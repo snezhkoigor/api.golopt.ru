@@ -6,8 +6,17 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
+        "bican/roles": "2.1.*",
+        "doctrine/dbal": "v2.4.2",
+        "guzzlehttp/guzzle": "^6.3",
+        "kodeine/laravel-acl": "~1.0@dev",
         "laravel/framework": "5.4.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "pragmarx/countries": "^0.1.0",
+        "tymon/jwt-auth": "0.5.*",
+        "omnipay/ym": "~1.0",
+        "yandexmoney/omnipay": "^1.0",
+        "dercoder/omnipay-webmoney": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

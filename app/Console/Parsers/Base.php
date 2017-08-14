@@ -6,7 +6,7 @@
  * Time: 22:06
  */
 
-namespace App\Cme;
+namespace App\Console\Parsers;
 
 
 class Base

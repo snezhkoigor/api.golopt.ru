@@ -6,8 +6,7 @@
  * Time: 22:05
  */
 
-namespace App\Cme;
-
+namespace App\Console\Parsers;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;

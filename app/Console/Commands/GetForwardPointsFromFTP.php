@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Cme\ForwardPoint;
+use App\Console\Parsers\ForwardPoint;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
