@@ -51,6 +51,6 @@ class ActivateController extends Controller
             'status' => false,
             'message' => 'Bad activation token.',
             'data' => null
-        ]);
+        ], 422);
     }
 }

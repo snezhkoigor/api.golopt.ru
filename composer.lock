@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "16a0971a0d737889e63e6be268c613c4",
-    "content-hash": "0d35208bf06807f93f3664c4bb73299c",
+    "hash": "840d46c338015469e42c71cb684d2e1e",
+    "content-hash": "8cee56c7cd520c1e9a910ec5988f0bcb",
     "packages": [
         {
             "name": "bican/roles",
@@ -686,6 +686,50 @@
             "time": "2017-05-14 14:47:48"
         },
         {
+            "name": "gerardojbaez/geodata",
+            "version": "v0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gerardojbaez/geodata.git",
+                "reference": "2827706a2ba3ef332ee2d43a14211ebf4eb03b67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gerardojbaez/geodata/zipball/2827706a2ba3ef332ee2d43a14211ebf4eb03b67",
+                "reference": "2827706a2ba3ef332ee2d43a14211ebf4eb03b67",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Gerardojbaez\\GeoData\\": "src/GeoData/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gerardo Báez",
+                    "email": "gerardojbaez@gmail.com"
+                }
+            ],
+            "description": "Laravel 5.2 package that provides basic geographical data like Countries, Regions and Cities.",
+            "keywords": [
+                "cities",
+                "countries",
+                "geographical data",
+                "laravel",
+                "regions"
+            ],
+            "time": "2017-04-14 19:48:33"
+        },
+        {
             "name": "guzzle/guzzle",
             "version": "v3.9.3",
             "source": {
@@ -961,6 +1005,49 @@
                 "url"
             ],
             "time": "2017-03-20 17:10:46"
+        },
+        {
+            "name": "ixudra/curl",
+            "version": "6.12.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ixudra/curl.git",
+                "reference": "1a40f8abc368164a3751f89692b818fca937a63e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ixudra/curl/zipball/1a40f8abc368164a3751f89692b818fca937a63e",
+                "reference": "1a40f8abc368164a3751f89692b818fca937a63e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=4.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ixudra\\Curl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Oris",
+                    "email": "jan.oris@ixudra.be"
+                }
+            ],
+            "description": "Custom PHP Curl library for the Laravel 5 framework - developed by Ixudra",
+            "homepage": "http://ixudra.be",
+            "keywords": [
+                "Ixudra",
+                "curl",
+                "laravel"
+            ],
+            "time": "2017-08-23 09:57:24"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -3218,6 +3305,77 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2017-07-23 12:43:26"
+        },
+        {
+            "name": "systemovich/laravel-translatable",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/systemovich/laravel-translatable.git",
+                "reference": "6f2d6132995d635f526fa0b8fe5a7d0294827f33"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/systemovich/laravel-translatable/zipball/6f2d6132995d635f526fa0b8fe5a7d0294827f33",
+                "reference": "6f2d6132995d635f526fa0b8fe5a7d0294827f33",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~5.2.0|~5.3.0|~5.4.0",
+                "illuminate/support": "~5.2.0|~5.3.0|~5.4.0",
+                "php": "^5.6|^7.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.4",
+                "orchestra/testbench": "~3.3.0|~3.4.0",
+                "phpunit/phpunit": "5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Translatable\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian De Deyne",
+                    "email": "sebastian@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Mohamed Said",
+                    "email": "theMohamedSaid@gmail.com",
+                    "role": "Original idea"
+                },
+                {
+                    "name": "Geoffrey van Wyk",
+                    "email": "geoffrey@vanwyk.biz",
+                    "role": "PHP 5 Compatibility"
+                }
+            ],
+            "description": "A trait to make an Eloquent model hold translations",
+            "homepage": "https://github.com/systemovich/laravel-translatable",
+            "keywords": [
+                "eloquent",
+                "i8n",
+                "laravel-translatable",
+                "model",
+                "multilingual",
+                "spatie",
+                "translate"
+            ],
+            "time": "2017-05-22 14:37:41"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

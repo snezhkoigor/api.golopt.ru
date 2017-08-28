@@ -59,13 +59,13 @@ class ResetPasswordController extends Controller
                 'status' => false,
                 'message' => 'User not created successfully.',
                 'data' => null
-            ]);
+            ], 422);
         }
 
         return response()->json([
             'status' => false,
             'message' => $validator->errors()->getMessages(),
             'data' => null
-        ]);
+        ], 422);
     }
 }

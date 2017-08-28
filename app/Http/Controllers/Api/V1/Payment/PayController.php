@@ -9,121 +9,197 @@
 namespace App\Http\Controllers\Api\V1\Payment;
 
 
+use App\Dictionary;
 use App\Http\Controllers\Controller;
+use App\Mail\SuccessPayForProduct;
+use App\Payment;
+use App\Product;
+use App\Rate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Omnipay\Omnipay;
+use JWTAuth;
 
 class PayController extends Controller
 {
-    public function pay(Request $request)
+    public function __construct()
+    {
+        $this->middleware('jwt.auth');
+    }
+
+    public function rules()
+    {
+        return [
+            'payment_system' => 'required|in:' . Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_DEMO,
+            'trade_account' => 'required|numeric',
+            'broker' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'payment_system.required' => 'No payment system selected.',
+            'payment_system.in' => 'Wrong payment system selected.',
+            'trade_account.required' => 'No account number selected.',
+            'trade_account.numeric' => 'Account must contain only digits.',
+            'broker.required' => 'No broker name selected.',
+        ];
+    }
+
+    public function demo(Request $request)
+    {
+        $user = JWTAuth::toUser(JWTAuth::getToken());
+        $product = Product::where('has_demo', 1)->first();
+
+        $request->request->add([ 'payment_system' => Dictionary::PAYMENT_SYSTEM_DEMO ]);
+
+        $validator = Validator::make($request->all(), $this->rules(), $this->messages());
+        if (!$user->products()->where('type', Dictionary::PRODUCT_TYPE_DEMO)->get()) {
+            if ($validator->fails() === false) {
+                $payment = new Payment();
+                $payment->user_id = $user['id'];
+                $payment->product_id = $product->id;
+                $payment->payment_system = $request->get('payment_system');
+                $payment->amount = 0;
+                $payment->currency = Dictionary::CURRENCY_USD;
+                $payment->success = 1;
+                $payment->details = json_encode([
+                    'trade_account' => $request->get('trade_account'),
+                    'broker' => $request->get('broker')
+                ]);
+                $payment->save();
+
+                $user->products()->attach(
+                    $user['id'],
+                    [
+                        'product_id' => $product->id,
+                        'trade_account' => $request->get('trade_account'),
+                        'broker' => $request->get('broker'),
+                        'type' => Dictionary::PRODUCT_TYPE_DEMO,
+                        'active' => 1,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'subscribe_date_until' => date('Y-m-d H:i:s', strtotime('+' . $product->demo_access_days . ' DAYS'))
+                    ]
+                );
+
+                $mail = new SuccessPayForProduct($product, true);
+                Mail::to($user->email)->send($mail);
+
+                return response()->json([
+                    'status' => true,
+                    'message' => null,
+                    'data' => null
+                ]);
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->getMessages(),
+                'data' => null
+            ], 422);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'You have demo access already.',
+            'data' => null
+        ], 422);
+    }
+
+    public function pay(Request $request, $id)
     {
         $result = null;
 
-        if (!empty($request->paymentSystem) && !empty($request->invoiceId)) {
-            $invoice = DB::connection('oldMysql')
-                ->table('payment')
-                ->where('_invoce', '=', $request->invoiceId)
-                ->first();
+        if ($product = Product::find($id)) {
+            $user = JWTAuth::toUser(JWTAuth::getToken());
+            $validator = Validator::make($request->all(), $this->rules(), $this->messages());
 
-            if (!empty($request->name)) {
-                DB::connection('oldMysql')
-                    ->table('users')
-                    ->where('id', '=', $invoice->_id_user)
-                    ->update([
-                        'name' => $request->name
+            if ($validator->fails() === false) {
+                $payment = new Payment();
+                    $payment->user_id = $user['id'];
+                    $payment->product_id = $product->id;
+                    $payment->payment_system = $request->get('payment_system');
+                    $payment->amount = $product->price;
+                    $payment->currency = $product->currency;
+                    $payment->success = 0;
+                    $payment->details = json_encode([
+                        'trade_account' => $request->get('trade_account'),
+                        'broker' => $request->get('broker')
                     ]);
+                    $payment->updated_at = null;
+                $payment->save();
+
+                switch ($payment->payment_system) {
+                    case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
+                        $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
+                        $gateway->setMerchantPurse('Z229902436381');
+
+                        $response = $gateway->purchase([
+                            'amount' => number_format($payment->amount, 2),
+                            'transactionId' => $payment->id,
+                            'currency' => $payment->currency,
+                            'testMode' => true,
+                            'description' => $product->description,
+                            'returnUrl' => 'http://cmeinfo.vlevels.ru/success',
+                            'cancelUrl' => 'http://cmeinfo.vlevels.ru/payment',
+                            'notifyUrl' => 'http://api.vlevels.ru/merchant/webmoney.php'
+                        ])->send();
+
+                        $result = [
+                            'actionUrl' => $response->getRedirectUrl(),
+                            'method' => $response->getRedirectMethod(),
+                            'params' => $response->getRedirectData()
+                        ];
+
+                        break;
+                    case Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY:
+                        $rate = Rate::where([
+                            ['date', date('Y-m-d')],
+                            ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
+                        ])->first();
+
+                        $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
+                        $gateway->setAccount('41001759464499');
+                        $gateway->setLabel($product->name);
+                        $gateway->setOrderId($payment->id);
+//                        $gateway->setMethod('PC');
+//                        $gateway->setReturnUrl('http://cmeinfo.vlevels.ru/success');
+//                        $gateway->setCancelUrl('http://cmeinfo.vlevels.ru/payment');
+                        $gateway->setParameter('targets', $product->name);
+                        $gateway->setParameter('comment', 'test');
+
+                        $response = $gateway->purchase(['amount' => $product->price * $rate->rate, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
+
+                        $result = [
+                            'actionUrl' => $response->getEndpoint(),
+                            'method' => $response->getRedirectMethod(),
+                            'params' => $response->getRedirectData()
+                        ];
+
+                        break;
+                }
+
+                return response()->json([
+                    'status' => true,
+                    'message' => null,
+                    'data' => $result
+                ]);
             }
 
-            switch ($request->paymentSystem) {
-                case 'WM':
-                    DB::connection('oldMysql')
-                        ->table('payment')
-                        ->where('_invoce', '=', $request->invoiceId)
-                        ->update([
-                            '_payment_type' => 'Web Money',
-                            '_fee' => 0,
-                            '_amount' => 1
-                        ]);
-
-                    $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
-                    $gateway->setMerchantPurse('Z229902436381');
-
-                    $response = $gateway->purchase([
-                        'amount' => '1.00',
-                        'transactionId' => $request->invoiceId,
-                        'currency' => 'USD',
-                        'testMode' => false,
-                        'description' => $request->formComment,
-                        'returnUrl' => 'http://cmeinfo.vlevels.ru/success',
-                        'cancelUrl' => 'http://cmeinfo.vlevels.ru/payment',
-                        'notifyUrl' => 'http://api.vlevels.ru/merchant/webmoney.php'
-                    ])->send();
-
-                    $result = [
-                        'actionUrl' => $response->getRedirectUrl(),
-                        'method' => $response->getRedirectMethod(),
-                        'params' => $response->getRedirectData()
-                    ];
-
-                    break;
-                case 'YM':
-                    DB::connection('oldMysql')
-                        ->table('payment')
-                        ->where('_invoce', '=', $request->invoiceId)
-                        ->update([
-                            '_payment_type' => 'Yandex.Money',
-                            '_fee' => round(($invoice->_amount*0.5)/100, 2)
-                        ]);
-
-                    $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
-                    $gateway->setAccount('41001310031527');
-                    $gateway->setLabel($invoice->_comment);
-                    $gateway->setPassword('CH+/mBSKzhlKvoX8uKG56att');
-                    $gateway->setOrderId($request->invoiceId);
-                    $gateway->setMethod('PC');
-                    $gateway->setReturnUrl('http://cmeinfo.vlevels.ru/success');
-                    $gateway->setCancelUrl('http://cmeinfo.vlevels.ru/payment');
-
-                    $response = $gateway->purchase(['amount' => $invoice->_amount, 'currency' => 'RUB', 'testMode' => false, 'FormComment' => $request->formComment])->send();
-
-                    $result = [
-                        'actionUrl' => $response->getEndpoint(),
-                        'method' => $response->getRedirectMethod(),
-                        'params' => $response->getRedirectData()
-                    ];
-
-                    break;
-
-                case 'MC':
-                case 'VISA':
-                    DB::connection('oldMysql')
-                        ->table('payment')
-                        ->where('_invoce', '=', $request->invoiceId)
-                        ->update([
-                            '_payment_type' => 'Yandex.Money',
-                            '_fee' => round(($invoice->_amount*0.5)/100, 2)
-                        ]);
-
-                    $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
-                    $gateway->setAccount('41001310031527');
-                    $gateway->setLabel($invoice->_comment);
-                    $gateway->setPassword('CH+/mBSKzhlKvoX8uKG56att');
-                    $gateway->setOrderId($request->invoiceId);
-                    $gateway->setMethod('AC');
-                    $gateway->setReturnUrl('http://cmeinfo.vlevels.ru/success');
-                    $gateway->setCancelUrl('http://cmeinfo.vlevels.ru/payment');
-
-                    $response = $gateway->purchase(['amount' => $invoice->_amount, 'currency' => 'RUB', 'testMode' => false, 'FormComment' => $request->formComment])->send();
-
-                    $result = [
-                        'actionUrl' => $response->getEndpoint(),
-                        'method' => $response->getRedirectMethod(),
-                        'params' => $response->getRedirectData()
-                    ];
-
-                    break;
-            }
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->getMessages(),
+                'data' => null
+            ], 422);
         }
 
-        return $result;
+        return response()->json([
+            'status' => false,
+            'message' => 'No product selected for buying.',
+            'data' => null
+        ], 422);
     }
 }

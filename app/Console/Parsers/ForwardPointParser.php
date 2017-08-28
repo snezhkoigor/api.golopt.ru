@@ -10,8 +10,9 @@ namespace App\Console\Parsers;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\ForwardPoint;
 
-class ForwardPoint
+class ForwardPointParser
 {
     public function parse($file)
     {
@@ -21,7 +22,6 @@ class ForwardPoint
 
         if ($contents) {
             $insert = [];
-            $file_content = '';
             $lines = explode("\n", $contents);
 
             if (count($lines) !== 0) {
@@ -42,16 +42,23 @@ class ForwardPoint
                 }
 
                 if (count($insert) !== 0) {
-                    $file_content .= (!empty($insert[Base::PAIR_AUD . Base::PAIR_USD]) ? $insert[Base::PAIR_AUD . Base::PAIR_USD] : 0) . ';';
-                    $file_content .= (!empty($insert[Base::PAIR_USD . Base::PAIR_CAD]) ? $insert[Base::PAIR_USD . Base::PAIR_CAD] : 0) . ';';
-                    $file_content .= (!empty($insert[Base::PAIR_USD . Base::PAIR_CHF]) ? $insert[Base::PAIR_USD . Base::PAIR_CHF] : 0) . ';';
-                    $file_content .= (!empty($insert[Base::PAIR_EUR . Base::PAIR_USD]) ? $insert[Base::PAIR_EUR . Base::PAIR_USD] : 0) . ';';
-                    $file_content .= (!empty($insert[Base::PAIR_GBP . Base::PAIR_USD]) ? $insert[Base::PAIR_GBP . Base::PAIR_USD] : 0) . ';';
-                    $file_content .= (!empty($insert[Base::PAIR_USD . Base::PAIR_JPY]) ? $insert[Base::PAIR_USD . Base::PAIR_JPY] : 0) . ';';
-                    $file_content .= (!empty($insert[Base::PAIR_MXN . Base::PAIR_USD]) ? $insert[Base::PAIR_MXN . Base::PAIR_USD] : 0) . ';';
-                    $file_content .= (!empty($insert[Base::PAIR_NZD . Base::PAIR_USD]) ? $insert[Base::PAIR_NZD . Base::PAIR_USD] : 0) . ';';
+                    foreach ($insert as $symbol => $fp) {
+                        $info = ForwardPoint::where([
+                            ['date', date('Y-m-d')],
+                            ['name', $symbol]
+                        ])->first();
 
-                    $disk->put('Forward_Point.csv', $file_content);
+                        if ($info) {
+                            $forward_point = $info;
+                        } else {
+                            $forward_point = new ForwardPoint();
+                        }
+
+                        $forward_point->name = $symbol;
+                        $forward_point->fp = $fp;
+                        $forward_point->date = date('Y-m-d');
+                        $forward_point->save();
+                    }
                 }
             } else {
                 Log::warning('Файл forward point пуст.', [ 'file' => $file ]);

@@ -73,7 +73,7 @@ class ProfileController extends Controller
 
     public function status(Request $request)
     {
-        $user = JWTAuth::toUser($request->get('token'));
+        $user = JWTAuth::toUser(JWTAuth::getToken());
 
         if ($user) {
             return response()->json([
@@ -89,12 +89,12 @@ class ProfileController extends Controller
             'status' => false,
             'message' => 'No user.',
             'data' => null
-        ]);
+        ], 422);
     }
 
     public function profile(Request $request)
     {
-        $user = JWTAuth::toUser($request->get('token'));
+        $user = JWTAuth::toUser(JWTAuth::getToken());
 
         if ($user) {
             return response()->json([
@@ -118,12 +118,12 @@ class ProfileController extends Controller
             'status' => false,
             'message' => 'No user.',
             'data' => null
-        ]);
+        ], 422);
     }
 
     public function update(Request $request)
     {
-        $user = JWTAuth::toUser($request->token);
+        $user = JWTAuth::toUser(JWTAuth::getToken());
 
         if ($user) {
             $validator = Validator::make($request->all(), $this->rules($request), $this->messages());
@@ -165,13 +165,13 @@ class ProfileController extends Controller
                 'status' => false,
                 'message' => $validator->errors()->getMessages(),
                 'data' => null
-            ]);
+            ], 422);
         }
 
         return response()->json([
             'status' => false,
             'message' => 'No user.',
             'data' => null
-        ]);
+        ], 422);
     }
 }

@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -179,6 +179,13 @@ return [
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         PragmaRX\Countries\ServiceProvider::class,
         Kodeine\Acl\AclServiceProvider::class,
+
+        Gerardojbaez\GeoData\GeoDataServiceProvider::class,
+
+        Spatie\Translatable\TranslatableServiceProvider::class,
+        App\Services\Locale\TranslationServiceProvider::class,
+
+        Ixudra\Curl\CurlServiceProvider::class,
     ],
 
     /*
@@ -230,7 +237,9 @@ return [
 
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'Countries'=> PragmaRX\Countries\Facade::class,
+        'Countries' => PragmaRX\Countries\Facade::class,
+
+        'Curl' => Ixudra\Curl\Facades\Curl::class,
     ],
 
 ];

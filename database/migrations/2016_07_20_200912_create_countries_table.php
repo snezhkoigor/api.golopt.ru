@@ -4,9 +4,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRolesTable extends Migration
+class CreateCountriesTable extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,13 +13,13 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('roles')) {
-            Schema::create('roles', function (Blueprint $table) {
+        if (!Schema::hasTable('countries')) {
+            Schema::create('countries', function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('name', 100)->unique();
-                $table->string('slug', 100)->unique();
-                $table->text('description')->nullable();
-                $table->timestamps();
+                $table->char('code', 2)->unique();
+                $table->boolean('active')->default(1);
+                $table->string('name');
+                $table->string('slug', 50)->unique();
             });
         }
     }
@@ -32,7 +31,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('roles');
+        Schema::drop('countries');
     }
-
 }

@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\GetForwardPointsFromFTP::class,
+        Commands\GetYahooRates::class
     ];
 
     /**
@@ -25,6 +26,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('getForwardPointsFromFTP')
+            ->hourly();
+
+        $schedule->command('getYahooRates')
             ->hourly();
     }
 

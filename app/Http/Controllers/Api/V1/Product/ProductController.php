@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use JWTAuth;
 
 class ProductController extends Controller
 {
@@ -40,12 +41,29 @@ class ProductController extends Controller
         ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $jwt_user = JWTAuth::getToken() ? JWTAuth::toUser(JWTAuth::getToken()) : null;
+        $products = $jwt_user ? Product::with(['users'])->get() : Product::all();
+
+        if ($jwt_user) {
+            foreach ($products as $product_key => $product) {
+                if (count($product->users)) {
+                    foreach ($product->users as $user_key => $user) {
+                        if ($user->id !== (int)$user['id']) {
+                            unset($products[$product_key]['users'][$user_key]);
+                        } else {
+                            $products[$product_key]['users'] = $user;
+                        }
+                    }
+                }
+            }
+        }
+
         return response()->json([
             'status' => true,
             'message' => null,
-            'data' => Product::all()
+            'data' => $products
         ]);
     }
 

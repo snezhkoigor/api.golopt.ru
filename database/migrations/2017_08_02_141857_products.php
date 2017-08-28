@@ -22,8 +22,10 @@ class Products extends Migration
                 $table->text('description')->nullable();
                 $table->smallInteger('price');
                 $table->enum('price_by', ['month', 'year', 'full'])->default('month');
+                $table->char('currency', 3)->default(\App\Dictionary::CURRENCY_USD);
                 $table->tinyInteger('demo_access_days')->default(14);
                 $table->boolean('active')->default(true);
+                $table->boolean('has_demo')->default(false);
                 $table->timestamps();
             });
         }

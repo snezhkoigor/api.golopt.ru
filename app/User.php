@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Kodeine\Acl\Traits\HasRole;
 
 class User extends Authenticatable
@@ -56,11 +57,20 @@ class User extends Authenticatable
             ->orderBy('created_at', 'DESC');
     }
 
+    public function hasProductByItemId($item_id)
+    {
+        return DB::table('product_user')
+            ->where([
+                ['user_id', $this->id],
+                ['id', $item_id]
+            ])->first();
+    }
+
     public function products()
     {
         return $this->belongsToMany('App\Product', 'product_user')
             ->withPivot([
-                'trade_account', 'broker', 'id'
+                'trade_account', 'broker', 'id', 'active', 'subscribe_date_until', 'type'
             ])
             ->with('payments');
     }

@@ -27,7 +27,7 @@ class RegisterController extends Controller
     {
         return [
             'email' => 'required|unique:users|email|max:50',
-            'password' => 'required'
+//            'password' => 'required'
         ];
     }
 
@@ -35,10 +35,10 @@ class RegisterController extends Controller
     {
         return [
             'email.required' => 'Enter your e-mail address.',
-            'email.unique' => 'We have already this e-mail. Try to enter another one.',
+            'email.unique' => 'We have already this e-mail. Try to enter another one or login, please',
             'email.email' => 'Bad e-mail format.',
             'email.max' => 'Sorry. But max e-mail length is 50 characters.',
-            'password.required' => 'Enter your password.',
+//            'password.required' => 'Enter your password.',
         ];
     }
 
@@ -48,13 +48,16 @@ class RegisterController extends Controller
 
         if ($validator->fails() === false) {
             $countryFromIp = GetCountryFromIP::execute();
+            $password = $request->get('password') ? $request->get('password') : User::generate_password(5);
 
             $user = new User();
                 $user->email = $request->get('email');
-                $user->password = Hash::make($request->get('password'));
+                $user->password = Hash::make($password);
                 $user->country = ($countryFromIp && Countries::where('cca2', $countryFromIp)->first()) ? $countryFromIp : null;
                 $user->first_name = $request->get('first_name');
                 $user->last_name = $request->get('first_name');
+                $user->skype = $request->get('skype') ? $request->get('skype') : null;
+                $user->phone = $request->get('phone') ? $request->get('phone') : null;
                 $user->active = false;
             $user->save();
 
@@ -62,7 +65,7 @@ class RegisterController extends Controller
                 $user->assignRole('client');
                 $this->activationService->sendMail($user);
 
-                $mail = new EmailRegister($user, $request->get('password'));
+                $mail = new EmailRegister($user, $password);
                 Mail::to($user->email)->send($mail);
 
                 return response()->json([
@@ -79,13 +82,13 @@ class RegisterController extends Controller
                 'status' => false,
                 'message' => 'User not created successfully.',
                 'data' => null
-            ]);
+            ], 422);
         }
 
         return response()->json([
             'status' => false,
             'message' => $validator->errors()->getMessages(),
             'data' => null
-        ]);
+        ], 422);
     }
 }

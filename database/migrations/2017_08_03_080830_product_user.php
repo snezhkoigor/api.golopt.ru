@@ -22,6 +22,7 @@ class ProductUser extends Migration
                 $table->string('broker');
                 $table->date('subscribe_date_until');
                 $table->enum('type', ['demo', 'real'])->default('real');
+                $table->boolean('active')->default(false);
                 $table->timestamps();
             });
         }

@@ -17,4 +17,12 @@ class Product extends Model
     {
         return $this->hasMany('App\Payment');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'product_user')
+            ->withPivot([
+                'trade_account', 'broker', 'id', 'active', 'subscribe_date_until', 'type'
+            ]);
+    }
 }

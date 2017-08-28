@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Parsers\ForwardPoint;
+use App\Console\Parsers\ForwardPointParser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -77,7 +77,7 @@ class GetForwardPointsFromFTP extends Command
                 }
 
                 if ($local_file) {
-                    $forward_point = new ForwardPoint();
+                    $forward_point = new ForwardPointParser();
 
                     $forward_point->parse($local_file);
                 }

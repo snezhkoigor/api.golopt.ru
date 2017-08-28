@@ -1,12 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\Schema;
 
-class CreateRolesTable extends Migration
+class CreatePaymentAnswerQueue extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -14,12 +13,11 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('roles')) {
-            Schema::create('roles', function (Blueprint $table) {
+        if (!Schema::hasTable('payment_answer_queue')) {
+            Schema::create('payment_answer_queue', function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('name', 100)->unique();
-                $table->string('slug', 100)->unique();
-                $table->text('description')->nullable();
+                $table->text('post');
+                $table->boolean('active')->default(false);
                 $table->timestamps();
             });
         }
@@ -32,7 +30,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('roles');
+        Schema::drop('payment_answer_queue');
     }
-
 }

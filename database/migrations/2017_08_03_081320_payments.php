@@ -18,8 +18,9 @@ class Payments extends Migration
                 $table->increments('id');
                 $table->integer('user_id')->unsigned()->index()->foreign()->references("id")->on("users");
                 $table->integer('product_id')->unsigned()->index()->foreign()->references("id")->on("products");
+                $table->char('payment_system', 10);
                 $table->decimal('amount');
-                $table->char('currency', 3);
+                $table->char('currency', 3)->default(\App\Dictionary::CURRENCY_USD);
                 $table->boolean('success')->default(false);
                 $table->timestamps();
             });

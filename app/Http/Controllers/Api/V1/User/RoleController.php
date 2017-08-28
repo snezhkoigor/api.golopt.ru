@@ -21,7 +21,7 @@ class RoleController extends Controller
 
     public function get(Request $request)
     {
-        $user = JWTAuth::toUser($request->token);
+        $user = JWTAuth::toUser(JWTAuth::getToken());
 
         if ($user) {
             return response()->json([
@@ -34,7 +34,7 @@ class RoleController extends Controller
                 'status' => false,
                 'message' => 'No user.',
                 'data' => null
-            ]);
+            ], 422);
         }
     }
 }

@@ -22,7 +22,7 @@ class LogoutController extends Controller
 
     public function logout(Request $request)
     {
-        JWTAuth::invalidate($request->token);
+        JWTAuth::invalidate(JWTAuth::getToken());
 
         return response()->json([
             'status' => true,
