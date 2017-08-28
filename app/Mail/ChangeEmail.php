@@ -12,22 +12,20 @@ class ChangeEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    protected $token;
     protected $start;
 
-    public function __construct(User $user, $start = true)
+    public function __construct($token, $start = true)
     {
-        $this->user = $user;
+        $this->token = $token;
         $this->start = $start;
     }
 
     public function build()
     {
         if ($this->start) {
-            $record = DB::table('user_change_emails')->where('user_id', $this->user->id)->first();
-
             return $this->view('emails.changeUserEmail.start')->with([
-                'token' => $record->token ? $record->token : null,
+                'token' => $this->token,
             ])->subject('Изменение e-mail аккаунта.');
         }
 

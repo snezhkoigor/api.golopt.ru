@@ -30,9 +30,9 @@ class ChangeEmailService
             return;
         }
 
-        $this->changeEmailRepo->create($user, $newEmail);
+        $token = $this->changeEmailRepo->create($user, $newEmail);
 
-        Mail::to($newEmail)->send(new ChangeEmail($user));
+        Mail::to($newEmail)->send(new ChangeEmail($token));
     }
 
     public function change($token)
