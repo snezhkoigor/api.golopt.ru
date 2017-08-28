@@ -17,7 +17,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
     Route::get('/logout', 'User\LogoutController@logout');
     Route::get('/activation/{token}', 'User\ActivateController@activate');
     Route::get('/new/email/{token}', 'User\ChangeEmailController@change');
-    Route::post('/new/email/cancel', 'User\ChangeEmailController@cancel');
+    Route::delete('/new/email/cancel', 'User\ChangeEmailController@cancel');
 
     Route::post('/new/password', 'User\ResetPasswordController@reset');
 
