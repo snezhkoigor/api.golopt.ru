@@ -51,10 +51,9 @@ class ChangeEmailController extends Controller
         ], 422);
     }
 
-    public function cancel(Request $request)
+    public function cancel($new_email)
     {
         $jwt_user = JWTAuth::toUser(JWTAuth::getToken());
-        $new_email = $request->get('new_email');
         $user = $jwt_user
             ->where('id', $jwt_user['id'])
             ->first();
