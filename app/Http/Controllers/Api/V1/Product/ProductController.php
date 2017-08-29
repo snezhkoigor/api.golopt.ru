@@ -50,7 +50,7 @@ class ProductController extends Controller
             foreach ($products as $product_key => $product) {
                 if (count($product->users)) {
                     foreach ($product->users as $user_key => $user) {
-                        if ($user->id !== (int)$user['id']) {
+                        if ($jwt_user->id !== (int)$user['id']) {
                             unset($products[$product_key]['users'][$user_key]);
                         } else {
                             $products[$product_key]['users'] = $user;
