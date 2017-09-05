@@ -32,11 +32,22 @@ class DictionaryController extends Controller
     {
         $result = [];
         if ($lang) {
-            $data = Fragment::where('text', 'like', '%"' . $lang . '"%')->get();
+            $data = Fragment::where('text', 'like', '{%' . $lang . '%:%}')->get();
 
             if (count($data) > 0) {
                 foreach ($data as $fragment) {
-                    $result[$fragment['key']] = $fragment['text'];
+//                    if (strpos($fragment['key'], '.') !== false) {
+//                        $key_array = explode('.', $fragment['key']);
+                        $result[$fragment['key']] = $fragment['text'];
+//                        $key_array[count($key_array) - 1] = $fragment['text'];
+
+//                        $result = [];
+//                        for ($i = count($key_array) - 1; $i >= 0; $i--) {
+//                            $result = [ $key_array[$i] => $result ];
+//                        }
+//                    } else {
+//                        $result[$fragment['key']] = $fragment['text'];
+//                    }
                 }
             }
         }

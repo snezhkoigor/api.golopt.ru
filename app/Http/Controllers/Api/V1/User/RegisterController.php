@@ -34,10 +34,10 @@ class RegisterController extends Controller
     public function messages()
     {
         return [
-            'email.required' => 'Enter your e-mail address.',
-            'email.unique' => 'We have already this e-mail. Try to enter another one or login, please',
-            'email.email' => 'Bad e-mail format.',
-            'email.max' => 'Sorry. But max e-mail length is 50 characters.',
+            'email.required' => 'Enter your e-mail address',
+            'email.unique' => 'We have already this e-mail',
+            'email.email' => 'Bad e-mail format',
+            'email.max' => 'Max e-mail length is 50 characters',
 //            'password.required' => 'Enter your password.',
         ];
     }

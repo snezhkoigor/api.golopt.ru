@@ -26,14 +26,14 @@ class LoginController extends Controller
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Invalid email or password.',
+                    'message' => 'Invalid email or password',
                     'data' => null
                 ], 422);
             }
         } catch (JWTException $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to create token.',
+                'message' => 'Failed to create token',
                 'data' => null
             ], 500);
         }
@@ -50,7 +50,7 @@ class LoginController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Activate your e-mail, please.',
+            'message' => 'Activate your e-mail, please',
             'data' => null
         ], 422);
     }
