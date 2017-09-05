@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'no-replay@golopt.ru'),
-        'name' => env('MAIL_FROM_NAME', 'Golopt.ru'),
+        'address' => env('MAIL_FROM_ADDRESS', 'no-replay@goloption.com'),
+        'name' => env('MAIL_FROM_NAME', 'Goloption.com'),
     ],
 
     /*
