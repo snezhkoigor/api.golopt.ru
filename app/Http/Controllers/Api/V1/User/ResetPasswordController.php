@@ -27,9 +27,9 @@ class ResetPasswordController extends Controller
     public function messages()
     {
         return [
-            'email.required' => 'Enter your e-mail address.',
-            'email.exists' => 'We can not find this e-mail. Try to enter another one.',
-            'email.email' => 'Bad e-mail format.'
+            'email.required' => 'Enter your e-mail address',
+            'email.exists' => 'Can not find this e-mail',
+            'email.email' => 'Bad e-mail format'
         ];
     }
 
@@ -50,14 +50,14 @@ class ResetPasswordController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => 'Reset success. Check your email address and go to login page.',
+                    'message' => 'Reset success',
                     'data' => null
                 ]);
             }
 
             return response()->json([
                 'status' => false,
-                'message' => 'User not created successfully.',
+                'message' => 'No user',
                 'data' => null
             ], 422);
         }
