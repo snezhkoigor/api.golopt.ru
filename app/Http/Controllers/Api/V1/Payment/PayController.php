@@ -40,11 +40,11 @@ class PayController extends Controller
     public function messages()
     {
         return [
-            'payment_system.required' => 'No payment system selected.',
-            'payment_system.in' => 'Wrong payment system selected.',
-            'trade_account.required' => 'No account number selected.',
-            'trade_account.numeric' => 'Account must contain only digits.',
-            'broker.required' => 'No broker name selected.',
+            'payment_system.required' => 'No payment system selected',
+            'payment_system.in' => 'Wrong payment system selected',
+            'trade_account.required' => 'No account number selected',
+//            'trade_account.numeric' => 'Account must contain only digits',
+            'broker.required' => 'No broker name',
         ];
     }
 
@@ -104,7 +104,7 @@ class PayController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'You have demo access already.',
+            'message' => 'You have demo access already',
             'data' => null
         ], 422);
     }
@@ -198,7 +198,7 @@ class PayController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'No product selected for buying.',
+            'message' => 'No product selected for buying',
             'data' => null
         ], 422);
     }

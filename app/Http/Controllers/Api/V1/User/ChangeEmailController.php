@@ -27,8 +27,8 @@ class ChangeEmailController extends Controller
     public function messages()
     {
         return [
-            'token.required' => 'Token is required.',
-            'token.exists' => 'No token in DB.'
+            'token.required' => 'Token is required',
+            'token.exists' => 'No token in DB'
         ];
     }
 
@@ -46,7 +46,7 @@ class ChangeEmailController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Bad activation token.',
+            'message' => 'Bad activation token',
             'data' => null
         ], 422);
     }
@@ -70,7 +70,7 @@ class ChangeEmailController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Can not find any information in Database by this credentials.',
+            'message' => 'Can not find any information in Database by this credentials',
             'data' => null
         ], 422);
     }

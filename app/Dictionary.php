@@ -72,7 +72,7 @@ class Dictionary
         return [
             self::PAYMENT_SYSTEM_YANDEX_MONEY => [
                 'key' => self::PAYMENT_SYSTEM_YANDEX_MONEY,
-                'text' => 'Яндекс.Деньги'
+                'text' => 'YandexMoney'
             ],
             self::PAYMENT_SYSTEM_WEB_MONEY => [
                 'key' => self::PAYMENT_SYSTEM_WEB_MONEY,
@@ -80,7 +80,7 @@ class Dictionary
             ],
             self::PAYMENT_SYSTEM_DEMO => [
                 'key' => self::PAYMENT_SYSTEM_DEMO,
-                'text' => 'Демо доступ'
+                'text' => 'Demo access'
             ]
         ];
     }

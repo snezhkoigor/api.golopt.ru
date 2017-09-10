@@ -25,8 +25,8 @@ class ActivateController extends Controller
     public function messages()
     {
         return [
-            'token.required' => 'Token is required.',
-            'token.exists' => 'No token in DB.'
+            'token.required' => 'Token is required',
+            'token.exists' => 'No token in DB'
         ];
     }
 
@@ -49,7 +49,7 @@ class ActivateController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'Bad activation token.',
+            'message' => 'Bad activation token',
             'data' => null
         ], 422);
     }

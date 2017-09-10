@@ -39,12 +39,12 @@ class ProfileController extends Controller
     public function messages()
     {
         return [
-            'email.required' => 'Enter your e-mail address.',
-            'email.unique' => 'We have already this e-mail. Try to enter another one.',
-            'email.email' => 'Bad e-mail format.',
-            'email.max' => 'Sorry. But max e-mail length is 50 characters.',
-            'new_password.required' => 'Enter your new password.',
-            'old_password.required' => 'Enter your current password.'
+            'email.required' => 'Enter your e-mail address',
+            'email.unique' => 'We have already this e-mail',
+            'email.email' => 'Bad e-mail format',
+            'email.max' => 'Max e-mail length is 50 characters',
+            'new_password.required' => 'Enter new password',
+            'old_password.required' => 'Enter your current password'
         ];
     }
 
@@ -87,7 +87,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'No user.',
+            'message' => 'No user',
             'data' => null
         ], 422);
     }
@@ -116,7 +116,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'No user.',
+            'message' => 'No user',
             'data' => null
         ], 422);
     }
@@ -128,7 +128,7 @@ class ProfileController extends Controller
         if ($user) {
             $validator = Validator::make($request->all(), $this->rules($request), $this->messages());
             if (($request->get('new_password') || $request->get('old_password')) && !Hash::check($request->get('old_password'), $user->password)) {
-                $validator->getMessageBag()->add('old_password', 'You have entered wrong current password.');
+                $validator->getMessageBag()->add('old_password', 'You have entered wrong current password');
             } else if ($validator->fails() === false) {
                 $user->skype = $request->get('skype') ? $request->get('skype') : null;
                 $user->first_name = $request->get('first_name') ? $request->get('first_name') : null;
@@ -170,7 +170,7 @@ class ProfileController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'No user.',
+            'message' => 'No user',
             'data' => null
         ], 422);
     }
