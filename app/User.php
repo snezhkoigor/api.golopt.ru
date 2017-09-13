@@ -51,6 +51,12 @@ class User extends Authenticatable
             ->orderBy('created_at', 'DESC');
     }
 
+    public function feedback()
+    {
+        return $this->hasMany('App\Feedback')
+            ->orderBy('created_at', 'DESC');
+    }
+
     public function payments()
     {
         return $this->hasMany('App\Payment')

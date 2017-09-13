@@ -14,6 +14,7 @@
 Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], function() {
     Route::post('/register', 'User\RegisterController@register');
     Route::post('/login', 'User\LoginController@login');
+    Route::post('/feedback', 'User\FeedbackController@question');
     Route::get('/logout', 'User\LogoutController@logout');
     Route::get('/activation/{token}', 'User\ActivateController@activate');
     Route::get('/new/email/{token}', 'User\ChangeEmailController@change');

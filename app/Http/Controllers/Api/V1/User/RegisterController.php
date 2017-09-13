@@ -70,7 +70,7 @@ class RegisterController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => 'User created successfully.',
+                    'message' => 'User created successfully',
 //                    'data' => [
 //                        'token' => JWTAuth::attempt($request->only('email', 'password'))
 //                    ]
@@ -80,7 +80,7 @@ class RegisterController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => 'User not created successfully.',
+                'message' => 'User not created successfully',
                 'data' => null
             ], 422);
         }
