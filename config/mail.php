@@ -68,7 +68,7 @@ return [
     */
 
     'feedback_to' => [
-        'address' => env('MAIL_FEEDBACK_TO_ADDRESS', 'i.s.sergeevich@yandex.ru'),
+        'address' => env('MAIL_FEEDBACK_TO_ADDRESS', 'feedback@goloption.com'),
         'name' => env('MAIL_FEEDBACK_TO_NAME', 'Goloption.com'),
     ],
 
