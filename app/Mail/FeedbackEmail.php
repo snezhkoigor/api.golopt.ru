@@ -22,7 +22,7 @@ class FeedbackEmail extends Mailable
     public function build()
     {
         return $this->from($this->feedback->email)
-            ->to(config('mail.feedback_to.address'))
+            ->to(config('mail.feedback_to.address'), config('mail.feedback_to.name'))
             ->text('emails.feedback.administrator')
             ->with([
                 'text' => $this->feedback->text
