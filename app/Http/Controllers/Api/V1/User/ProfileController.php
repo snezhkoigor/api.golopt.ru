@@ -30,7 +30,7 @@ class ProfileController extends Controller
     {
         return [
             'email' => 'required|' . $this->emailRulesByChanging($request) . '|email|max:50',
-            'phone' => 'numeric',
+            'phone' => 'nullable|numeric',
             'old_password' => $this->oldPasswordRulesByChanging($request),
             'new_password' => $this->newPasswordRulesByChanging($request)
         ];
