@@ -28,6 +28,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
     Route::get('/me/roles', 'User\RoleController@get');
     Route::put('/me/product/{id}', 'User\ProductController@update');
 
+    Route::get('/products/pricing', 'Product\ProductController@pricingTable');
     Route::get('/products', 'Product\ProductController@index');
     Route::put('/products/{id?}', 'Product\ProductController@save');
 

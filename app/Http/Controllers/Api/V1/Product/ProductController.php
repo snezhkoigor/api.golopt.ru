@@ -19,7 +19,7 @@ class ProductController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt.auth', ['except' => ['index']]);
+        $this->middleware('jwt.auth', ['except' => ['pricingTable']]);
     }
 
     public function rules()
@@ -41,8 +41,9 @@ class ProductController extends Controller
         ];
     }
 
-    public function index(Request $request)
+    public function pricingTable()
     {
+        $result = [];
         $jwt_user = JWTAuth::getToken() ? JWTAuth::toUser(JWTAuth::getToken()) : null;
         $products = $jwt_user ? Product::with(['users'])->get() : Product::all();
 
@@ -60,10 +61,50 @@ class ProductController extends Controller
             }
         }
 
+        foreach ($products as $product_key => $product) {
+            $result[$product['group']][$product_key] = $product;
+            $result[$product['group']][$product_key]['functional'] = null !== $product['functional'] ? json_decode($product['functional'], true) : null;
+        }
+
         return response()->json([
             'status' => true,
             'message' => null,
-            'data' => $products
+            'data' => $result
+        ]);
+    }
+
+    public function index(Request $request)
+    {
+        $result = [];
+        $jwt_user = JWTAuth::getToken() ? JWTAuth::toUser(JWTAuth::getToken()) : null;
+        $products = $jwt_user ? Product::with(['users'])->get() : Product::all();
+
+        if ($jwt_user) {
+            foreach ($products as $product_key => $product) {
+                if (count($product->users)) {
+                    foreach ($product->users as $user_key => $user) {
+                        if ($jwt_user->id !== (int)$user['id']) {
+                            unset($products[$product_key]['users'][$user_key]);
+                        } else {
+                            $products[$product_key]['users'] = $user;
+                        }
+                    }
+                }
+            }
+        }
+
+        if ($request->get('grouped') === true) {
+            foreach ($products as $product_key => $product) {
+                $result[$product['group']][$product_key] = $product;
+            }
+        } else {
+            $result = $products;
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => null,
+            'data' => $result
         ]);
     }
 

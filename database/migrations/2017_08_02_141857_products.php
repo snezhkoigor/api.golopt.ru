@@ -26,6 +26,8 @@ class Products extends Migration
                 $table->tinyInteger('demo_access_days')->default(14);
                 $table->boolean('active')->default(true);
                 $table->boolean('has_demo')->default(false);
+                $table->enum('group', ['full', 'lite', 'advisor'])->default('lite');
+                $table->text('functional')->nullable();
                 $table->timestamps();
             });
         }

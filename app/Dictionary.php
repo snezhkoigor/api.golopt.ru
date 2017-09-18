@@ -38,7 +38,7 @@ class Dictionary
             'PAYMENT_SYSTEM_DEMO' => 'demo',
             'PRODUCT_TYPE_REAL' => 'real',
             'PRODUCT_TYPE_DEMO' => 'demo',
-            'CURRENCY_USD' => 'USD'
+            'CURRENCY_USD' => 'usd'
         ];
     }
 

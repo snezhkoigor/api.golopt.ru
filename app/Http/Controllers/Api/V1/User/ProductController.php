@@ -52,7 +52,7 @@ class ProductController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => null,
-                    'data' => null
+                    'data' => $userProduct->pivot
                 ]);
             }
 
