@@ -186,6 +186,8 @@ return [
         App\Services\Locale\TranslationServiceProvider::class,
 
         Ixudra\Curl\CurlServiceProvider::class,
+
+        Alaouy\Youtube\YoutubeServiceProvider::class,
     ],
 
     /*
@@ -240,6 +242,8 @@ return [
         'Countries' => PragmaRX\Countries\Facade::class,
 
         'Curl' => Ixudra\Curl\Facades\Curl::class,
+
+        'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
     ],
 
 ];

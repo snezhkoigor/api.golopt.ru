@@ -40,4 +40,6 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
     Route::post('/product/demo', 'Payment\PayController@demo');
 
     Route::post('/pay/receive', 'Payment\ReceiveController@index');
+
+    Route::get('/youtube/videos', 'Youtube\VideoController@getList');
 });

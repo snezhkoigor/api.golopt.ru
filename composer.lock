@@ -4,9 +4,55 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "840d46c338015469e42c71cb684d2e1e",
-    "content-hash": "8cee56c7cd520c1e9a910ec5988f0bcb",
+    "hash": "7aa1c3f6e1b153f5ce9c1d421cb8da86",
+    "content-hash": "2b5c5f3deaa0f9b6bde838cdbefbf0e9",
     "packages": [
+        {
+            "name": "alaouy/youtube",
+            "version": "v1.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alaouy/Youtube.git",
+                "reference": "3066277809045fb41d88ea652cad1686e82747fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alaouy/Youtube/zipball/3066277809045fb41d88ea652cad1686e82747fd",
+                "reference": "3066277809045fb41d88ea652cad1686e82747fd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*@stable"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Alaouy\\Youtube\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mustapha Alaouy",
+                    "email": "alaouym@gmail.com"
+                }
+            ],
+            "description": "Laravel PHP Facade/Wrapper for the Youtube Data API v3",
+            "keywords": [
+                "alaouy",
+                "api",
+                "laravel",
+                "video",
+                "youtube"
+            ],
+            "time": "2017-07-14 12:08:48"
+        },
         {
             "name": "bican/roles",
             "version": "2.1.7",
