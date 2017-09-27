@@ -26,10 +26,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('getForwardPointsFromFTP')
-            ->hourly();
+            ->everyMinute()
+            ->withoutOverlapping();
+
 
         $schedule->command('getYahooRates')
-            ->hourly();
+            ->everyMinute()
+            ->withoutOverlapping();
     }
 
     /**
