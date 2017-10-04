@@ -187,7 +187,7 @@ return [
 
         Ixudra\Curl\CurlServiceProvider::class,
 
-        Alaouy\Youtube\YoutubeServiceProvider::class,
+        Alaouy\Youtube\YoutubeServiceProvider::class
     ],
 
     /*
@@ -243,7 +243,7 @@ return [
 
         'Curl' => Ixudra\Curl\Facades\Curl::class,
 
-        'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
+        'Youtube' => Alaouy\Youtube\Facades\Youtube::class
     ],
 
 ];

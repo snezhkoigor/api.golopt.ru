@@ -9,7 +9,7 @@
 namespace App;
 
 
-use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\DB;
 
 class Dictionary
 {
@@ -83,5 +83,19 @@ class Dictionary
                 'text' => 'Demo access'
             ]
         ];
+    }
+
+    public static function get_countries()
+    {
+        $result = [];
+        $countries = DB::table('countries')->where('active', '=', 1)->get();
+
+        if (0 !== count($countries)) {
+            foreach ($countries as $country) {
+                $result[] = $country->name;
+            }
+        }
+
+        return $result;
     }
 }

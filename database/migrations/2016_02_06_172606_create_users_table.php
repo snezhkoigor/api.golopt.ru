@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
                 $table->string('first_name')->nullable();
                 $table->string('last_name')->nullable();
                 $table->string('country')->nullable();
+                $table->integer('calling_code')->nullable();
                 $table->string('phone')->nullable();
                 $table->string('skype')->nullable();
                 $table->boolean('active')->default(false);

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Kodeine\Acl\Traits\HasRole;
+use Countries;
 
 class User extends Authenticatable
 {
@@ -83,6 +84,7 @@ class User extends Authenticatable
 
     public static function generate_password($number)
     {
+        $result = '';
         $arr = array('a','b','c','d','e','f',
             'g','h','i','j','k','l',
             'm','n','o','p','r','s',
@@ -98,13 +100,47 @@ class User extends Authenticatable
             '<','>','/','|','+','-',
             '{','}','`','~');
 
-        $pass = '';
+        for($i = 0; $i < $number; $i++) {
+            $index = mt_rand(0, count($arr) - 1);
+            $result .= $arr[$index];
+        }
+
+        return $result;
+    }
+
+    public static function generate_phone_code($number = 6)
+    {
+        $result = '';
+        $arr = array('1','2','3','4','5','6','7','8','9','0');
 
         for($i = 0; $i < $number; $i++) {
             $index = mt_rand(0, count($arr) - 1);
-            $pass .= $arr[$index];
+            $result .= $arr[$index];
         }
 
-        return $pass;
+        return $result;
+    }
+
+    public static function replace_calling_code_from_phone($calling_code, $phone)
+    {
+        $result = $phone;
+        if (strpos($phone, $calling_code) === 0) {
+            $result = substr($phone, strlen($calling_code));
+        }
+
+        return $result;
+    }
+
+    public static function get_calling_code($country)
+    {
+        $result = null;
+
+        $countryFromDb = DB::table('countries')->where('name', '=', $country)->first();
+        $callingCode = null;
+        if ($countryFromJson = Countries::where('cca2', $countryFromDb->code)->first()) {
+            $result = $countryFromJson->items['callingCode'][0];
+        }
+
+        return $result;
     }
 }

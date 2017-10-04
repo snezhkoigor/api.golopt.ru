@@ -11,6 +11,7 @@ namespace App\Services;
 
 use App\Mail\EmailActivate;
 use App\Repositories\ActivationRepository;
+use App\Smsc;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -22,6 +23,17 @@ class ActivationService
     public function __construct(ActivationRepository $activationRepo)
     {
         $this->activationRepo = $activationRepo;
+    }
+
+    public function sendSms($user)
+    {
+        if ($user->active || !$this->shouldSend($user)) {
+            return;
+        }
+
+        $this->activationRepo->create($user, true);
+
+        Smsc::send_sms($user->calling_code . $user->phone, $user->activation['token'], 0, 0, 0, 0, config('smsc.SMSC_FROM'));
     }
 
     public function sendMail($user)

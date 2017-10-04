@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Connection;
 
@@ -23,15 +24,15 @@ class ActivationRepository
         $this->db = $db;
     }
 
-    public function create($user)
+    public function create($user, $isSms = false)
     {
         $activation = $this->get($user);
 
         if (!$activation) {
-            return $this->createToken($user);
+            return $this->createToken($user, $isSms);
         }
 
-        return $this->regenerateToken($user);
+        return $this->regenerateToken($user, $isSms);
     }
 
     public function get($user)
@@ -49,14 +50,18 @@ class ActivationRepository
         $this->db->table($this->table)->where('token', $token)->delete();
     }
 
-    protected function getToken()
+    protected function getToken($isSms = false)
     {
-        return hash_hmac('sha256', str_random(40), config('app.key'));
+        if ($isSms === false) {
+            return hash_hmac('sha256', str_random(40), config('app.key'));
+        } else {
+            return User::generate_phone_code();
+        }
     }
 
-    private function regenerateToken($user)
+    private function regenerateToken($user, $isSms = false)
     {
-        $token = $this->getToken();
+        $token = $this->getToken($isSms);
         $this->db->table($this->table)->where('user_id', $user->id)->update([
             'token' => $token,
             'created_at' => new Carbon()
@@ -65,9 +70,9 @@ class ActivationRepository
         return $token;
     }
 
-    private function createToken($user)
+    private function createToken($user, $isSms = false)
     {
-        $token = $this->getToken();
+        $token = $this->getToken($isSms);
         $this->db->table($this->table)->insert([
             'user_id' => $user->id,
             'token' => $token,

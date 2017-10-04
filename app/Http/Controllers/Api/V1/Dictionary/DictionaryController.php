@@ -23,7 +23,8 @@ class DictionaryController extends Controller
                 'price_by' => Dictionary::get_product_price_by(),
                 'locales' => Dictionary::get_localizations(),
                 'payment_systems' => Dictionary::get_available_payment_systems(),
-                'const' => Dictionary::get_const()
+                'const' => Dictionary::get_const(),
+                'countries' => Dictionary::get_countries()
             ]
         ]);
     }
@@ -36,18 +37,7 @@ class DictionaryController extends Controller
 
             if (count($data) > 0) {
                 foreach ($data as $fragment) {
-//                    if (strpos($fragment['key'], '.') !== false) {
-//                        $key_array = explode('.', $fragment['key']);
-                        $result[$fragment['key']] = $fragment['text'];
-//                        $key_array[count($key_array) - 1] = $fragment['text'];
-
-//                        $result = [];
-//                        for ($i = count($key_array) - 1; $i >= 0; $i--) {
-//                            $result = [ $key_array[$i] => $result ];
-//                        }
-//                    } else {
-//                        $result[$fragment['key']] = $fragment['text'];
-//                    }
+                    $result[$fragment['key']] = $fragment['text'];
                 }
             }
         }
