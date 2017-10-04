@@ -51,7 +51,6 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), $this->rules(), $this->messages());
 
         if ($validator->fails() === false) {
-//            $countryFromIp = GetCountryFromIP::execute();
             $password = $request->get('password') ? $request->get('password') : User::generate_password(5);
             $callingCode = User::get_calling_code($request->get('country'));
 
@@ -61,7 +60,6 @@ class RegisterController extends Controller
                 $user = new User();
                     $user->email = $request->get('email');
                     $user->password = Hash::make($password);
-                    //                $user->country = ($countryFromIp && Countries::where('cca2', $countryFromIp)->first()) ? $countryFromIp : null;
                     $user->first_name = $request->get('first_name');
                     $user->last_name = $request->get('last_name');
                     $user->skype = $request->get('skype') ? $request->get('skype') : null;
@@ -73,7 +71,7 @@ class RegisterController extends Controller
 
                 if ($user) {
                     $user->assignRole('client');
-//                  $this->activationService->sendMail($user);
+                    $this->activationService->sendMail($user);
                     $this->activationService->sendSms($user);
 
                     $mail = new EmailRegister($user, $password);

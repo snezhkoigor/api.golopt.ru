@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\DB;
 
 class EmailActivate extends Mailable
 {
@@ -24,8 +25,13 @@ class EmailActivate extends Mailable
     public function build()
     {
         if ($this->start) {
+            $country = DB::table('countries')
+                ->where('name', '=', $this->user->country)
+                ->first();
+
             return $this->view('emails.activateUser.start')->with([
                 'token' => $this->user->activation['token'] ? $this->user->activation['token'] : null,
+                'lang' => strtolower($country->code)
             ])->subject('Верификация аккаунта.');
         }
 

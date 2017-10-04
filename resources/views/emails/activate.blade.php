@@ -5,6 +5,6 @@
         Здравствуйте!
     </p>
     <p>
-        Вам необходимо активировать свой <a href="{{config('app.url')}}/activate/{{$token}}" target="_blank">аккаунт</a>.
+        Вам необходимо активировать свой <a href="{{config('app.url')}}/{{ $lang }}/activate-by-phone-code/" target="_blank">аккаунт</a>.
     </p>
 @stop
