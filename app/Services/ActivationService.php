@@ -31,9 +31,9 @@ class ActivationService
             return;
         }
 
-        $this->activationRepo->create($user, true);
+        $token = $this->activationRepo->create($user, true);
 
-        return Smsc::send_sms('+' . $user->calling_code . $user->phone, $user->activation['token'], 0, 0, 0, 3, config('smsc.SMSC_FROM'));
+        return Smsc::send_sms($user->calling_code . $user->phone, $token, 0, 0, 0, 3, config('smsc.SMSC_FROM'));
     }
 
     public function sendMail($user, $createToken = true)
