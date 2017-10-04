@@ -71,7 +71,7 @@ class RegisterController extends Controller
 
                 if ($user) {
                     $user->assignRole('client');
-                    $this->activationService->sendMail($user);
+                    $this->activationService->sendMail($user, false);
                     $this->activationService->sendSms($user);
 
                     $mail = new EmailRegister($user, $password);

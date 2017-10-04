@@ -33,16 +33,18 @@ class ActivationService
 
         $this->activationRepo->create($user, true);
 
-        Smsc::send_sms($user->calling_code . $user->phone, $user->activation['token'], 0, 0, 0, 0, config('smsc.SMSC_FROM'));
+        return Smsc::send_sms('+' . $user->calling_code . $user->phone, $user->activation['token'], 0, 0, 0, 3, config('smsc.SMSC_FROM'));
     }
 
-    public function sendMail($user)
+    public function sendMail($user, $createToken = true)
     {
         if ($user->active || !$this->shouldSend($user)) {
             return;
         }
 
-        $this->activationRepo->create($user);
+        if ($createToken) {
+            $this->activationRepo->create($user);
+        }
 
         Mail::to($user->email)->send(new EmailActivate($user));
     }
