@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1\User;
 
-use App\Helpers\GetCountryFromIP;
 use App\Http\Controllers\Controller;
 use App\Mail\EmailRegister;
 use App\Services\ActivationService;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;

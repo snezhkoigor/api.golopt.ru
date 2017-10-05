@@ -42,4 +42,6 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
     Route::post('/pay/receive', 'Payment\ReceiveController@index');
 
     Route::get('/youtube/videos', 'Youtube\VideoController@getList');
+
+    Route::get('/user/subscription/verification', 'User\SubscriptionVerificationController@index');
 });
