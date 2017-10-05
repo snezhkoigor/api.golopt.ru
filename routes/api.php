@@ -43,5 +43,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
 
     Route::get('/youtube/videos', 'Youtube\VideoController@getList');
 
+    // For indicators
     Route::get('/user/subscription/verification', 'User\SubscriptionVerificationController@index');
+    Route::get('/forward-points/get', 'ForwardPoint\CurrentController@index');
 });

@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Validator;
 
 class SubscriptionVerificationController extends Controller
 {
-    protected $activationService;
-
     public function rules()
     {
         return [
