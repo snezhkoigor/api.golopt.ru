@@ -39,11 +39,10 @@ class SubscriptionVerificationController extends Controller
 
         if ($validator->fails() === false) {
             $product = DB::table('product_user')
-                ->join('users', 'product_user.user_id', '=', 'users.id')
-                ->select('product_user.active', 'product_user.subscribe_date_until')
+                ->select('active', 'subscribe_date_until')
                 ->where([
-                    ['product_user.product_id', '=', $request->get('product')],
-                    ['users.trade_account', '=', $request->get('account')]
+                    [ 'product_id', '=', $request->get('product') ],
+                    [ 'trade_account', '=', $request->get('account') ]
                 ])
                 ->first();
 
