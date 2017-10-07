@@ -40,16 +40,25 @@ class CurrentController extends Controller
         if ($validator->fails() === false) {
             $accountInfo = DB::table('product_user')
                 ->where([
-                    [ 'account', '=', $request->get('account') ],
+                    [ 'trade_account', '=', $request->get('account') ],
                     [ 'product_id', '=', $request->get('product') ],
                     [ 'active', '=', 1 ]
                 ])
                 ->first();
 
             if ($accountInfo) {
+                $date = ($request->get('date') ? $request->get('date') : date('Y-m-d'));
+                if (in_array(date('w'), [0, 6]) && !$request->get('date')) {
+                    if (date('w') === 6) {
+                        $date = date('Y-m-d', strtotime('-1 DAY'));
+                    } else {
+                        $date = date('Y-m-d', strtotime('-2 DAY'));
+                    }
+                }
+
                 $fp = DB::table('forward_points')
                     ->select('forward_points.name', 'forward_points.fp', DB::raw('UNIX_TIMESTAMP(forward_points.updated_at) as updated_at'))
-                    ->where('forward_points.date', '=', ($request->get('date') ? $request->get('date') : date('Y-m-d')))
+                    ->where('forward_points.date', '=', $date)
                     ->get();
 
                 if ($fp) {
