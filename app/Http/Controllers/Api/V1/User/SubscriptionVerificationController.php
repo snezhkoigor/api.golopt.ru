@@ -18,7 +18,7 @@ class SubscriptionVerificationController extends Controller
     public function rules()
     {
         return [
-            'phone' => 'required|exists:users',
+            'account' => 'required|exists:product_user,trade_account',
             'product' => 'required|exists:products,id'
         ];
     }
@@ -26,8 +26,8 @@ class SubscriptionVerificationController extends Controller
     public function messages()
     {
         return [
-            'phone.required' => 'Phone is required',
-            'phone.exists' => 'No phone in DB',
+            'account.required' => 'Trade account is required',
+            'account.exists' => 'No trade account in DB',
             'product.required' => 'Product is required',
             'product.exists' => 'No product in DB'
         ];
@@ -43,7 +43,7 @@ class SubscriptionVerificationController extends Controller
                 ->select('product_user.active', 'product_user.subscribe_date_until')
                 ->where([
                     ['product_user.product_id', '=', $request->get('product')],
-                    ['users.phone', '=', $request->get('phone')]
+                    ['users.trade_account', '=', $request->get('account')]
                 ])
                 ->first();
 
