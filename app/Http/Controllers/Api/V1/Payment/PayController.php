@@ -136,11 +136,22 @@ class PayController extends Controller
 
                 switch ($payment->payment_system) {
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
+                        if ($payment->currency === Dictionary::CURRENCY_RUB) {
+                            $amount = $product->price;
+                        } else {
+                            $rate = Rate::where([
+                                ['date', date('Y-m-d')],
+                                ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
+                            ])->first();
+
+                            $amount = $product->price * $rate->rate;
+                        }
+
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
                         $gateway->setMerchantPurse('Z229902436381');
 
                         $response = $gateway->purchase([
-                            'amount' => number_format($payment->amount, 2),
+                            'amount' => number_format($amount, 2),
                             'transactionId' => $payment->id,
                             'currency' => $payment->currency,
                             'testMode' => true,
@@ -158,10 +169,16 @@ class PayController extends Controller
 
                         break;
                     case Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY:
-                        $rate = Rate::where([
-                            ['date', date('Y-m-d')],
-                            ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
-                        ])->first();
+                        if ($payment->currency === Dictionary::CURRENCY_RUB) {
+                            $amount = $product->price;
+                        } else {
+                            $rate = Rate::where([
+                                ['date', date('Y-m-d')],
+                                ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
+                            ])->first();
+
+                            $amount = $product->price * $rate->rate;
+                        }
 
                         $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
                         $gateway->setAccount('41001759464499');
@@ -173,7 +190,7 @@ class PayController extends Controller
                         $gateway->setParameter('targets', $product->name);
                         $gateway->setParameter('comment', 'test');
 
-                        $response = $gateway->purchase(['amount' => $product->price * $rate->rate, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
+                        $response = $gateway->purchase(['amount' => $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
 
                         $result = [
                             'actionUrl' => $response->getEndpoint(),
