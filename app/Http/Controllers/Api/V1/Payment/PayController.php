@@ -181,12 +181,9 @@ class PayController extends Controller
                         }
 
                         $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
-                        $gateway->setAccount('4100324863876');
+                        $gateway->setAccount('41001759464499');
                         $gateway->setLabel($product->name);
                         $gateway->setOrderId($payment->id);
-//                        $gateway->setMethod('PC');
-//                        $gateway->setReturnUrl('http://cmeinfo.vlevels.ru/success');
-//                        $gateway->setCancelUrl('http://cmeinfo.vlevels.ru/payment');
                         $gateway->setParameter('targets', $product->name);
                         $gateway->setParameter('comment', 'test');
 
