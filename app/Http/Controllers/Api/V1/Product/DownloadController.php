@@ -15,9 +15,7 @@ class DownloadController extends Controller
 {
     public function index($id, $trade_account)
     {
-        $user = JWTAuth::toUser(JWTAuth::getToken());
-
-        if ($user) {
+        if ($trade_account && $id) {
             $product = DB::table('product_user')
                 ->select('products.path')
                 ->join('products', 'products.id', '=', 'product_user.product_id')
@@ -54,7 +52,7 @@ class DownloadController extends Controller
 
         return response()->json([
             'status' => false,
-            'message' => 'No user.',
+            'message' => 'No information.',
             'data' => null
         ], 422);
     }
