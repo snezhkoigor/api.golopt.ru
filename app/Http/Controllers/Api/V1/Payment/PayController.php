@@ -190,7 +190,8 @@ class PayController extends Controller
                         $response = $gateway->purchase(['amount' => $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => true, 'FormComment' => $product->description])->send();
 
                         $result = [
-                            'actionUrl' => $response->getEndpoint(),
+//                            'actionUrl' => $response->getEndpoint(),
+                            'actionUrl' => 'https://demomoney.yandex.ru/eshop.xml',
                             'method' => $response->getRedirectMethod(),
                             'params' => $response->getRedirectData()
                         ];
