@@ -31,6 +31,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
     Route::get('/products/pricing', 'Product\ProductController@pricingTable');
     Route::get('/products', 'Product\ProductController@index');
     Route::put('/products/{id?}', 'Product\ProductController@save');
+    Route::get('/product/{id}/get', 'Product\DownloadController@index');
 
     Route::get('/dictionary', 'Dictionary\DictionaryController@index');
     Route::get('/dictionary/fragment/{lang}', 'Dictionary\DictionaryController@getFragments');

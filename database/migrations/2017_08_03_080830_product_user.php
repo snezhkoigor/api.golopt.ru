@@ -23,6 +23,7 @@ class ProductUser extends Migration
                 $table->date('subscribe_date_until');
                 $table->enum('type', ['demo', 'real'])->default('real');
                 $table->boolean('active')->default(false);
+                $table->integer('download')->default(0);
                 $table->timestamps();
             });
         }
