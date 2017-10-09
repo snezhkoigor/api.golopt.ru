@@ -46,7 +46,6 @@ class DownloadController extends Controller
                 header('Expires: 0');
                 header('Cache-Control: must-revalidate');
                 header('Pragma: public');
-                header('Content-Length: ' . filesize($product->path));
                 // читаем файл и отправляем его пользователю
                 readfile($product->path);
                 exit;
