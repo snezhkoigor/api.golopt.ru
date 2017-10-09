@@ -10,7 +10,6 @@ namespace App\Http\Controllers\Api\V1\Product;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use JWTAuth;
 
 class DownloadController extends Controller
 {
