@@ -38,7 +38,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
     Route::get('/country/search/{name}', 'Country\CountryController@search');
 
     Route::post('/product/{id}/pay', 'Payment\PayController@pay');
-    Route::post('/product/demo', 'Payment\PayController@demo');
+    Route::post('/product/{id}/demo', 'Payment\PayController@demo');
 
     Route::post('/pay/receive', 'Payment\ReceiveController@index');
 

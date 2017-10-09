@@ -48,15 +48,17 @@ class PayController extends Controller
         ];
     }
 
-    public function demo(Request $request)
+    public function demo(Request $request, $id)
     {
         $user = JWTAuth::toUser(JWTAuth::getToken());
-        $product = Product::where('has_demo', 1)->first();
+        $product = Product::where([
+            [ 'has_demo', 1 ],
+            [ 'id', $id ]
+        ])->first();
 
         $request->request->add([ 'payment_system' => Dictionary::PAYMENT_SYSTEM_DEMO ]);
-
         $validator = Validator::make($request->all(), $this->rules(), $this->messages());
-        if (!$user->products()->where('type', Dictionary::PRODUCT_TYPE_DEMO)->get()) {
+        if (!$user->products()->where([ [ 'type', Dictionary::PRODUCT_TYPE_DEMO ], [ 'product_id', $product->id ], [ 'user_id', $user['id'] ]])->first()) {
             if ($validator->fails() === false) {
                 $payment = new Payment();
                 $payment->user_id = $user['id'];
