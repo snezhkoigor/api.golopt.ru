@@ -34,7 +34,22 @@ class DownloadController extends Controller
                 ->first();
 
             if ($product) {
-                return response()->download(public_path('robots.txt'));
+                // если этого не сделать файл будет читаться в память полностью!
+                if (ob_get_level()) {
+                    ob_end_clean();
+                }
+                // заставляем браузер показать окно сохранения файла
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=' . basename($product->path));
+                header('Content-Transfer-Encoding: binary');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($product->path));
+                // читаем файл и отправляем его пользователю
+                readfile($product->path);
+                exit;
             }
 
             return response()->json([
