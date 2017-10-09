@@ -25,10 +25,11 @@ class DownloadController extends Controller
 
         if ($user) {
             $product = DB::table('product_user')
-                ->select('path')
+                ->select('products.path')
+                ->join('products', 'products.id', '=', 'product_user.product_id')
                 ->where([
-                    [ 'product_id', '=', $id ],
-                    [ 'user_id', '=', $user['id'] ]
+                    [ 'product_user.product_id', '=', $id ],
+                    [ 'product_user.user_id', '=', $user['id'] ]
                 ])
                 ->first();
 
