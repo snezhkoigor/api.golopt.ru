@@ -14,12 +14,7 @@ use JWTAuth;
 
 class DownloadController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('jwt.auth');
-    }
-
-    public function index($id)
+    public function index($id, $trade_account)
     {
         $user = JWTAuth::toUser(JWTAuth::getToken());
 
@@ -29,7 +24,7 @@ class DownloadController extends Controller
                 ->join('products', 'products.id', '=', 'product_user.product_id')
                 ->where([
                     [ 'product_user.product_id', '=', $id ],
-                    [ 'product_user.user_id', '=', $user['id'] ]
+                    [ 'product_user.trade_account', '=', $trade_account ]
                 ])
                 ->first();
 
