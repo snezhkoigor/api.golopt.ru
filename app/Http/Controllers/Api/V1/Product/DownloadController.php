@@ -34,7 +34,7 @@ class DownloadController extends Controller
                 ->first();
 
             if ($product) {
-                return response()->download($product->path);
+                return response()->download('.' . $product->path);
             }
 
             return response()->json([
