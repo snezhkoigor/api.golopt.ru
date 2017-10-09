@@ -30,6 +30,7 @@ class ReceiveController extends Controller
             DB::table('payment_answer_queue')->insert(
                 [
                     'post' => json_encode($request),
+                    'active' => 1,
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]
