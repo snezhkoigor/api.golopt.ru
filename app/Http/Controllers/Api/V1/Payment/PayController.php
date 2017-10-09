@@ -187,7 +187,7 @@ class PayController extends Controller
                         $gateway->setParameter('targets', $product->name);
                         $gateway->setParameter('comment', $product->description);
 
-                        $response = $gateway->purchase(['amount' => $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
+                        $response = $gateway->purchase(['amount' => $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => true, 'FormComment' => $product->description])->send();
 
                         $result = [
                             'actionUrl' => $response->getEndpoint(),
