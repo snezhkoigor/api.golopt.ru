@@ -63,7 +63,7 @@ class CurrentController extends Controller
 
                 if ($fp) {
                     return response()->json([
-                        'status' => true,
+                        'status' => 1,
                         'message' => null,
                         'data' => $fp
                     ]);
@@ -71,15 +71,15 @@ class CurrentController extends Controller
             }
 
             return response()->json([
-                'status' => false,
-                'message' => 'No forward points.',
+                'status' => 0,
+                'message' => 'No forward points. (ERR - 1)',
                 'data' => null
             ], 422);
         }
 
         return response()->json([
-            'status' => false,
-            'message' => $validator->errors()->getMessages(),
+            'status' => 0,
+            'message' => 'No forward points. (ERR - 2)',
             'data' => null
         ], 422);
     }

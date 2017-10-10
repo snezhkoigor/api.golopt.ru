@@ -50,22 +50,22 @@ class SubscriptionVerificationController extends Controller
                 $product->subscribe_date_until = strtotime($product->subscribe_date_until);
 
                 return response()->json([
-                    'status' => true,
+                    'status' => 1,
                     'message' => null,
                     'data' => $product
                 ]);
             }
 
             return response()->json([
-                'status' => false,
-                'message' => 'This user has not this product.',
+                'status' => 0,
+                'message' => 'This user has not this product. (ERR - 1)',
                 'data' => null
             ], 422);
         }
 
         return response()->json([
-            'status' => false,
-            'message' => $validator->errors()->getMessages(),
+            'status' => 0,
+            'message' => 'This user has not this product. (ERR - 2)',
             'data' => null
         ], 422);
     }
