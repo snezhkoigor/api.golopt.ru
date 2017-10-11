@@ -62,16 +62,15 @@ class CurrentController extends Controller
                     ->get();
 
                 if ($fp) {
-                    $result = [];
+                    $result = [
+                        'status' => 1,
+                        'message' => null,
+                    ];
                     foreach ($fp as $item) {
                         $result[$item->name] = $item;
                     }
 
-                    return response()->json([
-                        'status' => 1,
-                        'message' => null,
-                        $result
-                    ]);
+                    return response()->json($result);
                 }
             }
 
