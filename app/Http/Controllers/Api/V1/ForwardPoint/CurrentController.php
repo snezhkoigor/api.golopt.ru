@@ -67,7 +67,10 @@ class CurrentController extends Controller
                         'message' => null,
                     ];
                     foreach ($fp as $item) {
-                        $result[$item->name] = $item;
+                        $result[$item->name] = [
+                            'fp' => $item->fp,
+                            'updated_at' => $item->updated_at
+                        ];
                     }
 
                     return response()->json($result);
