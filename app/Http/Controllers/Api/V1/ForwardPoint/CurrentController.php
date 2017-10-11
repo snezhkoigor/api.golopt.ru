@@ -64,7 +64,7 @@ class CurrentController extends Controller
                 if ($fp) {
                     $result = [];
                     foreach ($fp as $item) {
-                        $result[$item['name']] = $item;
+                        $result[$item->name] = $item;
                     }
 
                     return response()->json([
