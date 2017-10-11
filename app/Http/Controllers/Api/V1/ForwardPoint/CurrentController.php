@@ -73,7 +73,7 @@ class CurrentController extends Controller
                         ];
                     }
 
-                    return $result;
+                    return response()->json($result);
                 }
             }
 
