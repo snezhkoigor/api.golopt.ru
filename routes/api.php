@@ -46,5 +46,5 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
 
     // For indicators
     Route::get('/user/subscription/verification', 'User\SubscriptionVerificationController@index');
-    Route::get('/forward-points/{product}/{account}/{pair}/get', 'ForwardPoint\CurrentController@index');
+    Route::get('/forward-points/{account}/{pair}/get', 'ForwardPoint\CurrentController@index');
 });

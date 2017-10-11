@@ -18,8 +18,7 @@ class CurrentController extends Controller
     public function rules()
     {
         return [
-            'account' => 'required|exists:product_user,trade_account',
-            'product' => 'required|exists:products,id'
+            'account' => 'required|exists:product_user,trade_account'
         ];
     }
 
@@ -27,21 +26,18 @@ class CurrentController extends Controller
     {
         return [
             'account.required' => 'Trade account is required',
-            'account.exists' => 'No trade account in DB',
-            'product.required' => 'Product is required',
-            'product.exists' => 'No product in DB'
+            'account.exists' => 'No trade account in DB'
         ];
     }
 
-    public function index(Request $request, $product, $account, $pair)
+    public function index(Request $request, $account, $pair)
     {
-        $validator = Validator::make(['product' => $product, 'account' => $account], $this->rules(), $this->messages());
+        $validator = Validator::make([ 'account' => $account ], $this->rules(), $this->messages());
 
         if ($validator->fails() === false) {
             $accountInfo = DB::table('product_user')
                 ->where([
                     [ 'trade_account', '=', $account ],
-                    [ 'product_id', '=', $product ],
                     [ 'active', '=', 1 ]
                 ])
                 ->first();
