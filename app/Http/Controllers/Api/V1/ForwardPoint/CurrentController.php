@@ -68,9 +68,7 @@ class CurrentController extends Controller
                     }
 
                     return response()->json([
-                        'status' => 1,
-                        'message' => null,
-                        'data' => $result
+                        $result
                     ]);
                 }
             }
