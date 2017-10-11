@@ -33,15 +33,15 @@ class CurrentController extends Controller
         ];
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $product, $account, $pair)
     {
-        $validator = Validator::make($request->all(), $this->rules(), $this->messages());
+        $validator = Validator::make(['product' => $product, 'account' => $account], $this->rules(), $this->messages());
 
         if ($validator->fails() === false) {
             $accountInfo = DB::table('product_user')
                 ->where([
-                    [ 'trade_account', '=', $request->get('account') ],
-                    [ 'product_id', '=', $request->get('product') ],
+                    [ 'trade_account', '=', $account ],
+                    [ 'product_id', '=', $product ],
                     [ 'active', '=', 1 ]
                 ])
                 ->first();
@@ -58,22 +58,18 @@ class CurrentController extends Controller
 
                 $fp = DB::table('forward_points')
                     ->select('forward_points.name', 'forward_points.fp', DB::raw('UNIX_TIMESTAMP(forward_points.updated_at) as updated_at'))
-                    ->where('forward_points.date', '=', $date)
-                    ->get();
+                    ->where([
+                        [ 'forward_points.date', '=', $date ],
+                        [ 'forward_points.name', '=', $pair ]
+                    ])
+                    ->first();
 
                 if ($fp) {
-                    $result = [
+                    return response()->json([
                         'status' => 1,
                         'message' => null,
-                    ];
-                    foreach ($fp as $item) {
-                        $result[$item->name] = [
-                            'fp' => $item->fp,
-                            'updated_at' => $item->updated_at
-                        ];
-                    }
-
-                    return response()->json($result);
+                        'data' => $fp->fp
+                    ]);
                 }
             }
 
