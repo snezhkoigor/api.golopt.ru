@@ -29,12 +29,25 @@ class EmailActivate extends Mailable
                 ->where('name', '=', $this->user->country)
                 ->first();
 
-            return $this->view('emails.activateUser.start')->with([
+            if ($this->user->country === 'Russia') {
+                return $this->view('emails.activation.start.ru')->with([
+                    'token' => $this->user->activation['token'] ? $this->user->activation['token'] : null,
+                    'lang' => strtolower($country->code)
+                ])->subject('Верификация аккаунта.');
+            }
+
+            return $this->view('emails.activation.start.en')->with([
                 'token' => $this->user->activation['token'] ? $this->user->activation['token'] : null,
                 'lang' => strtolower($country->code)
-            ])->subject('Верификация аккаунта.');
+            ])->subject(config('app.name') . ' account verification.');
         }
 
-        return $this->view('emails.activateUser.end')->subject('Верификация аккаунта пройдена успешно.');
+        if ($this->user->country === 'Russia') {
+            return $this->view('emails.activation.end.ru')
+                ->subject('Верификация аккаунта пройдена успешно.');
+        }
+
+        return $this->view('emails.activation.end.en')
+            ->subject('Success ' . config('app.name') . ' account verification.');
     }
 }

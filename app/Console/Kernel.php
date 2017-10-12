@@ -14,7 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\GetForwardPointsFromFTP::class,
-        Commands\GetYahooRates::class
+        Commands\GetYahooRates::class,
+        Commands\SendEndSubscriptionEmail::class,
+        Commands\UpdateUserSubscriptions::class
     ];
 
     /**
@@ -32,6 +34,14 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('getYahooRates')
             ->hourly()
+            ->withoutOverlapping();
+
+        $schedule->command('sendEndSubscriptionEmail')
+            ->daily()
+            ->withoutOverlapping();
+
+        $schedule->command('updateUserSubscriptions')
+            ->twiceDaily(1, 18)
             ->withoutOverlapping();
     }
 

@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    public static $how_many_days_before = 2;
+
     public function payments()
     {
         return $this->hasMany('App\Payment');

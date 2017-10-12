@@ -12,15 +12,17 @@ class ResetPassword extends Mailable
     use Queueable, SerializesModels;
 
     protected $notCryptedPassword;
+    protected $user_country;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($notCryptedPassword)
+    public function __construct($notCryptedPassword, $user_country)
     {
         $this->notCryptedPassword = $notCryptedPassword;
+        $this->user_country = $user_country;
     }
 
     /**
@@ -30,8 +32,14 @@ class ResetPassword extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.resetPassword')->with([
+        if ($this->user_country === 'Russia') {
+            return $this->view('emails.resetPassword.ru')->with([
+                'password' => $this->notCryptedPassword,
+            ])->subject('Сброс пароля.');
+        }
+
+        return $this->view('emails.resetPassword.en')->with([
             'password' => $this->notCryptedPassword,
-        ])->subject('Сброс пароля на сайте.');
+        ])->subject('Reset password.');
     }
 }

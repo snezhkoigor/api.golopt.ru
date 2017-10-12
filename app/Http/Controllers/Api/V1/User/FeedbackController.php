@@ -45,7 +45,7 @@ class FeedbackController extends Controller
             $feedback->save();
 
             if ($feedback) {
-                $mail = new FeedbackEmail($feedback);
+                $mail = new FeedbackEmail($feedback, $user->country);
                 Mail::to($feedback->email)->send($mail);
 
                 return response()->json([

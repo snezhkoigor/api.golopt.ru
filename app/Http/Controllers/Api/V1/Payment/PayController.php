@@ -87,7 +87,7 @@ class PayController extends Controller
                     ]
                 );
 
-                $mail = new SuccessPayForProduct($product, true);
+                $mail = new SuccessPayForProduct($product, $user['country'], true);
                 Mail::to($user->email)->send($mail);
 
                 return response()->json([

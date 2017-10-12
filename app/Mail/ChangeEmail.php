@@ -23,13 +23,30 @@ class ChangeEmail extends Mailable
 
     public function build()
     {
+        $user = DB::table('user_change_emails')
+            ->select('users.country')
+            ->join('users', 'users.id', '=', 'user_change_emails.user_id')
+            ->where('user_change_emails.token', $this->token)
+            ->first();
+
         if ($this->start) {
-            return $this->view('emails.changeUserEmail.start')->with([
+            if ($user->country === 'Russia') {
+                return $this->view('emails.changeUserEmail.ru.start')->with([
+                    'token' => $this->token,
+                ])->subject('Изменение e-mail аккаунта.');
+            }
+
+            return $this->view('emails.changeUserEmail.en.start')->with([
                 'token' => $this->token,
-            ])->subject('Изменение e-mail аккаунта.');
+            ])->subject('Change e-mail request.');
         }
 
-        return $this->view('emails.changeUserEmail.end')
-            ->subject('E-mail аккаунта успешно изменен.');
+        if ($user->country === 'Russia') {
+            return $this->view('emails.changeUserEmail.ru.end')
+                ->subject('E-mail аккаунта успешно изменен.');
+        }
+
+        return $this->view('emails.changeUserEmail.en.end')
+            ->subject('Success e-mail change request.');
     }
 }

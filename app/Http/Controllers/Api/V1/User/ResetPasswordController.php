@@ -45,7 +45,7 @@ class ResetPasswordController extends Controller
                 $user->password = Hash::make($password);
                 $user->save();
 
-                $mail = new ResetPassword($password);
+                $mail = new ResetPassword($password, $user->country);
                 Mail::to($user->email)->send($mail);
 
                 return response()->json([

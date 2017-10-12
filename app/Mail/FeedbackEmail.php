@@ -13,10 +13,12 @@ class FeedbackEmail extends Mailable
     use Queueable, SerializesModels;
 
     protected $feedback;
+    protected $user_country;
 
-    public function __construct(Feedback $feedback)
+    public function __construct(Feedback $feedback, $user_country)
     {
         $this->feedback = $feedback;
+        $this->user_country = $user_country;
     }
 
     public function build()
@@ -27,6 +29,6 @@ class FeedbackEmail extends Mailable
             ->with([
                 'text' => $this->feedback->text
             ])
-            ->subject('Обратная связь.');
+            ->subject($this->user_country === 'Russia' ? 'Обратная связь.' : 'Feedback');
     }
 }

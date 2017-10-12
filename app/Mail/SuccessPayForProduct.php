@@ -14,15 +14,17 @@ class SuccessPayForProduct extends Mailable
 
     protected $product;
     protected $is_demo;
+    protected $user_country;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Product $product, $is_demo = false)
+    public function __construct(Product $product, $user_country, $is_demo = false)
     {
         $this->product = $product;
+        $this->user_country = $user_country;
         $this->is_demo = $is_demo;
     }
 
@@ -33,9 +35,16 @@ class SuccessPayForProduct extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.product.get')->with([
+        if ($this->user_country === 'Russia') {
+            return $this->view('emails.product.ru.get')->with([
+                'product' => $this->product,
+                'is_demo' => $this->is_demo,
+            ])->subject('Ссылка на продукт.');
+        }
+
+        return $this->view('emails.product.en.get')->with([
             'product' => $this->product,
             'is_demo' => $this->is_demo,
-        ])->subject('Ссылка на продукт.');
+        ])->subject('Product link.');
     }
 }

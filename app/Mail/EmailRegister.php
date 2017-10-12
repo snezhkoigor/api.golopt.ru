@@ -28,9 +28,16 @@ class EmailRegister extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.register')->with([
+        if ($this->user->country === 'Russia') {
+            return $this->view('emails.registration.en')->with([
+                'email' => $this->user->email,
+                'password' => $this->notCryptedPassword,
+            ])->subject(config('app.name') . ' регистрация.');
+        }
+
+        return $this->view('emails.registration.en')->with([
             'email' => $this->user->email,
             'password' => $this->notCryptedPassword,
-        ])->subject('Регистрация на сайте.');
+        ])->subject(config('app.name') . ' registration.');
     }
 }

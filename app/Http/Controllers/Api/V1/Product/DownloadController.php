@@ -17,7 +17,7 @@ class DownloadController extends Controller
     {
         if ($trade_account && $id) {
             $product = DB::table('product_user')
-                ->select('products.path')
+                ->select('products.path', 'product_user.download')
                 ->join('products', 'products.id', '=', 'product_user.product_id')
                 ->where([
                     [ 'product_user.product_id', '=', $id ],
@@ -26,6 +26,13 @@ class DownloadController extends Controller
                 ->first();
 
             if ($product) {
+                DB::table('product_user')
+                    ->where([
+                        [ 'product_id', '=', $id ],
+                        [ 'trade_account', '=', $trade_account ]
+                    ])
+                    ->update(['download' => $product->download + 1]);
+
                 // если этого не сделать файл будет читаться в память полностью!
                 if (ob_get_level()) {
                     ob_end_clean();
