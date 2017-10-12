@@ -14,21 +14,21 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
-class UpdateUserSubscriptions extends Command
+class CheckPayments extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'updateUserSubscriptions';
+    protected $signature = 'checkPayments';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Update active status all client subscriptions';
+    protected $description = 'Check payment in DB';
 
     /**
      * Create a new command instance.
@@ -47,21 +47,18 @@ class UpdateUserSubscriptions extends Command
      */
     public function handle()
     {
-        $products = DB::table('product_user')
+        $queue = DB::table('payment_answer_queue')
             ->where('active', 1)
             ->get();
 
-        if ($products) {
-            $now = date('Y-m-d');
-            foreach ($products as $product) {
-                if ($now > $product->subscribe_date_until) {
-                    DB::table('product_user')
-                        ->where('id', $product->id)
-                        ->update([
-                            'active' => 0,
-                            'updated_at' => date('Y-m-d H:i:s')
-                        ]);
-                }
+        if ($queue) {
+            foreach ($queue as $payment) {
+                DB::table('payment_answer_queue')
+                    ->where('id', $payment->id)
+                    ->update([
+                        'active' => 0,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
             }
         }
     }
