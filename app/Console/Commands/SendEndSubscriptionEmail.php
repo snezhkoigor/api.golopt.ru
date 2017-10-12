@@ -57,7 +57,7 @@ class SendEndSubscriptionEmail extends Command
         if ($products) {
             $check_date = date('Y-m-d', strtotime('+ ' . Product::$how_many_days_before . ' DAYS'));
             foreach ($products as $product) {
-                if ($check_date < $product->subscribe_date_until) {
+                if ($check_date === $product->subscribe_date_until) {
                     $mail = new EndSubscriptionEmail($product->name, $product->subscribe_date_until, $product->country);
                     Mail::to($products->email)->send($mail);
 
