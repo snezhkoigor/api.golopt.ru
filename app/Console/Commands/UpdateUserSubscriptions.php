@@ -57,10 +57,12 @@ class UpdateUserSubscriptions extends Command
                 if ($now < $product->subscribe_date_until) {
                     DB::table('product_user')
                         ->where('id', $product->id)
-                        ->update(['active', 0]);
+                        ->update([
+                            'active' => 0,
+                            'updated_at' => date('Y-m-d H:i:s')
+                        ]);
                 }
             }
         }
-
     }
 }
