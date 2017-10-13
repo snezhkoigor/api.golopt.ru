@@ -134,6 +134,8 @@ class PayController extends Controller
                     $payment->updated_at = null;
                 $payment->save();
 
+                $user_language = $user['country'] === 'Russia' ? 'ru' : 'en';
+
                 switch ($payment->payment_system) {
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
                         if ($payment->currency === Dictionary::CURRENCY_RUB) {
@@ -148,7 +150,7 @@ class PayController extends Controller
                         }
 
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
-                        $gateway->setMerchantPurse('Z229902436381');
+                        $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? 'R244624580848' : 'Z298654230937');
 
                         $response = $gateway->purchase([
                             'amount' => number_format($amount, 2),
@@ -156,9 +158,9 @@ class PayController extends Controller
                             'currency' => $payment->currency,
                             'testMode' => true,
                             'description' => $product->description,
-                            'returnUrl' => 'http://cmeinfo.vlevels.ru/success',
-                            'cancelUrl' => 'http://cmeinfo.vlevels.ru/payment',
-                            'notifyUrl' => 'http://api.vlevels.ru/merchant/webmoney.php'
+                            'returnUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
+                            'cancelUrl' => 'http://goloption.com/' . $user_language . '/pay/fail',
+                            'notifyUrl' => 'http://api.goloption.com/api/pay/receive'
                         ])->send();
 
                         $result = [
@@ -180,18 +182,22 @@ class PayController extends Controller
                             $amount = $product->price * $rate->rate;
                         }
 
+                        // 5APWA3k3xNj3FhFQ47LiLHpP
                         $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
-                        $gateway->setAccount('41001759464499');
+                        $gateway->setAccount('410011068486292');
                         $gateway->setLabel($product->name);
                         $gateway->setOrderId($payment->id);
                         $gateway->setParameter('targets', $product->name);
                         $gateway->setParameter('comment', $product->description);
+                        $gateway->setParameter('need-fio', 'false');
+                        $gateway->setParameter('need-email', 'false');
+                        $gateway->setParameter('need-phone', 'false');
+                        $gateway->setParameter('need-address', 'false');
 
-                        $response = $gateway->purchase(['amount' => $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => true, 'FormComment' => $product->description])->send();
+                        $response = $gateway->purchase(['amount' => $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
 
                         $result = [
-//                            'actionUrl' => $response->getEndpoint(),
-                            'actionUrl' => 'https://demomoney.yandex.ru/eshop.xml',
+                            'actionUrl' => $response->getEndpoint(),
                             'method' => $response->getRedirectMethod(),
                             'params' => $response->getRedirectData()
                         ];
