@@ -182,17 +182,16 @@ class PayController extends Controller
                             $amount = $product->price * $rate->rate;
                         }
 
-                        // 5APWA3k3xNj3FhFQ47LiLHpP
                         $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
                         $gateway->setAccount('410011068486292');
                         $gateway->setLabel($product->name);
                         $gateway->setOrderId($payment->id);
                         $gateway->setParameter('targets', $product->name);
                         $gateway->setParameter('comment', $product->description);
-                        $gateway->setParameter('need-fio', 'false');
-                        $gateway->setParameter('need-email', 'false');
-                        $gateway->setParameter('need-phone', 'false');
-                        $gateway->setParameter('need-address', 'false');
+                        $gateway->setParameter('need-fio', 0);
+                        $gateway->setParameter('need-email', 0);
+                        $gateway->setParameter('need-phone', 0);
+                        $gateway->setParameter('need-address', 0);
 
                         $response = $gateway->purchase(['amount' => $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
 

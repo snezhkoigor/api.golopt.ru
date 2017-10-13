@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
         Commands\GetForwardPointsFromFTP::class,
         Commands\GetYahooRates::class,
         Commands\SendEndSubscriptionEmail::class,
-        Commands\UpdateUserSubscriptions::class
+        Commands\UpdateUserSubscriptions::class,
+        Commands\CheckPayments::class
     ];
 
     /**
@@ -42,6 +43,10 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('updateUserSubscriptions')
             ->twiceDaily(1, 18)
+            ->withoutOverlapping();
+
+        $schedule->command('checkPayments')
+            ->everyMinute()
             ->withoutOverlapping();
     }
 

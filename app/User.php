@@ -124,7 +124,7 @@ class User extends Authenticatable
     public static function replace_calling_code_from_phone($calling_code, $phone)
     {
         $result = $phone;
-        if (strpos($phone, $calling_code) === 0) {
+        if (strpos($phone, $calling_code) === 0 || strpos($phone, '+' . $calling_code) === 0) {
             $result = substr($phone, strlen($calling_code));
         }
 
