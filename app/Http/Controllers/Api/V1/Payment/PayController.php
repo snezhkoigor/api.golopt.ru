@@ -154,7 +154,7 @@ class PayController extends Controller
                         $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? 'R244624580848' : 'Z298654230937');
 
                         $response = $gateway->purchase([
-                            'amount' => number_format($amount, 2),
+                            'amount' => number_format($amount, 2, '.', ''),
                             'transactionId' => $payment->id,
                             'currency' => $payment->currency,
                             'testMode' => true,
@@ -189,11 +189,11 @@ class PayController extends Controller
                         $gateway->setOrderId($payment->id);
                         $gateway->setParameter('targets', $product->name);
                         $gateway->setParameter('comment', $product->description);
-                        $gateway->setMethod('PC');
+                        $gateway->setMethod('AC');
                         $gateway->setReturnUrl('http://goloption.com/' . $user_language . '/pay/success');
                         $gateway->setCancelUrl('http://goloption.com/' . $user_language . '/pay/fail');
 
-                        $response = $gateway->purchase(['amount' => $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
+                        $response = $gateway->purchase(['amount' => $amount, 'currency' => $payment->currency, 'testMode' => false, 'FormComment' => $product->description])->send();
 
                         $result = [
                             'actionUrl' => $response->getEndpoint(),
