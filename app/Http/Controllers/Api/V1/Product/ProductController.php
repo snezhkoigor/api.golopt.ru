@@ -45,21 +45,7 @@ class ProductController extends Controller
     {
         $result = [];
         $jwt_user = JWTAuth::getToken() ? JWTAuth::toUser(JWTAuth::getToken()) : null;
-        $products = $jwt_user ? Product::with(['users'])->get() : Product::all();
-
-        if ($jwt_user) {
-            foreach ($products as $product_key => $product) {
-                if (count($product->users)) {
-                    foreach ($product->users as $user_key => $user) {
-                        if ($jwt_user->id !== (int)$user['id']) {
-                            unset($products[$product_key]['users'][$user_key]);
-                        } else {
-                            $products[$product_key]['users'] = $user;
-                        }
-                    }
-                }
-            }
-        }
+        $products = $jwt_user ? Product::with(['users' => function($query) use ($jwt_user) { $query->where('users.id', (int)$jwt_user->id); }])->get() : Product::all();
 
         foreach ($products as $product_key => $product) {
             $result[$product['group']][$product_key] = $product;
