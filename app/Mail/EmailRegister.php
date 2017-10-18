@@ -28,7 +28,7 @@ class EmailRegister extends Mailable
      */
     public function build()
     {
-        if ($this->user->country === 'Russia') {
+        if (User::get_language($this->user->country) === User::AVAILABLE_LANG_RU) {
             return $this->view('emails.registration.en')->with([
                 'email' => $this->user->email,
                 'password' => $this->notCryptedPassword,

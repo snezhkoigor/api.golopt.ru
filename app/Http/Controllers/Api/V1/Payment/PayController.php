@@ -15,6 +15,7 @@ use App\Mail\SuccessPayForProduct;
 use App\Payment;
 use App\Product;
 use App\Rate;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -134,7 +135,7 @@ class PayController extends Controller
                     $payment->updated_at = null;
                 $payment->save();
 
-                $user_language = $user['country'] === 'Russia' ? 'ru' : 'en';
+                $user_language = User::get_language($user['country']);
 
                 switch ($payment->payment_system) {
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:

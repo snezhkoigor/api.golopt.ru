@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -32,7 +33,7 @@ class ResetPassword extends Mailable
      */
     public function build()
     {
-        if ($this->user_country === 'Russia') {
+        if (User::get_language($this->user_country) === User::AVAILABLE_LANG_RU) {
             return $this->view('emails.resetPassword.ru')->with([
                 'password' => $this->notCryptedPassword,
             ])->subject('Сброс пароля.');

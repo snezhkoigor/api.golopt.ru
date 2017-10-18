@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -34,7 +35,7 @@ class EndSubscriptionEmail extends Mailable
      */
     public function build()
     {
-        if ($this->user_country === 'Russia') {
+        if (User::get_language($this->user_country) === User::AVAILABLE_LANG_RU) {
             return $this->view('emails.endSubscription.en')->with([
                 'product_name' => $this->product_name,
                 'subscribe_date_until' => date('d.m.Y', strtotime($this->subscribe_date_until)),

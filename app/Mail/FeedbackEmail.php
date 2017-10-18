@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Feedback;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -29,6 +30,6 @@ class FeedbackEmail extends Mailable
             ->with([
                 'text' => $this->feedback->text
             ])
-            ->subject($this->user_country === 'Russia' ? 'Обратная связь.' : 'Feedback');
+            ->subject(User::get_language($this->user_country) === User::AVAILABLE_LANG_RU ? 'Обратная связь.' : 'Feedback');
     }
 }

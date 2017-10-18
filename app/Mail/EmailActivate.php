@@ -29,7 +29,7 @@ class EmailActivate extends Mailable
                 ->where('name', '=', $this->user->country)
                 ->first();
 
-            if ($this->user->country === 'Russia') {
+            if (User::get_language($this->user->country) === User::AVAILABLE_LANG_RU) {
                 return $this->view('emails.activation.start.ru')->with([
                     'token' => $this->user->activation['token'] ? $this->user->activation['token'] : null,
                     'lang' => strtolower($country->code)
@@ -42,7 +42,7 @@ class EmailActivate extends Mailable
             ])->subject(config('app.name') . ' account verification.');
         }
 
-        if ($this->user->country === 'Russia') {
+        if (User::get_language($this->user->country) === User::AVAILABLE_LANG_RU) {
             return $this->view('emails.activation.end.ru')
                 ->subject('Верификация аккаунта пройдена успешно.');
         }

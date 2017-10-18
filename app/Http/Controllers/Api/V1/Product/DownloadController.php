@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\V1\Product;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Support\Facades\DB;
 
 class DownloadController extends Controller
@@ -17,8 +18,9 @@ class DownloadController extends Controller
     {
         if ($trade_account && $id) {
             $product = DB::table('product_user')
-                ->select('products.path', 'product_user.download')
+                ->select('products.path', 'product_user.download', 'users.country')
                 ->join('products', 'products.id', '=', 'product_user.product_id')
+                ->join('users', 'users.id', '=', 'product_user.user_id')
                 ->where([
                     [ 'product_user.product_id', '=', $id ],
                     [ 'product_user.trade_account', '=', $trade_account ]
@@ -37,6 +39,9 @@ class DownloadController extends Controller
                 if (ob_get_level()) {
                     ob_end_clean();
                 }
+
+                $language = User::get_language($product->country);
+
                 // заставляем браузер показать окно сохранения файла
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
@@ -46,7 +51,8 @@ class DownloadController extends Controller
                 header('Cache-Control: must-revalidate');
                 header('Pragma: public');
                 // читаем файл и отправляем его пользователю
-                readfile($product->path);
+                $path = str_replace('{language}', $language, $product->path);
+                readfile($path);
                 exit;
             }
 

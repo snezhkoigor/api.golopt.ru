@@ -30,7 +30,7 @@ class ChangeEmail extends Mailable
             ->first();
 
         if ($this->start) {
-            if ($user->country === 'Russia') {
+            if (User::get_language($user->country) === User::AVAILABLE_LANG_RU) {
                 return $this->view('emails.changeUserEmail.ru.start')->with([
                     'token' => $this->token,
                 ])->subject('Изменение e-mail аккаунта.');
@@ -41,7 +41,7 @@ class ChangeEmail extends Mailable
             ])->subject('Change e-mail request.');
         }
 
-        if ($user->country === 'Russia') {
+        if (User::get_language($user->country) === User::AVAILABLE_LANG_RU) {
             return $this->view('emails.changeUserEmail.ru.end')
                 ->subject('E-mail аккаунта успешно изменен.');
         }

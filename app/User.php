@@ -11,6 +11,9 @@ class User extends Authenticatable
 {
     use HasRole;
 
+    const AVAILABLE_LANG_RU = 'ru';
+    const AVAILABLE_LANG_EN = 'en';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -28,6 +31,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password'
     ];
+
+    public static function get_language($country)
+    {
+        return $country !== 'Russia' || null === $country ? self::AVAILABLE_LANG_EN : self::AVAILABLE_LANG_RU;
+    }
 
     public function activation()
     {
