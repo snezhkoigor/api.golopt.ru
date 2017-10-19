@@ -68,18 +68,27 @@ class RegisterController extends Controller
                 $user->save();
 
                 if ($user) {
-                    $user->assignRole('client');
-                    $this->activationService->sendMail($user, false);
-                    $this->activationService->sendSms($user);
+                    if ($this->activationService->sendSms($user)) {
+                        $user->assignRole('client');
+                        $this->activationService->sendMail($user, false);
 
-                    $mail = new EmailRegister($user, $password);
-                    Mail::to($user->email)->send($mail);
+                        $mail = new EmailRegister($user, $password);
+                        Mail::to($user->email)->send($mail);
 
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'User created successfully',
-                        'data' => null
-                    ]);
+                        return response()->json([
+                            'status' => true,
+                            'message' => 'User created successfully',
+                            'data' => null
+                        ]);
+                    } else {
+                        $user->delete();
+
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Sms send error',
+                            'data' => null
+                        ], 422);
+                    }
                 }
 
                 return response()->json([

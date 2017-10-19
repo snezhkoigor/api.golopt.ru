@@ -11,7 +11,7 @@ namespace App\Services;
 
 use App\Mail\EmailActivate;
 use App\Repositories\ActivationRepository;
-use App\Smsru;
+use App\Smsc;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -31,14 +31,12 @@ class ActivationService
             return;
         }
 
-        $token = $this->activationRepo->create($user, true);
+        $code = $this->activationRepo->create($user, true);
 
-        $smsru = new Smsru(config('smsru.API_ID'));
-
-        return $smsru->send([
-            'to' => $user->calling_code . $user->phone,
-            'msg' => 'Goloption activation: ' . $token,
-        ], $token);
+        return Smsc::send([
+            'phones' => $user->calling_code . $user->phone,
+            'mes' => view('sms.activation.' . User::get_language($user->country), ['code' => $code])
+        ], $code);
     }
 
     public function sendMail($user, $createToken = true)
