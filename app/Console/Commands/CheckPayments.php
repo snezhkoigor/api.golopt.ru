@@ -76,7 +76,7 @@ class CheckPayments extends Command
                                 switch ($transaction->payment_system) {
                                     case Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY:
                                         $sha1 = sha1( $post['notification_type'] . '&'. $post['operation_id']. '&' . $post['amount'] . '&643&' . $post['datetime'] . '&'. $post['sender'] . '&' . $post['codepro'] . '&' . config('payments.YANDEX_SECRET_KEY') . '&' . $post['label']);
-                                        if ($sha1 === $post['sha1_hash'] && (float)$post['withdraw_amount'] >= (float)$transaction->amount && (float)$post['withdraw_amount'] >= (float)$product->price) {
+                                        if ($sha1 === $post['sha1_hash']/* && (float)$post['withdraw_amount'] >= (float)$transaction->amount && (float)$post['withdraw_amount'] >= (float)$product->price*/) {
                                             $success = true;
                                         } else {
                                             // неверные данные
@@ -86,7 +86,7 @@ class CheckPayments extends Command
 
                                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
                                         $hash = strtoupper(hash('sha256', $post['LMI_PAYEE_PURSE'].$post['LMI_PAYMENT_AMOUNT'].$post['LMI_PAYMENT_NO'].$post['LMI_MODE'].$post['LMI_SYS_INVS_NO'].$post['LMI_SYS_TRANS_NO'].$post['LMI_SYS_TRANS_DATE'].config('payments.WEBMONEY_SECRET_KEY').$post['LMI_PAYER_PURSE'].$post['LMI_PAYER_WM']));
-                                        if ($hash === $post['LMI_HASH'] && (float)$post['LMI_PAYMENT_AMOUNT'] >= (float)$transaction->amount && (float)$post['LMI_PAYMENT_AMOUNT'] >= (float)$product->price) {
+                                        if ($hash === $post['LMI_HASH']/* && (float)$post['LMI_PAYMENT_AMOUNT'] >= (float)$transaction->amount && (float)$post['LMI_PAYMENT_AMOUNT'] >= (float)$product->price*/) {
                                             $success = true;
                                         } else {
                                             // неверные данные
