@@ -36,7 +36,7 @@ class EndSubscriptionEmail extends Mailable
     public function build()
     {
         if (User::get_language($this->user_country) === User::AVAILABLE_LANG_RU) {
-            return $this->view('emails.endSubscription.en')->with([
+            return $this->view('emails.endSubscription.ru')->with([
                 'product_name' => $this->product_name,
                 'subscribe_date_until' => date('d.m.Y', strtotime($this->subscribe_date_until)),
             ])->subject('Заканчивается подписка.');
