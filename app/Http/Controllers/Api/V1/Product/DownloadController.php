@@ -41,18 +41,19 @@ class DownloadController extends Controller
                 }
 
                 $language = User::get_language($product->country);
+                $path = str_replace('{language}', $language, $product->path);
 
                 // заставляем браузер показать окно сохранения файла
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream', true, 200);
-                header('Content-Disposition: attachment; filename=' . basename($product->path));
+                header('Content-Disposition: attachment; filename=' . basename($path));
                 header('Content-Transfer-Encoding: binary');
                 header('Expires: 0');
                 header('Cache-Control: must-revalidate');
                 header('Pragma: public');
                 // читаем файл и отправляем его пользователю
-                $path = str_replace('{language}', $language, $product->path);
                 readfile($path);
+
                 exit;
             }
 
