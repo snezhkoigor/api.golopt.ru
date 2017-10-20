@@ -35,11 +35,6 @@ class DownloadController extends Controller
                     ])
                     ->update(['download' => $product->download + 1]);
 
-                // если этого не сделать файл будет читаться в память полностью!
-                if (ob_get_level()) {
-                    ob_end_clean();
-                }
-
                 $language = User::get_language($product->country);
                 $file = str_replace('{language}', $language, $product->path);
                 $path = storage_path($file);
