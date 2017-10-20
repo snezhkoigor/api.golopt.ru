@@ -46,7 +46,7 @@ class DownloadController extends Controller
 
                 header("HTTP/1.1 200 OK");
                 header('Content-Description: File Transfer');
-                header('Content-Type: application/download');
+                header('Content-Type: application/download',true,200);
                 header('Content-Disposition: attachment; filename='.basename($file));
                 header('Content-Transfer-Encoding: binary');
                 header('Expires: 0');
