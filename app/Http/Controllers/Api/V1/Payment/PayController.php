@@ -33,7 +33,7 @@ class PayController extends Controller
     {
         return [
             'payment_system' => 'required|in:' . Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_DEMO,
-            'trade_account' => 'required|numeric',
+            'trade_account' => 'required',
             'broker' => 'required',
         ];
     }
