@@ -74,28 +74,45 @@ class PayController extends Controller
                 ]);
                 $payment->save();
 
-                $user->products()->attach(
-                    $user['id'],
-                    [
-                        'product_id' => $product->id,
-                        'trade_account' => $request->get('trade_account'),
-                        'broker' => $request->get('broker'),
-                        'type' => Dictionary::PRODUCT_TYPE_DEMO,
-                        'active' => 1,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'subscribe_date_until' => date('Y-m-d H:i:s', strtotime('+' . $product->demo_access_days . ' DAYS'))
-                    ]
-                );
+                $current_demo = $user->products()->where([ [ 'type', Dictionary::PRODUCT_TYPE_DEMO ], [ 'user_id', $user['id'] ]])->first();
+                $subscribe_date_until = date('Y-m-d H:i:s', strtotime('+' . $product->demo_access_days . ' DAYS'));
 
-                $mail = new SuccessPayForProduct($product, $user['country'], true);
-                Mail::to($user->email)->send($mail);
+                if (time() < strtotime($current_demo->pivot->subscribe_date_until)) {
+                    if ($current_demo) {
+                        $subscribe_date_until = $current_demo->pivot->subscribe_date_until;
+
+                        $user->products()->where([['type', Dictionary::PRODUCT_TYPE_DEMO], ['user_id', $user['id']]])->detach();
+                    }
+
+                    $user->products()->attach(
+                        $user['id'],
+                        [
+                            'product_id' => $product->id,
+                            'trade_account' => $request->get('trade_account'),
+                            'broker' => $request->get('broker'),
+                            'type' => Dictionary::PRODUCT_TYPE_DEMO,
+                            'active' => 1,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                            'subscribe_date_until' => $subscribe_date_until
+                        ]
+                    );
+
+                    $mail = new SuccessPayForProduct($product, $user['country'], true);
+                    Mail::to($user->email)->send($mail);
+
+                    return response()->json([
+                        'status' => true,
+                        'message' => null,
+                        'data' => null
+                    ]);
+                }
 
                 return response()->json([
-                    'status' => true,
-                    'message' => null,
+                    'status' => false,
+                    'message' => 'Testing period is over',
                     'data' => null
-                ]);
+                ], 422);
             }
 
             return response()->json([
