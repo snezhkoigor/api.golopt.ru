@@ -75,7 +75,7 @@ class PayController extends Controller
                 $payment->save();
 
                 $current_demo = $user->products()->where([ [ 'type', Dictionary::PRODUCT_TYPE_DEMO ], [ 'user_id', $user['id'] ]])->first();
-                if ($current_demo && time() < strtotime($current_demo->pivot->subscribe_date_until)) {
+                if ($current_demo && date('Y-m-d') < $current_demo->pivot->subscribe_date_until) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Testing period is over',
