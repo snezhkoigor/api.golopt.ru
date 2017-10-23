@@ -24,7 +24,8 @@ class DictionaryController extends Controller
                 'locales' => Dictionary::get_localizations(),
                 'payment_systems' => Dictionary::get_available_payment_systems(),
                 'const' => Dictionary::get_const(),
-                'countries' => Dictionary::get_countries()
+                'countries' => Dictionary::get_countries(),
+                'codes' => Dictionary::get_calling_codes()
             ]
         ]);
     }

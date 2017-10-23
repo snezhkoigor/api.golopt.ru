@@ -10,6 +10,7 @@ namespace App;
 
 
 use Illuminate\Support\Facades\DB;
+use Countries;
 
 class Dictionary
 {
@@ -93,6 +94,22 @@ class Dictionary
         if (0 !== count($countries)) {
             foreach ($countries as $country) {
                 $result[] = $country->name;
+            }
+        }
+
+        return $result;
+    }
+
+    public static function get_calling_codes()
+    {
+        $result = [];
+        $countries = DB::table('countries')->where('active', '=', 1)->get();
+
+        if (0 !== count($countries)) {
+            foreach ($countries as $country) {
+                if ($countryFromJson = Countries::where('cca2', $country->code)->first()) {
+                    $result[$country->name] = $countryFromJson->items['callingCode'][0];
+                }
             }
         }
 
