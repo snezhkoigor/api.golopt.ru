@@ -34,7 +34,7 @@ class User extends Authenticatable
 
     public static function get_language($country)
     {
-        return $country !== 'Russia' || null === $country ? self::AVAILABLE_LANG_EN : self::AVAILABLE_LANG_RU;
+        return !in_array($country, ['Russia', 'Ukraine', 'Republic of Belarus']) || null === $country ? self::AVAILABLE_LANG_EN : self::AVAILABLE_LANG_RU;
     }
 
     public function activation()
