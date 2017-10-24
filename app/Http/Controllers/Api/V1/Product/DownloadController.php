@@ -76,7 +76,8 @@ class DownloadController extends Controller
                 }
                 // заставляем браузер показать окно сохранения файла
                 header('Content-Description: File Transfer');
-                header('Content-Type: application/octet-stream');
+//                header('Content-Type: application/octet-stream');
+                header('Content-Type: ' . filetype($path));
                 header('Content-Disposition: attachment; filename=' . basename($path));
                 header('Content-Transfer-Encoding: binary');
                 header('Expires: 0');
