@@ -69,7 +69,12 @@ class DownloadController extends Controller
                 ->first();
 
             if ($product && null !== $product->set_path) {
-                return response()->download(storage_path($product->set_path));
+                $path = storage_path($product->set_path);
+                $headers = array(
+                    'Content-Type: ' . mime_content_type($path),
+                );
+
+                return response()->download($path, null, $headers);
             }
 
             return response()->json([
