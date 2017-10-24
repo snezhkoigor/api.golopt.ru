@@ -69,7 +69,7 @@ class DownloadController extends Controller
                 ->first();
 
             if ($product && null !== $product->set_path) {
-                return response()->download($product->set_path);
+                return response()->download(storage_path($product->set_path));
             }
 
             return response()->json([
