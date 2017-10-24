@@ -72,6 +72,9 @@ class DownloadController extends Controller
                 $path = storage_path($product->set_path);
                 $headers = array(
                     'Content-Type: ' . mime_content_type($path),
+                    'Content-Description: File Transfer',
+                    'Content-Type: application/octet-stream',
+                    'Content-Transfer-Encoding: binary'
                 );
 
                 return response()->download($path, null, $headers);
