@@ -48,7 +48,7 @@ class SendEndSubscriptionEmail extends Command
     public function handle()
     {
         $products = DB::table('product_user')
-            ->select('products.name', 'product_user.subscribe_date_until', 'users.email', 'users.country')
+            ->select('products.name', 'product_user.subscribe_date_until', 'users.email', 'users.country', 'products.group')
             ->where('product_user.active', 1)
             ->join('products', 'products.id', '=', 'product_user.product_id')
             ->join('users', 'users.id', '=', 'product_user.user_id')
@@ -58,8 +58,8 @@ class SendEndSubscriptionEmail extends Command
             $check_date = date('Y-m-d', strtotime('+ ' . Product::$how_many_days_before . ' DAYS'));
             foreach ($products as $product) {
                 if ($check_date === $product->subscribe_date_until) {
-                    $mail = new EndSubscriptionEmail($product->name, $product->subscribe_date_until, $product->country);
-                    Mail::to($products->email)->send($mail);
+                    $mail = new EndSubscriptionEmail($product->name, $product->subscribe_date_until, $product->country, $product->group);
+                    Mail::to($product->email)->send($mail);
 
                     unset($mail);
                 }
