@@ -77,7 +77,7 @@ class DownloadController extends Controller
                     'Content-Transfer-Encoding: binary'
                 );
 
-                return response()->download($path, null, $headers);
+                return response()->download($path, 'f.set', $headers);
             }
 
             return response()->json([
