@@ -74,7 +74,8 @@ class DownloadController extends Controller
                     'Content-Type: text/plain',
                     'Content-Description: File Transfer',
                     'Content-Type: application/octet-stream',
-                    'Content-Transfer-Encoding: binary'
+                    'Content-Transfer-Encoding: binary',
+                    'Accept-Ranges: bytes'
                 );
 
                 return response()->download($path, null, $headers);
