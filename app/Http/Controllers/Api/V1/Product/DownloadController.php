@@ -70,8 +70,6 @@ class DownloadController extends Controller
 
             if ($product && null !== $product->set_path) {
                 $path = storage_path($product->set_path);
-//
-//                return response()->download($path);
 
                 if (ob_get_level()) {
                     ob_end_clean();
