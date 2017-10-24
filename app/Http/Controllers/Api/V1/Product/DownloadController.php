@@ -44,7 +44,37 @@ class DownloadController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => 'This user has not this product.',
+                'message' => 'This user has not this product',
+                'data' => null
+            ], 422);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'No information.',
+            'data' => null
+        ], 422);
+    }
+
+    public function getSetFile($id, $trade_account)
+    {
+        if ($trade_account && $id) {
+            $product = DB::table('product_user')
+                ->select('products.path', 'products.set_path')
+                ->join('products', 'products.id', '=', 'product_user.product_id')
+                ->where([
+                    [ 'product_user.product_id', '=', $id ],
+                    [ 'product_user.trade_account', '=', $trade_account ]
+                ])
+                ->first();
+
+            if ($product && null !== $product->set_path) {
+                return response()->download($product->path);
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => 'This product has not set file',
                 'data' => null
             ], 422);
         }
