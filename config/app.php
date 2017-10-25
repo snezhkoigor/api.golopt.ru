@@ -187,7 +187,9 @@ return [
 
         Ixudra\Curl\CurlServiceProvider::class,
 
-        Alaouy\Youtube\YoutubeServiceProvider::class
+        Alaouy\Youtube\YoutubeServiceProvider::class,
+
+        Rollbar\Laravel\RollbarServiceProvider::class,
     ],
 
     /*

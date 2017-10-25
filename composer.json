@@ -19,6 +19,7 @@
         "laravel/tinker": "~1.0",
         "omnipay/ym": "~1.0",
         "pragmarx/countries": "^0.1.0",
+        "rollbar/rollbar-laravel": "^2.2",
         "systemovich/laravel-translatable": "^2.2",
         "tymon/jwt-auth": "0.5.*",
         "yandexmoney/omnipay": "^1.0"
