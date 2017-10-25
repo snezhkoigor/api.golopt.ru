@@ -32,7 +32,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        \Log::debug($exception); //rollbar
+        if (config('app.env') === 'production') {
+            \Log::debug($exception);
+        }
+
         parent::report($exception);
     }
 
