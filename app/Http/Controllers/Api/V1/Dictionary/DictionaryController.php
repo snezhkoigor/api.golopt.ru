@@ -20,12 +20,12 @@ class DictionaryController extends Controller
             'status' => true,
             'message' => null,
             'data' => [
-                'price_by' => Dictionary::get_product_price_by(),
-                'locales' => Dictionary::get_localizations(),
-                'payment_systems' => Dictionary::get_available_payment_systems(),
-                'const' => Dictionary::get_const(),
-                'countries' => Dictionary::get_countries(),
-                'codes' => Dictionary::get_calling_codes()
+                'price_by' => Dictionary::getProductPriceBy(),
+                'locales' => Dictionary::getLocalizations(),
+                'payment_systems' => Dictionary::getAvailablePaymentSystems(),
+                'const' => Dictionary::getConst(),
+                'countries' => Dictionary::getCountries(),
+                'codes' => Dictionary::getCallingCodes()
             ]
         ]);
     }

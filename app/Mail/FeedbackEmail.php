@@ -30,6 +30,6 @@ class FeedbackEmail extends Mailable
             ->with([
                 'text' => $this->feedback->text
             ])
-            ->subject(User::get_language($this->user_country) === User::AVAILABLE_LANG_RU ? 'Обратная связь.' : 'Feedback');
+            ->subject(User::getLanguage($this->user_country) === User::AVAILABLE_LANG_RU ? 'Обратная связь.' : 'Feedback');
     }
 }

@@ -34,7 +34,7 @@ class ActivationService
         $code = $this->activationRepo->create($user, true);
         return Smsc::send([
             'phones' => $user->calling_code . $user->phone,
-            'mes' => view('sms.activation.' . User::get_language($user->country), ['code' => $code])
+            'mes' => view('sms.activation.' . User::getLanguage($user->country), ['code' => $code])
         ], $code);
     }
 

@@ -39,7 +39,7 @@ class User extends Authenticatable
         ];
     }
 
-    public static function get_language($country)
+    public static function getLanguage($country)
     {
         return !in_array($country, ['Russia', 'Ukraine', 'Republic of Belarus']) || null === $country ? self::AVAILABLE_LANG_EN : self::AVAILABLE_LANG_RU;
     }
@@ -123,7 +123,7 @@ class User extends Authenticatable
         return $result;
     }
 
-    public static function generate_phone_code($number = 6)
+    public static function generatePhoneCode($number = 6)
     {
         $result = '';
         $arr = array('1','2','3','4','5','6','7','8','9','0');
@@ -136,7 +136,7 @@ class User extends Authenticatable
         return $result;
     }
 
-    public static function replace_calling_code_from_phone($calling_code, $phone)
+    public static function replaceCallingCodeFromPhone($calling_code, $phone)
     {
         $result = $phone;
         if (strpos($phone, $calling_code) === 0 || strpos($phone, '+' . $calling_code) === 0) {
@@ -146,7 +146,7 @@ class User extends Authenticatable
         return $result;
     }
 
-    public static function get_calling_code($country)
+    public static function getCallingCode($country)
     {
         $result = null;
 

@@ -55,7 +55,7 @@ class ActivationRepository
         if ($isSms === false) {
             return hash_hmac('sha256', str_random(40), config('app.key'));
         } else {
-            return User::generate_phone_code();
+            return User::generatePhoneCode();
         }
     }
 

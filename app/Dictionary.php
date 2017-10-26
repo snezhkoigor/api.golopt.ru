@@ -28,7 +28,7 @@ class Dictionary
     const CURRENCY_USD = 'USD';
     const CURRENCY_RUB = 'RUB';
 
-    public static function get_const()
+    public static function getConst()
     {
         return [
             'PRODUCT_PRICE_BY_MONTH' => 'month',
@@ -43,7 +43,7 @@ class Dictionary
         ];
     }
 
-    public static function get_product_price_by()
+    public static function getProductPriceBy()
     {
         return [
             self::PRODUCT_PRICE_BY_MONTH => [
@@ -61,14 +61,14 @@ class Dictionary
         ];
     }
 
-    public static function get_localizations()
+    public static function getLocalizations()
     {
         return [
             'hello' => 'test'
         ];
     }
 
-    public static function get_available_payment_systems()
+    public static function getAvailablePaymentSystems()
     {
         return [
             self::PAYMENT_SYSTEM_YANDEX_MONEY => [
@@ -86,7 +86,7 @@ class Dictionary
         ];
     }
 
-    public static function get_countries()
+    public static function getCountries()
     {
         $result = [];
         $countries = DB::table('countries')->where('active', '=', 1)->get();
@@ -100,7 +100,7 @@ class Dictionary
         return $result;
     }
 
-    public static function get_calling_codes()
+    public static function getCallingCodes()
     {
         $result = [];
         $countries = DB::table('countries')->where('active', '=', 1)->get();

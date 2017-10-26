@@ -50,9 +50,9 @@ class RegisterController extends Controller
 
         if ($validator->fails() === false) {
             $password = $request->get('password') ? $request->get('password') : User::generate_password(5);
-            $callingCode = User::get_calling_code($request->get('country'));
+            $callingCode = User::getCallingCode($request->get('country'));
 
-            if (User::where('phone', User::replace_calling_code_from_phone($callingCode, $request->get('phone')))->first()) {
+            if (User::where('phone', User::replaceCallingCodeFromPhone($callingCode, $request->get('phone')))->first()) {
                 $validator->getMessageBag()->add('phone', 'We have already this phone number');
             } else {
                 $user = new User();
@@ -61,7 +61,7 @@ class RegisterController extends Controller
                     $user->first_name = $request->get('first_name');
                     $user->last_name = $request->get('last_name');
                     $user->skype = $request->get('skype') ? $request->get('skype') : null;
-                    $user->phone = User::replace_calling_code_from_phone($callingCode, $request->get('phone'));
+                    $user->phone = User::replaceCallingCodeFromPhone($callingCode, $request->get('phone'));
                     $user->country = $request->get('country');
                     $user->calling_code = $callingCode;
                     $user->active = false;

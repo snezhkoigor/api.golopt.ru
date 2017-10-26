@@ -35,7 +35,7 @@ class DownloadController extends Controller
                     ])
                     ->update(['download' => $product->download + 1]);
 
-                $language = User::get_language($product->country);
+                $language = User::getLanguage($product->country);
                 $file = str_replace('{language}', $language, $product->path);
                 $path = storage_path($file);
 

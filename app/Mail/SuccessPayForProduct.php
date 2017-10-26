@@ -36,7 +36,7 @@ class SuccessPayForProduct extends Mailable
      */
     public function build()
     {
-        if (User::get_language($this->user_country) === User::AVAILABLE_LANG_RU) {
+        if (User::getLanguage($this->user_country) === User::AVAILABLE_LANG_RU) {
             return $this->view('emails.product.ru.get')->with([
                 'product' => $this->product,
                 'is_demo' => $this->is_demo,

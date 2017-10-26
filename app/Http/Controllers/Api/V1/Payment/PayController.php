@@ -152,7 +152,7 @@ class PayController extends Controller
                     $payment->updated_at = null;
                 $payment->save();
 
-                $user_language = User::get_language($user['country']);
+                $user_language = User::getLanguage($user['country']);
 
                 switch ($payment->payment_system) {
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
