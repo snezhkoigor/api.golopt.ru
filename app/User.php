@@ -32,6 +32,13 @@ class User extends Authenticatable
         'password'
     ];
 
+    public static function getDevAccounts()
+    {
+        return [
+            '305019', '10175989', '3391875'
+        ];
+    }
+
     public static function get_language($country)
     {
         return !in_array($country, ['Russia', 'Ukraine', 'Republic of Belarus']) || null === $country ? self::AVAILABLE_LANG_EN : self::AVAILABLE_LANG_RU;
