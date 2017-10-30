@@ -197,7 +197,7 @@ class PayController extends Controller
 
                         break;
                     case Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY:
-                        if ($payment->currency !== Dictionary::CURRENCY_RUB) {
+                        if ($payment->currency === Dictionary::CURRENCY_RUB) {
                             $amount = $product->price;
                         } else {
                             $rate = Rate::where([
