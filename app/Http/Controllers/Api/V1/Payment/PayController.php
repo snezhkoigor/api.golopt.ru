@@ -156,30 +156,11 @@ class PayController extends Controller
 
                 switch ($payment->payment_system) {
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
-                        if ($payment->currency !== Dictionary::CURRENCY_RUB) {
-                            $amount = $product->price;
-                        } else {
-                            $rate = Rate::where([
-                                ['date', date('Y-m-d')],
-                                ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
-                            ])->first();
-
-                            if (!$rate) {
-                                return response()->json([
-                                    'status' => false,
-                                    'message' => 'No exchange rate for today',
-                                    'data' => null
-                                ], 422);
-                            }
-
-                            $amount = $product->price * $rate->rate; // это в рублях
-                        }
-
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
-                        $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? 'R244624580848' : 'Z298654230937');
 
+                        $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? 'R244624580848' : 'Z298654230937');
                         $response = $gateway->purchase([
-                            'amount' => number_format($amount, 2, '.', ''),
+                            'amount' => number_format($product->price, 2, '.', ''),
                             'transactionId' => $payment->id,
                             'currency' => $payment->currency,
                             'testMode' => true,
