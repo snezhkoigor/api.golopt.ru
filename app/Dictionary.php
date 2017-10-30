@@ -108,7 +108,9 @@ class Dictionary
         if (0 !== count($countries)) {
             foreach ($countries as $country) {
                 if ($countryFromJson = Countries::where('cca2', $country->code)->first()) {
-                    $result[$country->name] = $countryFromJson->items['callingCode'][0];
+                    if (!empty($countryFromJson->items['callingCode'][0])) {
+                        $result[$country->name] = $countryFromJson->items['callingCode'][0];
+                    }
                 }
             }
         }
