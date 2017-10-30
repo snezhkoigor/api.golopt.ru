@@ -112,20 +112,14 @@ class Dictionary
             ->orderBy('name')
             ->get();
 
-        $no = [];
-
         if (0 !== count($countries)) {
             foreach ($countries as $country) {
                 if ($countryFromJson = Countries::where('cca2', $country->code)->first()) {
                     if (!empty($countryFromJson->items['callingCode'][0])) {
                         $result[$country->name] = $countryFromJson->items['callingCode'][0];
                     }
-                } else {
-                    $no[] = $countryFromJson;
                 }
             }
-
-            Log::warning(json_encode($no));
         }
 
         return $result;
