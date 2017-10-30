@@ -89,7 +89,10 @@ class Dictionary
     public static function getCountries()
     {
         $result = [];
-        $countries = DB::table('countries')->where('active', '=', 1)->get();
+        $countries = DB::table('countries')
+            ->where('active', '=', 1)
+            ->orderBy('name')
+            ->get();
 
         if (0 !== count($countries)) {
             foreach ($countries as $country) {
