@@ -156,7 +156,7 @@ class PayController extends Controller
 
                 switch ($payment->payment_system) {
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
-                        if ($payment->currency === Dictionary::CURRENCY_RUB) {
+                        if ($payment->currency !== Dictionary::CURRENCY_RUB) {
                             $amount = $product->price;
                         } else {
                             $rate = Rate::where([
@@ -164,7 +164,15 @@ class PayController extends Controller
                                 ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
                             ])->first();
 
-                            $amount = $product->price * $rate->rate;
+                            if (!$rate) {
+                                return response()->json([
+                                    'status' => false,
+                                    'message' => 'No exchange rate for today',
+                                    'data' => null
+                                ], 422);
+                            }
+
+                            $amount = $product->price * $rate->rate; // это в рублях
                         }
 
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
@@ -189,16 +197,24 @@ class PayController extends Controller
 
                         break;
                     case Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY:
-//                        if ($payment->currency === Dictionary::CURRENCY_RUB) {
-//                            $amount = $product->price;
-//                        } else {
-//                            $rate = Rate::where([
-//                                ['date', date('Y-m-d')],
-//                                ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
-//                            ])->first();
-//
-//                            $amount = $product->price * $rate->rate;
-//                        }
+                        if ($payment->currency !== Dictionary::CURRENCY_RUB) {
+                            $amount = $product->price;
+                        } else {
+                            $rate = Rate::where([
+                                ['date', date('Y-m-d')],
+                                ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
+                            ])->first();
+
+                            if (!$rate) {
+                                return response()->json([
+                                    'status' => false,
+                                    'message' => 'No exchange rate for today',
+                                    'data' => null
+                                ], 422);
+                            }
+
+                            $amount = $product->price * $rate->rate; // это в рублях
+                        }
 
                         $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
                         $gateway->setAccount('410011068486292');
@@ -210,7 +226,7 @@ class PayController extends Controller
                         $gateway->setReturnUrl('http://goloption.com/' . $user_language . '/pay/success');
                         $gateway->setCancelUrl('http://goloption.com/' . $user_language . '/pay/fail');
 
-                        $response = $gateway->purchase(['amount'=> $product->price, 'currency' => $payment->currency, 'testMode' => false, 'FormComment' => $product->description])->send();
+                        $response = $gateway->purchase(['amount'=> $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
 
                         $result = [
                             'actionUrl' => $response->getEndpoint(),
