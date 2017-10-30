@@ -11,6 +11,7 @@ namespace App;
 
 use Illuminate\Support\Facades\DB;
 use Countries;
+use Illuminate\Support\Facades\Log;
 
 class Dictionary
 {
