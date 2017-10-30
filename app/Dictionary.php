@@ -125,7 +125,7 @@ class Dictionary
                 }
             }
 
-            Log::warning('Не смогли получить содержимое файла forward point.', [ 'file' => $no ]);
+            Log::warning(json_encode($no));
         }
 
         return $result;
