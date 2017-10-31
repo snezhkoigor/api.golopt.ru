@@ -119,17 +119,11 @@ class CurrentController extends Controller
 				}
 			}
 
-			return response()->json([
-				'status' => 0,
-				'message' => 'No forward points. (ERR - 1)',
-				'data' => null
-			], 422);
+			echo 0;
+			die;
 		}
 
-		return response()->json([
-			'status' => 0,
-			'message' => 'No forward points. (ERR - 2)',
-			'data' => null
-		], 422);
+		echo 0;
+		die;
 	}
 }
