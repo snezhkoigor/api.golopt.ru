@@ -115,6 +115,7 @@ class CurrentController extends Controller
 
 				if ($fp) {
 					echo (float)$fp->fp;
+					die;
 				}
 			}
 
