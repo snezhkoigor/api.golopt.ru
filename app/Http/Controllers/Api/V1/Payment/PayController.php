@@ -202,7 +202,7 @@ class PayController extends Controller
                         $gateway->setLabel($product->name);
                         $gateway->setOrderId($payment->id);
                         $gateway->setParameter('targets', 'goloption.com');
-                        $gateway->setParameter('comment', $product->description);
+                        $gateway->setParameter('comment', 'goloption.com');
                         $gateway->setMethod('AC');
                         $gateway->setReturnUrl('http://goloption.com/' . $user_language . '/pay/success');
                         $gateway->setCancelUrl('http://goloption.com/' . $user_language . '/pay/fail');
