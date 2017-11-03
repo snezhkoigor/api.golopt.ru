@@ -207,7 +207,7 @@ class PayController extends Controller
                         $gateway->setReturnUrl('http://goloption.com/' . $user_language . '/pay/success');
                         $gateway->setCancelUrl('http://goloption.com/' . $user_language . '/pay/fail');
 
-                        $response = $gateway->purchase(['amount'=> $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => 'hkjk'])->send();
+                        $response = $gateway->purchase(['amount'=> $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false])->send();
 
                         $result = [
                             'actionUrl' => $response->getEndpoint(),
