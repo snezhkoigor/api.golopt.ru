@@ -199,7 +199,7 @@ class PayController extends Controller
 
                         $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
                         $gateway->setAccount('410011068486292');
-                        $gateway->setLabel($product->name);
+                        $gateway->setLabel('Goloption.com');
                         $gateway->setOrderId($payment->id);
                         $gateway->setParameter('targets', $product->name);
                         $gateway->setParameter('comment', $product->description);
