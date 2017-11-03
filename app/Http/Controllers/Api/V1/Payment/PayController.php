@@ -199,9 +199,9 @@ class PayController extends Controller
 
                         $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
                         $gateway->setAccount('410011068486292');
-                        $gateway->setLabel('Goloption.com');
+                        $gateway->setLabel($product->name);
                         $gateway->setOrderId($payment->id);
-                        $gateway->setParameter('targets', $product->name);
+                        $gateway->setParameter('targets', 'goloption.com');
                         $gateway->setParameter('comment', $product->description);
                         $gateway->setMethod('AC');
                         $gateway->setReturnUrl('http://goloption.com/' . $user_language . '/pay/success');
