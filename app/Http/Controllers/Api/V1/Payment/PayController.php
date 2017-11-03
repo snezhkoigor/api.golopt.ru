@@ -201,13 +201,13 @@ class PayController extends Controller
                         $gateway->setAccount('410011068486292');
                         $gateway->setLabel($product->name);
                         $gateway->setOrderId($payment->id);
-                        $gateway->setParameter('targets', 'goloption.com');
-                        $gateway->setParameter('comment', 'goloption.com');
+                        $gateway->setParameter('targets', $product->name);
+                        $gateway->setParameter('comment', $product->description);
                         $gateway->setMethod('AC');
                         $gateway->setReturnUrl('http://goloption.com/' . $user_language . '/pay/success');
                         $gateway->setCancelUrl('http://goloption.com/' . $user_language . '/pay/fail');
 
-                        $response = $gateway->purchase(['amount'=> $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
+                        $response = $gateway->purchase(['amount'=> $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => 'hkjk'])->send();
 
                         $result = [
                             'actionUrl' => $response->getEndpoint(),
