@@ -102,37 +102,32 @@ class GetYahooRates extends Command
 				    }
 			    }
 		    } else {
-			    Log::warning('Не смогли получить курсы валют.');
+			    $info = Rate::where([
+				    ['date', date('Y-m-d')],
+				    ['name', $major_symbol . Dictionary::CURRENCY_RUB]
+			    ])->first();
+
+			    if (!$info) {
+				    $ratePrev = Rate::where([
+					    ['name', $major_symbol . Dictionary::CURRENCY_RUB]
+				    ])->orderBy('date', 'desc')->first();
+
+				    if ($ratePrev)
+				    {
+					    $rate = new Rate();
+
+					    $rate->name = $major_symbol . Dictionary::CURRENCY_RUB;
+					    $rate->rate = (float) $ratePrev->rate;
+					    $rate->date = date('Y-m-d');
+					    $rate->save();
+
+					    Log::warning('Установили предыдущий курс валют.');
+				    } else {
+					    Log::warning('Не смогли получить курсы валют.');
+				    }
+			    }
 		    }
 	    }
-
-//
-//        $response = Curl::to('https://query.yahooapis.com/v1/public/yql?q=select+*+from+yahoo.finance.xchange+where+pair+=+%22USDRUB,EURRUB%22&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=')
-//            ->get();
-//
-//        if ($response) {
-//            $json = json_decode($response, true);
-//
-//            foreach ($json['query']['results']['rate'] as $item) {
-//                $info = Rate::where([
-//                    ['date', date('Y-m-d')],
-//                    ['name', $item['id']]
-//                ])->first();
-//
-//                if ($info) {
-//                    $rate = $info;
-//                } else {
-//                    $rate = new Rate();
-//                }
-//
-//                $rate->name = $item['id'];
-//                $rate->rate = (float)$item['Rate'];
-//                $rate->date = date('Y-m-d');
-//                $rate->save();
-//            }
-//        } else {
-//            Log::warning('Не смогли получить курсы валют.');
-//        }
 
         return true;
     }
