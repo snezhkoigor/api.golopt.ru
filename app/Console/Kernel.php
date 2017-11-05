@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
 
 
         $schedule->command('getYahooRates')
-            ->hourly()
+            ->twiceDaily()
             ->withoutOverlapping();
 
         $schedule->command('sendEndSubscriptionEmail')
