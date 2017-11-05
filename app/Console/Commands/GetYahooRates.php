@@ -102,27 +102,38 @@ class GetYahooRates extends Command
 				    }
 			    }
 		    } else {
-			    $info = Rate::where([
-				    ['date', date('Y-m-d')],
-				    ['name', $major_symbol . Dictionary::CURRENCY_RUB]
-			    ])->first();
 
-			    if (!$info) {
-				    $ratePrev = Rate::where([
-					    ['name', $major_symbol . Dictionary::CURRENCY_RUB]
-				    ])->orderBy('date', 'desc')->first();
+			    $info = Rate::where(
+				    [
+					    ['date', date('Y-m-d')],
+					    ['name', $major . Dictionary::CURRENCY_RUB]
+				    ]
+			    )
+				    ->first();
+
+			    if (!$info)
+			    {
+				    $ratePrev = Rate::where(
+					    [
+						    ['name', $major . Dictionary::CURRENCY_RUB]
+					    ]
+				    )
+					    ->orderBy('date', 'desc')
+					    ->first();
 
 				    if ($ratePrev)
 				    {
 					    $rate = new Rate();
 
-					    $rate->name = $major_symbol . Dictionary::CURRENCY_RUB;
+					    $rate->name = $major . Dictionary::CURRENCY_RUB;
 					    $rate->rate = (float) $ratePrev->rate;
 					    $rate->date = date('Y-m-d');
 					    $rate->save();
 
 					    Log::warning('Установили предыдущий курс валют.');
-				    } else {
+				    }
+				    else
+				    {
 					    Log::warning('Не смогли получить курсы валют.');
 				    }
 			    }
