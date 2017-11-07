@@ -43,6 +43,28 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
+| Application Error Logger
+|--------------------------------------------------------------------------
+|
+| Here we will configure the error logger setup for the application which
+| is built on top of the wonderful Monolog library. By default we will
+| build a basic log file setup which creates a single file for logs.
+|
+*/
+
+$app->configureMonologUsing(function($monolog) use ($app) {
+	$monolog->pushHandler(
+		(new Monolog\Handler\RotatingFileHandler(
+		// Set the log path
+			$app->storagePath().'/logs/laravel-'.get_current_user().'.log',
+			// Set the number of daily files you want to keep
+			$app->make('config')->get('app.log_max_files', 10)
+		))->setFormatter(new Monolog\Formatter\LineFormatter(null, null, true, true))
+	);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Return The Application
 |--------------------------------------------------------------------------
 |
