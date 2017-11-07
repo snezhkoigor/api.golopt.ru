@@ -101,6 +101,8 @@ class GetYahooRates extends Command
 					    $rate->save();
 				    }
 			    }
+
+			    Log::info('Установили курс валют за ' . date('Y-m-d') . '.');
 		    } else {
 
 			    $info = Rate::where(
@@ -130,7 +132,7 @@ class GetYahooRates extends Command
 					    $rate->date = date('Y-m-d');
 					    $rate->save();
 
-					    Log::warning('Установили предыдущий курс валют.');
+					    Log::info('Установили предыдущий курс валют.');
 				    }
 				    else
 				    {
