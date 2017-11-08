@@ -61,19 +61,6 @@ class PayController extends Controller
         $validator = Validator::make($request->all(), $this->rules(), $this->messages());
         if (!$user->products()->where([ [ 'type', Dictionary::PRODUCT_TYPE_DEMO ], [ 'product_id', $product->id ], [ 'user_id', $user['id'] ]])->first()) {
             if ($validator->fails() === false) {
-                $payment = new Payment();
-                $payment->user_id = $user['id'];
-                $payment->product_id = $product->id;
-                $payment->payment_system = $request->get('payment_system');
-                $payment->amount = 0;
-                $payment->currency = Dictionary::CURRENCY_USD;
-                $payment->success = 1;
-                $payment->details = json_encode([
-                    'trade_account' => $request->get('trade_account'),
-                    'broker' => $request->get('broker')
-                ]);
-                $payment->save();
-
                 $current_demo = $user->products()->where([ [ 'type', Dictionary::PRODUCT_TYPE_DEMO ], [ 'user_id', $user['id'] ]])->first();
                 if ($current_demo && date('Y-m-d') > $current_demo->pivot->subscribe_date_until) {
                     return response()->json([
@@ -104,6 +91,19 @@ class PayController extends Controller
                         'subscribe_date_until' => $subscribe_date_until
                     ]
                 );
+
+	            $payment = new Payment();
+	            $payment->user_id = $user['id'];
+	            $payment->product_id = $product->id;
+	            $payment->payment_system = $request->get('payment_system');
+	            $payment->amount = 0;
+	            $payment->currency = Dictionary::CURRENCY_USD;
+	            $payment->success = 1;
+	            $payment->details = json_encode([
+		            'trade_account' => $request->get('trade_account'),
+		            'broker' => $request->get('broker')
+	            ]);
+	            $payment->save();
 
                 $mail = new SuccessPayForProduct($product, $user['country'], true);
                 Mail::to($user->email)->send($mail);
