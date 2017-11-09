@@ -61,7 +61,7 @@ class RegisterController extends Controller
                     $user->first_name = $request->get('first_name');
                     $user->last_name = $request->get('last_name');
                     $user->skype = $request->get('skype') ? $request->get('skype') : null;
-                    $user->phone = User::replaceCallingCodeFromPhone($callingCode, $request->get('phone'));
+                    $user->phone = $request->get('phone');
                     $user->country = $request->get('country');
                     $user->calling_code = $callingCode;
                     $user->active = false;
