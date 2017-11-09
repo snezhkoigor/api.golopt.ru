@@ -152,7 +152,11 @@ class User extends Authenticatable
 
         $countryFromDb = DB::table('countries')->where('name', '=', $country)->first();
         $callingCode = null;
-        if ($countryFromJson = Countries::where('cca2', $countryFromDb->code)->first()) {
+
+        // TODO баг в пакете
+	    if ($country === 'Kazakhstan') {
+		    $result = '7';
+	    } elseif ($countryFromJson = Countries::where('cca2', $countryFromDb->code)->first()) {
             $result = $countryFromJson->items['callingCode'][0];
         }
 
