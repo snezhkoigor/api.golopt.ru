@@ -116,7 +116,7 @@ class Dictionary
             foreach ($countries as $country) {
                 if ($countryFromJson = Countries::where('cca2', $country->code)->first()) {
                     if (!empty($countryFromJson->items['callingCode'][0])) {
-                        $result[$country->name] = $countryFromJson->items['callingCode'][0];
+                    	$result[$country->name] = $country->code === 'KZ' ? '7' : $countryFromJson->items['callingCode'][0];
                     }
                 }
             }
