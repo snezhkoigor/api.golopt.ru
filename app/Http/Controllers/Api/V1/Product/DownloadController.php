@@ -71,21 +71,7 @@ class DownloadController extends Controller
             if ($product && null !== $product->set_path) {
                 $path = storage_path($product->set_path);
 
-                if (ob_get_level()) {
-                    ob_end_clean();
-                }
-                // заставляем браузер показать окно сохранения файла
-                header('Content-Description: File Transfer');
-                header('Content-Type: application/octet-stream');
-                header('Content-Disposition: attachment; filename=' . basename($path));
-                header('Content-Transfer-Encoding: binary');
-                header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: ' . filesize($path));
-                // читаем файл и отправляем его пользователю
-                readfile($path);
-                exit;
+	            return response()->download($path);
             }
 
             return response()->json([
