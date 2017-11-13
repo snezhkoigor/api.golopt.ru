@@ -32,7 +32,7 @@ class PayController extends Controller
     public function rules()
     {
         return [
-            'payment_system' => 'required|in:' . Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_DEMO,
+            'payment_system' => 'required|in:' . Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_QIWI . ',' . Dictionary::PAYMENT_SYSTEM_DEMO,
             'trade_account' => 'required',
             'broker' => 'required',
         ];
@@ -157,20 +157,20 @@ class PayController extends Controller
                 switch ($payment->payment_system) {
 	                case Dictionary::PAYMENT_SYSTEM_QIWI:
 	                	$gateway = Omnipay::create('\Omnipay\Qiwi\Gateway');
-		                $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? 'R244624580848' : 'Z298654230937');
+
+	                	$gateway->setProviderId(config('payments.QIWI_ACCOUNT'));
 
 		                $response = $gateway->purchase([
-			                'summ' => $product->price,
-//			                'from' => $payment->currency,
-//			                'to' => $payment->currency,
+			                'amount' => number_format($product->price, 2, '.', ''),
 			                'txn_id' => $payment->id,
-			                'currency' => $payment->currency,
-			                'testMode' => false,
-			                'comm' => $product->description,
-			                'successUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
-			                'failUrl' => 'http://goloption.com/' . $user_language . '/pay/fail',
+			                'currency' => Dictionary::CURRENCY_RUB,
+			                'description' => $product->description,
+			                'returnUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
+			                'cancelUrl' => 'http://goloption.com/' . $user_language . '/pay/fail',
+			                'notifyUrl' => 'http://api.goloption.com/api/pay/receive'
 		                ])->send();
 
+		                return response()->json($response);die;
 		                $result = [
 			                'actionUrl' => $response->getRedirectUrl(),
 			                'method' => $response->getRedirectMethod(),
@@ -182,7 +182,7 @@ class PayController extends Controller
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
 
-                        $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? 'R244624580848' : 'Z298654230937');
+                        $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? config('payments.WEBMONEY_RUB') : config('payments.WEBMONEY_USD'));
                         $response = $gateway->purchase([
                             'amount' => number_format($product->price, 2, '.', ''),
                             'transactionId' => $payment->id,
@@ -222,7 +222,7 @@ class PayController extends Controller
                         }
 
                         $gateway = Omnipay::create('\yandexmoney\YandexMoney\GatewayIndividual');
-                        $gateway->setAccount('410011068486292');
+                        $gateway->setAccount(config('payments.YANDEX_MONEY_ACCOUNT'));
                         $gateway->setLabel($product->name);
                         $gateway->setOrderId($payment->id);
                         $gateway->setParameter('targets', $product->name);
@@ -231,7 +231,12 @@ class PayController extends Controller
                         $gateway->setReturnUrl('http://goloption.com/' . $user_language . '/pay/success');
                         $gateway->setCancelUrl('http://goloption.com/' . $user_language . '/pay/fail');
 
-                        $response = $gateway->purchase(['amount'=> $amount, 'currency' => Dictionary::CURRENCY_RUB, 'testMode' => false, 'FormComment' => $product->description])->send();
+                        $response = $gateway->purchase([
+                        	'amount'=> $amount,
+	                        'currency' => Dictionary::CURRENCY_RUB,
+	                        'testMode' => false,
+	                        'FormComment' => $product->description
+                        ])->send();
 
                         $result = [
                             'actionUrl' => $response->getEndpoint(),

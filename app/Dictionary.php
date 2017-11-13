@@ -81,10 +81,10 @@ class Dictionary
                 'key' => self::PAYMENT_SYSTEM_WEB_MONEY,
                 'text' => 'WebMoney'
             ],
-//            self::PAYMENT_SYSTEM_QIWI => [
-//	            'key' => self::PAYMENT_SYSTEM_QIWI,
-//	            'text' => 'QIWI'
-//            ],
+            self::PAYMENT_SYSTEM_QIWI => [
+	            'key' => self::PAYMENT_SYSTEM_QIWI,
+	            'text' => 'QIWI'
+            ],
             self::PAYMENT_SYSTEM_DEMO => [
                 'key' => self::PAYMENT_SYSTEM_DEMO,
                 'text' => 'Demo access'
