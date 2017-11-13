@@ -21,6 +21,7 @@ class Dictionary
 
     const PAYMENT_SYSTEM_YANDEX_MONEY = 'ym';
     const PAYMENT_SYSTEM_WEB_MONEY = 'wm';
+	const PAYMENT_SYSTEM_QIWI = 'qiwi';
     const PAYMENT_SYSTEM_DEMO = 'demo';
 
     const PRODUCT_TYPE_REAL = 'real';
@@ -80,6 +81,10 @@ class Dictionary
                 'key' => self::PAYMENT_SYSTEM_WEB_MONEY,
                 'text' => 'WebMoney'
             ],
+//            self::PAYMENT_SYSTEM_QIWI => [
+//	            'key' => self::PAYMENT_SYSTEM_QIWI,
+//	            'text' => 'QIWI'
+//            ],
             self::PAYMENT_SYSTEM_DEMO => [
                 'key' => self::PAYMENT_SYSTEM_DEMO,
                 'text' => 'Demo access'

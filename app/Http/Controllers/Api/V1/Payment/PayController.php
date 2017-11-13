@@ -155,6 +155,30 @@ class PayController extends Controller
                 $user_language = User::getLanguage($user['country']);
 
                 switch ($payment->payment_system) {
+	                case Dictionary::PAYMENT_SYSTEM_QIWI:
+	                	$gateway = Omnipay::create('\Omnipay\Qiwi\Gateway');
+		                $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? 'R244624580848' : 'Z298654230937');
+
+		                $response = $gateway->purchase([
+			                'summ' => $product->price,
+//			                'from' => $payment->currency,
+//			                'to' => $payment->currency,
+			                'txn_id' => $payment->id,
+			                'currency' => $payment->currency,
+			                'testMode' => false,
+			                'comm' => $product->description,
+			                'successUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
+			                'failUrl' => 'http://goloption.com/' . $user_language . '/pay/fail',
+		                ])->send();
+
+		                $result = [
+			                'actionUrl' => $response->getRedirectUrl(),
+			                'method' => $response->getRedirectMethod(),
+			                'params' => $response->getRedirectData()
+		                ];
+
+	                	break;
+
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
 
@@ -163,7 +187,7 @@ class PayController extends Controller
                             'amount' => number_format($product->price, 2, '.', ''),
                             'transactionId' => $payment->id,
                             'currency' => $payment->currency,
-                            'testMode' => true,
+                            'testMode' => false,
                             'description' => $product->description,
                             'returnUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
                             'cancelUrl' => 'http://goloption.com/' . $user_language . '/pay/fail',

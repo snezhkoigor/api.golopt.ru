@@ -22,7 +22,8 @@
         "rollbar/rollbar-laravel": "^2.2",
         "systemovich/laravel-translatable": "^2.2",
         "tymon/jwt-auth": "0.5.*",
-        "yandexmoney/omnipay": "^1.0"
+        "yandexmoney/omnipay": "^1.0",
+        "hiqdev/omnipay-qiwi": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
