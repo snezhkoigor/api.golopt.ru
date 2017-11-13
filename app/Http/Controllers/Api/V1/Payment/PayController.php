@@ -155,29 +155,29 @@ class PayController extends Controller
                 $user_language = User::getLanguage($user['country']);
 
                 switch ($payment->payment_system) {
-	                case Dictionary::PAYMENT_SYSTEM_QIWI:
-	                	$gateway = Omnipay::create('\Omnipay\Qiwi\Gateway');
-
-	                	$gateway->setProviderId(config('payments.QIWI_ACCOUNT'));
-
-		                $response = $gateway->purchase([
-			                'amount' => number_format($product->price, 2, '.', ''),
-			                'txn_id' => $payment->id,
-			                'currency' => Dictionary::CURRENCY_RUB,
-			                'description' => $product->description,
-			                'returnUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
-			                'cancelUrl' => 'http://goloption.com/' . $user_language . '/pay/fail',
-			                'notifyUrl' => 'http://api.goloption.com/api/pay/receive'
-		                ])->send();
-
-		                return response()->json($response);die;
-		                $result = [
-			                'actionUrl' => $response->getRedirectUrl(),
-			                'method' => $response->getRedirectMethod(),
-			                'params' => $response->getRedirectData()
-		                ];
-
-	                	break;
+//	                case Dictionary::PAYMENT_SYSTEM_QIWI:
+//	                	$gateway = Omnipay::create('\Omnipay\Qiwi\Gateway');
+//
+//	                	$gateway->setProviderId(config('payments.QIWI_ACCOUNT'));
+//
+//		                $response = $gateway->purchase([
+//			                'amount' => number_format($product->price, 2, '.', ''),
+//			                'txn_id' => $payment->id,
+//			                'currency' => Dictionary::CURRENCY_RUB,
+//			                'description' => $product->description,
+//			                'returnUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
+//			                'cancelUrl' => 'http://goloption.com/' . $user_language . '/pay/fail',
+//			                'notifyUrl' => 'http://api.goloption.com/api/pay/receive'
+//		                ])->send();
+//
+//		                return response()->json($response);die;
+//		                $result = [
+//			                'actionUrl' => $response->getRedirectUrl(),
+//			                'method' => $response->getRedirectMethod(),
+//			                'params' => $response->getRedirectData()
+//		                ];
+//
+//	                	break;
 
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
