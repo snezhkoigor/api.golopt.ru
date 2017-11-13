@@ -23,6 +23,7 @@ class LoginController extends Controller
         $token = null;
 
         try {
+	        $credentials['email'] = strtolower($credentials['email']);
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
                     'status' => false,
