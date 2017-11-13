@@ -56,7 +56,7 @@ class RegisterController extends Controller
                 $validator->getMessageBag()->add('phone', 'We have already this phone number');
             } else {
                 $user = new User();
-                    $user->email = $request->get('email');
+                    $user->email = strtolower($request->get('email'));
                     $user->password = Hash::make($password);
                     $user->first_name = $request->get('first_name');
                     $user->last_name = $request->get('last_name');
