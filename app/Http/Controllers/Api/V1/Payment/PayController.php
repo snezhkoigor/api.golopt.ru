@@ -155,7 +155,7 @@ class PayController extends Controller
                 $user_language = User::getLanguage($user['country']);
 
                 switch ($payment->payment_system) {
-//	                case Dictionary::PAYMENT_SYSTEM_QIWI:
+	                case Dictionary::PAYMENT_SYSTEM_QIWI:
 //	                	$gateway = Omnipay::create('\Omnipay\Qiwi\Gateway');
 //
 //	                	$gateway->setProviderId(config('payments.QIWI_ACCOUNT'));
@@ -163,6 +163,7 @@ class PayController extends Controller
 //		                $response = $gateway->purchase([
 //			                'amount' => number_format($product->price, 2, '.', ''),
 //			                'txn_id' => $payment->id,
+//			                'to' => '+79213887398',
 //			                'currency' => Dictionary::CURRENCY_RUB,
 //			                'description' => $product->description,
 //			                'returnUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
@@ -176,17 +177,55 @@ class PayController extends Controller
 //			                'method' => $response->getRedirectMethod(),
 //			                'params' => $response->getRedirectData()
 //		                ];
-//
-//	                	break;
+
+		                $result = [
+		                	'actionUrl' => 'https://bill.qiwi.com/order/external/create.action',
+			                'method' => 'GET',
+			                'params' => [
+			                	'from' => config('payments.QIWI_ACCOUNT'),
+				                'summ' => number_format($product->price, 2, '.', ''),
+				                'currency' => $payment->currency,
+				                'to' => $user->calling_code . $user->phone,
+				                'comm' => $product->description,
+				                'txn_id' => $payment->id,
+				                'successUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
+                                'cancelUrl' => 'http://goloption.com/' . $user_language . '/pay/fail',
+                                'notifyUrl' => 'http://api.goloption.com/api/pay/receive'
+			                ]
+		                ];
+
+	                	break;
 
                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY:
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
 
-                        $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? config('payments.WEBMONEY_RUB') : config('payments.WEBMONEY_USD'));
+	                    if ($payment->currency === Dictionary::CURRENCY_RUB) {
+		                    $amount = $product->price;
+	                    } else {
+		                    $rate = Rate::where([
+			                    ['date', date('Y-m-d')],
+			                    ['name', strtoupper($payment->currency) . Dictionary::CURRENCY_RUB]
+		                    ])->first();
+
+		                    if (!$rate) {
+			                    return response()->json([
+				                    'status' => false,
+				                    'message' => 'No exchange rate for today',
+				                    'data' => null
+			                    ], 422);
+		                    }
+
+		                    $amount = $product->price * $rate->rate; // это в рублях
+	                    }
+
+//                        $gateway->setMerchantPurse($payment->currency === Dictionary::CURRENCY_RUB ? config('payments.WEBMONEY_RUB') : config('payments.WEBMONEY_USD'));
+	                    $gateway->setMerchantPurse(config('payments.WEBMONEY_RUB'));
                         $response = $gateway->purchase([
-                            'amount' => number_format($product->price, 2, '.', ''),
+//                            'amount' => number_format($product->price, 2, '.', ''),
+                            'amount' => number_format($amount, 2, '.', ''),
                             'transactionId' => $payment->id,
-                            'currency' => $payment->currency,
+//                            'currency' => $payment->currency,
+                            'currency' => Dictionary::CURRENCY_RUB,
                             'testMode' => false,
                             'description' => $product->description,
                             'returnUrl' => 'http://goloption.com/' . $user_language . '/pay/success',
