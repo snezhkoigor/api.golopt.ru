@@ -22,7 +22,6 @@ class Dictionary
     const PAYMENT_SYSTEM_YANDEX_MONEY = 'ym';
     const PAYMENT_SYSTEM_WEB_MONEY_RUB = 'wm_rub';
 	const PAYMENT_SYSTEM_WEB_MONEY_USD = 'wm_usd';
-	const PAYMENT_SYSTEM_QIWI = 'qiwi';
     const PAYMENT_SYSTEM_DEMO = 'demo';
 
     const PRODUCT_TYPE_REAL = 'real';
