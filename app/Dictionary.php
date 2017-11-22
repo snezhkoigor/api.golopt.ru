@@ -20,7 +20,8 @@ class Dictionary
     const PRODUCT_PRICE_BY_FULL = 'full';
 
     const PAYMENT_SYSTEM_YANDEX_MONEY = 'ym';
-    const PAYMENT_SYSTEM_WEB_MONEY = 'wm';
+    const PAYMENT_SYSTEM_WEB_MONEY_RUB = 'wm_rub';
+	const PAYMENT_SYSTEM_WEB_MONEY_USD = 'wm_usd';
 	const PAYMENT_SYSTEM_QIWI = 'qiwi';
     const PAYMENT_SYSTEM_DEMO = 'demo';
 
@@ -37,7 +38,8 @@ class Dictionary
             'PRODUCT_PRICE_BY_YEAR' => 'year',
             'PRODUCT_PRICE_BY_FULL' => 'full',
             'PAYMENT_SYSTEM_YANDEX_MONEY' => 'ym',
-            'PAYMENT_SYSTEM_WEB_MONEY' => 'wm',
+            'PAYMENT_SYSTEM_WEB_MONEY_RUB' => 'wm_rub',
+            'PAYMENT_SYSTEM_WEB_MONEY_USD' => 'wm_usd',
             'PAYMENT_SYSTEM_DEMO' => 'demo',
             'PRODUCT_TYPE_REAL' => 'real',
             'PRODUCT_TYPE_DEMO' => 'demo',
@@ -77,14 +79,14 @@ class Dictionary
                 'key' => self::PAYMENT_SYSTEM_YANDEX_MONEY,
                 'text' => 'YandexMoney'
             ],
-            self::PAYMENT_SYSTEM_WEB_MONEY => [
-                'key' => self::PAYMENT_SYSTEM_WEB_MONEY,
-                'text' => 'WebMoney'
+            self::PAYMENT_SYSTEM_WEB_MONEY_RUB => [
+                'key' => self::PAYMENT_SYSTEM_WEB_MONEY_RUB,
+                'text' => 'WebMoney (RUB)'
             ],
-//            self::PAYMENT_SYSTEM_QIWI => [
-//	            'key' => self::PAYMENT_SYSTEM_QIWI,
-//	            'text' => 'QIWI'
-//            ],
+	        self::PAYMENT_SYSTEM_WEB_MONEY_USD => [
+	            'key' => self::PAYMENT_SYSTEM_WEB_MONEY_USD,
+	            'text' => 'WebMoney (USD)'
+	        ],
             self::PAYMENT_SYSTEM_DEMO => [
                 'key' => self::PAYMENT_SYSTEM_DEMO,
                 'text' => 'Demo access'
