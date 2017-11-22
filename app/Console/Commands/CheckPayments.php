@@ -86,7 +86,9 @@ class CheckPayments extends Command
 
                                     case Dictionary::PAYMENT_SYSTEM_WEB_MONEY_RUB:
 	                                case Dictionary::PAYMENT_SYSTEM_WEB_MONEY_USD:
-                                        $sha256 = strtoupper(hash('sha256', $post['LMI_PAYEE_PURSE'].$post['LMI_PAYMENT_AMOUNT'].$post['LMI_PAYMENT_NO'].$post['LMI_MODE'].$post['LMI_SYS_INVS_NO'].$post['LMI_SYS_TRANS_NO'].$post['LMI_SYS_TRANS_DATE'].config('payments.WEBMONEY_SECRET_KEY').$post['LMI_PAYER_PURSE'].$post['LMI_PAYER_WM']));
+	                                	$secret_key = config($transaction->payment_system === Dictionary::PAYMENT_SYSTEM_WEB_MONEY_RUB ? 'payments.WEBMONEY_SECRET_KEY_RUB' : 'payments.WEBMONEY_SECRET_KEY_USD');
+
+                                        $sha256 = strtoupper(hash('sha256', $post['LMI_PAYEE_PURSE'].$post['LMI_PAYMENT_AMOUNT'].$post['LMI_PAYMENT_NO'].$post['LMI_MODE'].$post['LMI_SYS_INVS_NO'].$post['LMI_SYS_TRANS_NO'].$post['LMI_SYS_TRANS_DATE'].$secret_key.$post['LMI_PAYER_PURSE'].$post['LMI_PAYER_WM']));
                                         if ($sha256 === $post['LMI_HASH']/* && (float)$post['LMI_PAYMENT_AMOUNT'] >= (float)$transaction->amount && (float)$post['LMI_PAYMENT_AMOUNT'] >= (float)$product->price*/) {
                                             $success = true;
                                         } else {

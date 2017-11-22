@@ -2,7 +2,8 @@
 
 return [
     'YANDEX_SECRET_KEY' => '5APWA3k3xNj3FhFQ47LiLHpP',
-    'WEBMONEY_SECRET_KEY' => 'Ghjrl7654#hjl',
+    'WEBMONEY_SECRET_KEY_RUB' => 'Ghjrl7654#hjl',
+    'WEBMONEY_SECRET_KEY_USD' => 'lkjkfjg8765#jhlkj',
 
     'YANDEX_MONEY_ACCOUNT' => '410011068486292',
 
