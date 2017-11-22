@@ -32,7 +32,7 @@ class PayController extends Controller
     public function rules()
     {
         return [
-            'payment_system' => 'required|in:' . Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_QIWI . ',' . Dictionary::PAYMENT_SYSTEM_DEMO,
+            'payment_system' => 'required|in:' . Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY_RUB . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY_USD . ',' . Dictionary::PAYMENT_SYSTEM_QIWI . ',' . Dictionary::PAYMENT_SYSTEM_DEMO,
             'trade_account' => 'required',
             'broker' => 'required',
         ];
