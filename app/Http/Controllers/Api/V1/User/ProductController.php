@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Api\V1\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 
@@ -21,10 +22,10 @@ class ProductController extends Controller
         $this->middleware('jwt.auth');
     }
 
-    public function rules()
+    public function rules(Request $request)
     {
         return [
-            'trade_account' => 'required|numeric',
+            'trade_account' => 'required|' . $this->accountRulesByChanging($request) . '|numeric',
             'broker' => 'required'
         ];
     }
@@ -37,6 +38,19 @@ class ProductController extends Controller
             'broker.required' => 'No broker name selected.',
         ];
     }
+
+	public function accountRulesByChanging($request)
+	{
+		$result = '';
+		$user = JWTAuth::toUser($request->get('token'));
+
+		if ($user && $request->get('trade_account')) {
+			$trade_account = $request->get('email');
+			$result = DB::table('product_user')->where([ ['user_id', '<>', $user['id'] ], [ 'trade_account', $trade_account ] ])->first() ? 'unique:product_user' : '';
+		}
+
+		return $result;
+	}
 
     public function update(Request $request, $id)
     {

@@ -80,7 +80,7 @@ class Dictionary
             ],
             self::PAYMENT_SYSTEM_WEB_MONEY_RUB => [
                 'key' => self::PAYMENT_SYSTEM_WEB_MONEY_RUB,
-                'text' => 'WebMoney (RUB)'
+                'text' => 'WebMoney (RUB, VISA/MASTERCARD)'
             ],
 	        self::PAYMENT_SYSTEM_WEB_MONEY_USD => [
 	            'key' => self::PAYMENT_SYSTEM_WEB_MONEY_USD,
