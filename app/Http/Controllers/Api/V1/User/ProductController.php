@@ -45,7 +45,7 @@ class ProductController extends Controller
 		$user = JWTAuth::toUser($request->get('token'));
 
 		if ($user && $request->get('trade_account')) {
-			$trade_account = $request->get('email');
+			$trade_account = $request->get('trade_account');
 			$result = DB::table('product_user')->where([ ['user_id', '<>', $user['id'] ], [ 'trade_account', $trade_account ] ])->first() ? 'unique:product_user' : '';
 		}
 
