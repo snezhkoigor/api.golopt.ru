@@ -33,9 +33,10 @@ class ProductController extends Controller
     public function messages()
     {
         return [
-            'trade_account.required' => 'No account number selected.',
-            'trade_account.numeric' => 'Account must contain only digits.',
-            'broker.required' => 'No broker name selected.',
+            'trade_account.required' => 'No account number selected',
+            'trade_account.numeric' => 'Account must contain only digits',
+            'trade_account.unique' => 'This trade account is busy',
+            'broker.required' => 'No broker name selected',
         ];
     }
 
