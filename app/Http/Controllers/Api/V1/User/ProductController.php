@@ -54,7 +54,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), $this->rules(), $this->messages());
+        $validator = Validator::make($request->all(), $this->rules($request), $this->messages());
         $user = JWTAuth::toUser($request->get('token'));
 
         if ($id && ($userProduct = $user->products->where('id', $id)->first())) {
