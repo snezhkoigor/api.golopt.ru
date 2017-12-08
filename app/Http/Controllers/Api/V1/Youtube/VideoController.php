@@ -16,10 +16,21 @@ class VideoController extends Controller
     public function getList()
     {
         $youtube = new Youtube(config('youtube.KEY'));
+
+        $data = (array)$youtube->listChannelVideos('UCaCmSeb1GwQ9OHTXkpXAJVg', 4, 'date');
+
+        $data = json_decode(json_encode($data), True);
+
+        if ($data) {
+        	foreach ($data as $id => $item) {
+        		$data[$id]['src'] = 'https://www.youtube.com/embed/' . $item['id']['videoId'];
+	        }
+        }
+
         return response()->json([
             'status' => true,
             'message' => null,
-            'data' => $youtube->listChannelVideos('UCaCmSeb1GwQ9OHTXkpXAJVg', 50)
+            'data' => $data
         ]);
     }
 }
