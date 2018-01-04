@@ -63,12 +63,12 @@ class UserRepository
 			case 'month':
 				$query->select(DB::raw('COUNT(id) as count, SUM(active) as activations, DATE_FORMAT(created_at, \'%m.%Y\') as date'));
 				$query->groupBy(DB::raw('DATE_FORMAT(created_at, \'%m.%Y\')'));
-				$query->whereBetween('created_at', [ Carbon::today(), Carbon::today()->subMonths(12) ]);
+				$query->whereBetween('created_at', [ Carbon::today()->subMonths(12), Carbon::today() ]);
 				break;
 			default:
 				$query->select(DB::raw('COUNT(id) as count, SUM(active) as activations, DATE_FORMAT(created_at, \'%d.%m.%Y\') as date'));
 				$query->groupBy(DB::raw('DATE_FORMAT(created_at, \'%d.%m.%Y\')'));
-				$query->whereBetween('created_at', [ Carbon::today(), Carbon::today()->subDays(7) ]);
+				$query->whereBetween('created_at', [ Carbon::today()->subDays(7), Carbon::today() ]);
 				break;
 		}
 
