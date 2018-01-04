@@ -23,7 +23,10 @@
         "systemovich/laravel-translatable": "^2.2",
         "tymon/jwt-auth": "0.5.*",
         "yandexmoney/omnipay": "^1.0",
-        "hiqdev/omnipay-qiwi": "dev-master"
+        "hiqdev/omnipay-qiwi": "dev-master",
+        "league/fractal": "^0.17",
+        "spatie/laravel-fractal": "4.5",
+        "intervention/image": "^2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -11,6 +11,9 @@
 |
 */
 
+use Intervention\Image\ImageManagerStatic as Image;
+use \Illuminate\Support\Facades\Storage;
+
 Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], function() {
     Route::post('/register', 'User\RegisterController@register');
     Route::post('/login', 'User\LoginController@login');
@@ -49,4 +52,23 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
     Route::get('/user/subscription/verification', 'User\SubscriptionVerificationController@index');
     Route::get('/forward-points/{account}/{pair}/get', 'ForwardPoint\CurrentController@index');
 	Route::get('/forward-points/{account}/{pair}', 'ForwardPoint\CurrentController@newGet');
+
+	// News
+	Route::get('/news', 'News\NewsController@getNews');
+	Route::get('/news/{news_id}', 'News\NewsController@getNewsById');
+	Route::post('/news', 'News\NewsController@add');
+	Route::post('/news/{news_id}', 'News\NewsController@updateById');
+	Route::delete('/news/{news_id}', 'News\NewsController@deleteById');
+
+	//Widgets
+	Route::get('/widgets/clients/totalRegistrations', 'User\WidgetController@totalClientRegistrations');
+	Route::get('/widgets/clients/totalRegistrationsAndActivations/{period_type?}', 'User\WidgetController@totalClientRegistrationsAndActivations');
+
+	Route::get('/files/{storage}/{filename}', function ($storage, $filename) {
+		if (Storage::disk($storage)->exists($filename)) {
+			return Image::make(Storage::disk($storage)->get($filename))->response();
+		}
+
+		throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Image not found');
+	});
 });

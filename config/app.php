@@ -190,6 +190,8 @@ return [
         Alaouy\Youtube\YoutubeServiceProvider::class,
 
         Rollbar\Laravel\RollbarServiceProvider::class,
+
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -245,7 +247,9 @@ return [
 
         'Curl' => Ixudra\Curl\Facades\Curl::class,
 
-        'Youtube' => Alaouy\Youtube\Facades\Youtube::class
+        'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
+
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];
