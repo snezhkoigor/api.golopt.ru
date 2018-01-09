@@ -44,27 +44,27 @@ class GetForwardPointsFromFTP extends Command
         $path_prefix = $disk->getDriver()->getAdapter()->getPathPrefix();
 
         // установка соединения
-        $conn_id = ftp_connect(env('CME_FTP_URL'));
+        $conn_id = ftp_connect(config('cme_ftp.url'));
         // вход с именем пользователя и паролем
-        $login_result = ftp_login($conn_id, env('CME_FTP_LOGIN'), '');
+        $login_result = ftp_login($conn_id, config('cme_ftp.user'), '');
 
         if ($login_result == true) {
             ftp_pasv($conn_id, true);
 
             // получить содержимое текущей директории
-            $contents = ftp_nlist($conn_id, env('CME_FTP_CONTENTS_FORWARD_POINTS_FOLDER') . '/');
+            $contents = ftp_nlist($conn_id, config('cme_ftp.ftp_folder') . '/');
 
             if (!empty($contents)) {
                 $last_file = array_pop($contents);
-                $last_file = str_replace(env('CME_FTP_CONTENTS_FORWARD_POINTS_FOLDER') . '/', '', $last_file);
+                $last_file = str_replace(config('cme_ftp.ftp_folder') . '/', '', $last_file);
 
                 $name_arr = explode('-', $last_file);
 
-                $disk->makeDirectory(env('CME_PARSER_FORWARD_POINTS_SAVE_FOLDER') . '/' . $name_arr[1] . '/');
+                $disk->makeDirectory(config('cme_ftp.save_path') . '/' . $name_arr[1] . '/');
 
                 // попытка скачать и распаковать архив
-                $local_file = env('CME_PARSER_FORWARD_POINTS_SAVE_FOLDER') . '/' . $name_arr[1] . '/' . $last_file;
-                $ftp_file = 'ftp://' . env('CME_FTP_URL') . '/' . env('CME_FTP_CONTENTS_FORWARD_POINTS_FOLDER') . '/' . $last_file;
+                $local_file = config('cme_ftp.save_path') . '/' . $name_arr[1] . '/' . $last_file;
+                $ftp_file = 'ftp://' . config('cme_ftp.url') . '/' . config('cme_ftp.ftp_folder') . '/' . $last_file;
 
                 if (!$disk->has($local_file)) {
                     if (copy($ftp_file, $path_prefix . $local_file)) {
