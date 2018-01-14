@@ -18,12 +18,12 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "omnipay/ym": "~1.0",
+        "omnipay/paypal": "2.6.*",
         "pragmarx/countries": "^0.1.0",
         "rollbar/rollbar-laravel": "^2.2",
         "systemovich/laravel-translatable": "^2.2",
         "tymon/jwt-auth": "0.5.*",
         "yandexmoney/omnipay": "^1.0",
-        "hiqdev/omnipay-qiwi": "dev-master",
         "league/fractal": "^0.17",
         "spatie/laravel-fractal": "4.5",
         "intervention/image": "^2.4"

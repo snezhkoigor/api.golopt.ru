@@ -86,6 +86,10 @@ class Dictionary
 	            'key' => self::PAYMENT_SYSTEM_WEB_MONEY_USD,
 	            'text' => 'WebMoney (USD)'
 	        ],
+//            self::PAYMENT_SYSTEM_PAYPAL => [
+//	            'key' => self::PAYMENT_SYSTEM_PAYPAL,
+//	            'text' => 'Pay Pal'
+//            ],
             self::PAYMENT_SYSTEM_DEMO => [
                 'key' => self::PAYMENT_SYSTEM_DEMO,
                 'text' => 'Demo access'

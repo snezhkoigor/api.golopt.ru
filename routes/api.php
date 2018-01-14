@@ -56,6 +56,8 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
 	// News
 	Route::get('/news', 'News\NewsController@getNews');
 	Route::get('/news/{news_id}', 'News\NewsController@getNewsById');
+	Route::get('/view', 'News\NewsController@view');
+	Route::get('/show/{news_id}', 'News\NewsController@show');
 	Route::post('/news', 'News\NewsController@add');
 	Route::post('/news/{news_id}', 'News\NewsController@updateById');
 	Route::delete('/news/{news_id}', 'News\NewsController@deleteById');

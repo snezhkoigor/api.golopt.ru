@@ -73,6 +73,23 @@ class NewsController extends Controller
 			->respond();
 	}
 
+	public function view()
+	{
+		return fractal(NewsRepository::getNews(), new NewsTransformer())
+			->toArray();
+	}
+
+	public function show($news_id)
+	{
+		$news = News::find($news_id);
+		if ($news === null) {
+			throw new NotFoundHttpException('Нет новости');
+		}
+
+		return fractal($news, new NewsTransformer())
+			->respond();
+	}
+
     public function add(Request $request)
     {
     	$this->validate($request, $this->rules(), $this->messages());
