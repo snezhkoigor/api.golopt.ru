@@ -32,7 +32,7 @@ class PayController extends Controller
     public function rules()
     {
         return [
-            'payment_system' => 'required|in:' . Dictionary::PAYMENT_SYSTEM_PAYPAL . ',' . Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY_RUB . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY_USD . ',' . Dictionary::PAYMENT_SYSTEM_DEMO,
+            'payment_system' => 'required|in:' . Dictionary::PAYMENT_SYSTEM_YANDEX_MONEY . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY_RUB . ',' . Dictionary::PAYMENT_SYSTEM_WEB_MONEY_USD . ',' . Dictionary::PAYMENT_SYSTEM_DEMO,
             'trade_account' => 'required',
             'broker' => 'required',
         ];
@@ -155,31 +155,6 @@ class PayController extends Controller
                 $user_language = User::getLanguage($user['country']);
 
                 switch ($payment->payment_system) {
-	                case Dictionary::PAYMENT_SYSTEM_PAYPAL:
-		                $gateway = Omnipay::create('PayPal_Rest');
-
-		                $gateway->setUsername('balda@inbox.ru');
-		                $gateway->setPassword('amrtx5amrtx#');
-//		                $gateway->setSignature('XXXXX');
-
-
-		                $response = $gateway->completePurchase(
-			                array(
-				                'cancelUrl' => 'www.xyz.com/cancelurl',
-				                'returnUrl' => 'www.xyz.com/returnurl',
-				                'amount' => number_format(25, 2, '.', ''),
-				                'currency' => 'USD'
-			                )
-		                )->send();
-
-		                $result = [
-			                'actionUrl' => $response->getRedirectUrl(),
-			                'method' => $response->getRedirectMethod(),
-			                'params' => $response->getData()
-		                ];
-
-	                	break;
-
 	                case Dictionary::PAYMENT_SYSTEM_WEB_MONEY_RUB:
 	                case Dictionary::PAYMENT_SYSTEM_WEB_MONEY_USD:
                         $gateway = Omnipay::create('\Omnipay\WebMoney\Gateway');
