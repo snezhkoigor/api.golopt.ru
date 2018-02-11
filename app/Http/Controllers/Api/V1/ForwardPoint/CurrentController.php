@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Api\V1\ForwardPoint;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -32,6 +33,33 @@ class CurrentController extends Controller
 
     public function index(Request $request, $account, $pair)
     {
+    	$date = ($request->get('date') ? $request->get('date') : date('Y-m-d'));
+        if (in_array(date('w'), [0, 6]) && !$request->get('date')) {
+            if (date('w') === 6) {
+                $date = date('Y-m-d', strtotime('-1 DAY'));
+            } else {
+                $date = date('Y-m-d', strtotime('-2 DAY'));
+            }
+        }
+
+    	if (in_array($account, User::getDevAccounts())) {
+            $fp = DB::table('forward_points')
+                ->select('forward_points.name', 'forward_points.fp', DB::raw('UNIX_TIMESTAMP(forward_points.updated_at) as updated_at'))
+                ->where([
+                    [ 'forward_points.date', '=', $date ],
+                    [ 'forward_points.name', '=', $pair ]
+                ])
+                ->first();
+
+            if ($fp) {
+                return response()->json([
+                    'status' => 1,
+                    'message' => null,
+                    'data' => (float)$fp->fp
+                ]);
+            }
+	    }
+
         $validator = Validator::make([ 'account' => $account ], $this->rules(), $this->messages());
 
         if ($validator->fails() === false) {
@@ -43,15 +71,6 @@ class CurrentController extends Controller
                 ->first();
 
             if ($accountInfo) {
-                $date = ($request->get('date') ? $request->get('date') : date('Y-m-d'));
-                if (in_array(date('w'), [0, 6]) && !$request->get('date')) {
-                    if (date('w') === 6) {
-                        $date = date('Y-m-d', strtotime('-1 DAY'));
-                    } else {
-                        $date = date('Y-m-d', strtotime('-2 DAY'));
-                    }
-                }
-
                 $fp = DB::table('forward_points')
                     ->select('forward_points.name', 'forward_points.fp', DB::raw('UNIX_TIMESTAMP(forward_points.updated_at) as updated_at'))
                     ->where([
