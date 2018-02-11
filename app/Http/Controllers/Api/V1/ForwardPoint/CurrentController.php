@@ -42,7 +42,6 @@ class CurrentController extends Controller
             }
         }
 
-var_dump($account, in_array($account, User::getDevAccounts()), in_array((string)$account, User::getDevAccounts()));
     	if (in_array($account, User::getDevAccounts())) {
             $fp = DB::table('forward_points')
                 ->select('forward_points.name', 'forward_points.fp', DB::raw('UNIX_TIMESTAMP(forward_points.updated_at) as updated_at'))
@@ -105,6 +104,30 @@ var_dump($account, in_array($account, User::getDevAccounts()), in_array((string)
 
 	public function newGet(Request $request, $account, $pair)
 	{
+		$date = ($request->get('date') ? $request->get('date') : date('Y-m-d'));
+		if (in_array(date('w'), [0, 6]) && !$request->get('date')) {
+			if (date('w') === 6) {
+				$date = date('Y-m-d', strtotime('-1 DAY'));
+			} else {
+				$date = date('Y-m-d', strtotime('-2 DAY'));
+			}
+		}
+
+		if (in_array($account, User::getDevAccounts())) {
+			$fp = DB::table('forward_points')
+				->select('forward_points.name', 'forward_points.fp', DB::raw('UNIX_TIMESTAMP(forward_points.updated_at) as updated_at'))
+				->where([
+					[ 'forward_points.date', '=', $date ],
+					[ 'forward_points.name', '=', $pair ]
+				])
+				->first();
+
+			if ($fp) {
+				echo (float)$fp->fp;
+				die;
+			}
+		}
+		
 		$validator = Validator::make([ 'account' => $account ], $this->rules(), $this->messages());
 
 		if ($validator->fails() === false) {
@@ -116,15 +139,6 @@ var_dump($account, in_array($account, User::getDevAccounts()), in_array((string)
 				->first();
 
 			if ($accountInfo) {
-				$date = ($request->get('date') ? $request->get('date') : date('Y-m-d'));
-				if (in_array(date('w'), [0, 6]) && !$request->get('date')) {
-					if (date('w') === 6) {
-						$date = date('Y-m-d', strtotime('-1 DAY'));
-					} else {
-						$date = date('Y-m-d', strtotime('-2 DAY'));
-					}
-				}
-
 				$fp = DB::table('forward_points')
 					->select('forward_points.name', 'forward_points.fp', DB::raw('UNIX_TIMESTAMP(forward_points.updated_at) as updated_at'))
 					->where([
