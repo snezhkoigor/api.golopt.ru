@@ -113,7 +113,7 @@ class CurrentController extends Controller
 			}
 		}
 
-		if (in_array($account, User::getDevAccounts())) {
+		if (in_array((string)$account, User::getDevAccounts())) {
 			$fp = DB::table('forward_points')
 				->select('forward_points.name', 'forward_points.fp', DB::raw('UNIX_TIMESTAMP(forward_points.updated_at) as updated_at'))
 				->where([
