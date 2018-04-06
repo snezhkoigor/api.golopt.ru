@@ -58,8 +58,17 @@ class GetFuturesFromCME extends Command
 		    {
 		        $data = file_get_contents($link);
 		        $json = json_decode($data, true);
-		        $price = $json['quotes'][0]['last'];
-	
+		        
+		        $price = 0;
+		        foreach ($json as $item)
+		        {
+		        	if ((float)$item['last'])
+			        {
+			        	$price = $item['last'];
+			        	break;
+			        }
+		        }
+
 		        $future = FuturesPrice::query()
 			        ->where([
 			            ['pair', $pair],
