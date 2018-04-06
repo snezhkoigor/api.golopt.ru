@@ -63,7 +63,7 @@ class GetFuturesFromCME extends Command
 		        $future = FuturesPrice::query()
 			        ->where([
 			            ['pair', $pair],
-				        ['date', Carbon::today()->format('Y-m-d 00:00:00')]
+				        ['date', Carbon::today()->format('Y-m-d')]
 			        ])
 			        ->first();
 	
@@ -72,7 +72,7 @@ class GetFuturesFromCME extends Command
 		            $future = new FuturesPrice();
 			        $future->price = (float)$price;
 			        $future->pair = $pair;
-			        $future->date = Carbon::today()->format('Y-m-d 00:00:00');
+			        $future->date = Carbon::today()->format('Y-m-d');
 		        }
 		        else
 		        {
