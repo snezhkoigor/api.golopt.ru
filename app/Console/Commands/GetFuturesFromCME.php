@@ -76,9 +76,9 @@ class GetFuturesFromCME extends Command
 		        }
 		        else
 		        {
-		            $future->price = (float)$price;
+		            $future->price = $price;
 		        }
-		        
+
 		        $future->save();
 		    }
 	    }
