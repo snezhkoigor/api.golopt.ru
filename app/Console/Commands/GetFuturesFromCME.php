@@ -70,7 +70,7 @@ class GetFuturesFromCME extends Command
 		        if ($future === null)
 		        {
 		            $future = new FuturesPrice();
-			        $future->price = (float)$price;
+			        $future->price = $price;
 			        $future->pair = $pair;
 			        $future->date = Carbon::today()->format('Y-m-d');
 		        }
