@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $id
  * @property string $date
  * @property string $pair
- * @property double $price
+ * @property string $price
  *
  * Class FuturesPrice
  * @package App\Models

@@ -52,6 +52,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
     Route::get('/user/subscription/verification', 'User\SubscriptionVerificationController@index');
     Route::get('/forward-points/{account}/{pair}/get', 'ForwardPoint\CurrentController@index');
 	Route::get('/forward-points/{account}/{pair}', 'ForwardPoint\CurrentController@newGet');
+	Route::get('/futures/{account}/{pair}', 'Futures\CurrentController@get');
 
 	// News
 	Route::get('/news', 'News\NewsController@getNews');
