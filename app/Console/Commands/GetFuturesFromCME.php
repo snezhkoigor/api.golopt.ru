@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Exceptions\SystemErrorException;
 use App\FuturesPrice;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -36,6 +37,8 @@ class GetFuturesFromCME extends Command
      * Execute the console command.
      *
      * @return mixed
+     *
+     * @throws \Exception
      */
     public function handle()
     {
@@ -48,33 +51,40 @@ class GetFuturesFromCME extends Command
 		    'JPY' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/69/G?pageSize=50',
 		    'MXN' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/75/G?pageSize=50',
 	    ];
-    	
-    	foreach ($links as $pair => $link)
+
+    	try
 	    {
-	        $aud = file_get_contents('https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/37/G?pageSize=50');
-	        $json = json_decode($aud, true);
-	        $price = $json['quotes'][0]['last'];
-
-	        $future = FuturesPrice::query()
-		        ->where([
-		        	['pair', $pair],
-			        ['date', Carbon::today()->format('Y-m-d 00:00:00')]
-		        ])
-		        ->first();
-
-	        if ($future === null)
-	        {
-	        	$future = new FuturesPrice();
-		        $future->price = (float)$price;
-		        $future->pair = $pair;
-		        $future->date = Carbon::today()->format('Y-m-d 00:00:00');
-	        }
-	        else
-	        {
-	        	$future->price = (float)$price;
-	        }
-	        
-	        $future->save();
+	        foreach ($links as $pair => $link)
+		    {
+		        $data = file_get_contents($link);
+		        $json = json_decode($data, true);
+		        $price = $json['quotes'][0]['last'];
+	
+		        $future = FuturesPrice::query()
+			        ->where([
+			            ['pair', $pair],
+				        ['date', Carbon::today()->format('Y-m-d 00:00:00')]
+			        ])
+			        ->first();
+	
+		        if ($future === null)
+		        {
+		            $future = new FuturesPrice();
+			        $future->price = (float)$price;
+			        $future->pair = $pair;
+			        $future->date = Carbon::today()->format('Y-m-d 00:00:00');
+		        }
+		        else
+		        {
+		            $future->price = (float)$price;
+		        }
+		        
+		        $future->save();
+		    }
+	    }
+	    catch (\Exception $e)
+	    {
+		    throw new SystemErrorException('Future parse error', $e);
 	    }
     }
 }
