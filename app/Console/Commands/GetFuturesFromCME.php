@@ -60,7 +60,7 @@ class GetFuturesFromCME extends Command
 		        $json = json_decode($data, true);
 		        
 		        $price = 0;
-		        foreach ($json as $item)
+		        foreach ($json['quotes'] as $item)
 		        {
 		        	if ((float)$item['last'])
 			        {
