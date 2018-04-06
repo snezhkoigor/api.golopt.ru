@@ -43,10 +43,10 @@ class GetFuturesFromCME extends Command
     public function handle()
     {
     	$month = [
-			1 => 'JAN',
-			2 => 'APR',
-			3 => 'JUL',
-			4 => 'OCT'
+			1 => 'MAR',
+			2 => 'JUN',
+			3 => 'SEP',
+			4 => 'DEC'
 	    ];
 
     	$current = $month[(int)(date('n')+2) / 3] . ' ' . date('Y');
