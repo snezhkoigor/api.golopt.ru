@@ -14,7 +14,7 @@
 use Intervention\Image\ImageManagerStatic as Image;
 use \Illuminate\Support\Facades\Storage;
 
-Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], function() {
+Route::group(['middleware' => ['api', 'cors', 'throttle:15,15'], 'namespace' => 'Api\V1'], function() {
     Route::post('/register', 'User\RegisterController@register');
     Route::post('/login', 'User\LoginController@login');
     Route::post('/feedback', 'User\FeedbackController@question');
