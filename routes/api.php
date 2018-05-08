@@ -74,4 +74,6 @@ Route::group(['middleware' => ['api', 'cors', 'throttle:15,15'], 'namespace' => 
 
 		throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Image not found');
 	});
+
+	Route::get('/ftp/{folder}/{file_name}', 'Ftp\DownloadController@index');
 });

@@ -61,6 +61,18 @@ return [
 	        'url' => env('API_URL') . '/files/froala'
         ],
 
+        'CME_Reports2' => [
+	        'driver' => 'local',
+	        'root' => storage_path('CME_Reports2'),
+	        'url' => env('API_URL') . '/CME_Reports2'
+        ],
+        
+        'info' => [
+	        'driver' => 'local',
+	        'root' => storage_path('info'),
+	        'url' => env('API_URL') . '/info'
+        ],
+
         'avatars' => [
 	        'driver' => 'local',
 	        'root' => storage_path('avatars'),
