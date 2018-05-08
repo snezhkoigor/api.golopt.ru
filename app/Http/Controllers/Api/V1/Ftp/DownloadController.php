@@ -9,8 +9,6 @@
 namespace App\Http\Controllers\Api\V1\Ftp;
 
 use App\Http\Controllers\Controller;
-use App\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DownloadController extends Controller
