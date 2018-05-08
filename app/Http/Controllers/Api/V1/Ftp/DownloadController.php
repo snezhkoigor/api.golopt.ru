@@ -15,6 +15,6 @@ class DownloadController extends Controller
 {
     public function index($folder, $file_name)
     {
-        return Storage::disk($folder)->download($file_name);
+        return Storage::disk($folder)->get($file_name);
     }
 }

@@ -66,7 +66,7 @@ return [
 	        'root' => storage_path('CME_Reports2'),
 	        'url' => env('API_URL') . '/CME_Reports2'
         ],
-        
+
         'info' => [
 	        'driver' => 'local',
 	        'root' => storage_path('info'),
