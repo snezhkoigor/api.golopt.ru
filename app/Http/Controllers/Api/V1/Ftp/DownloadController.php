@@ -9,13 +9,11 @@
 namespace App\Http\Controllers\Api\V1\Ftp;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 
 class DownloadController extends Controller
 {
     public function index($folder, $file_name)
     {
     	return response()->file(storage_path($folder . '/' . $file_name));
-//        return Storage::disk($folder)->get($file_name);
     }
 }
