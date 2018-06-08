@@ -35,7 +35,7 @@ class User extends Authenticatable
     public static function getDevAccounts()
     {
         return [
-            '8219010', '5542813', '5637886'
+            '8219010', '5542813', '5637886', '1449206'
         ];
     }
 
