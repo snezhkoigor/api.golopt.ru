@@ -46,7 +46,7 @@ class CurrentController extends Controller
 				->first();
 
 			if ($future) {
-				echo $future->price;
+				echo $future->price . '|' . $future->updated_at;
 				die;
 			}
 		}
@@ -70,7 +70,7 @@ class CurrentController extends Controller
 					->first();
 	
 				if ($future) {
-					echo $future->price;
+					echo $future->price . '|' . $future->updated_at;
 					die;
 				}
 			}
