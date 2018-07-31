@@ -124,7 +124,7 @@ class CheckPayments extends Command
                                                 ]
                                             );
                                     } else {
-                                        $current_subscribe_date_until = date('Y-m-d');
+                                        $current_subscribe_date_until = date('Y-m-d') > $user_product->subscribe_date_until ?? $user_product->subscribe_date_until;
                                         // изменяем настройки продукта у пользователя
                                         DB::table('product_user')
                                             ->where('id', $user_product->id)
