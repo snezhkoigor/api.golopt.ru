@@ -91,12 +91,12 @@ class GetFuturesFromCME extends Command
 			        $future->price = $price;
 			        $future->pair = $pair;
 			        $future->date = Carbon::today()->format('Y-m-d');
-				$future->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+				$future->updated_at = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
 		        }
 		        else
 		        {
 		            $future->price = $price;
-				$future->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+				$future->updated_at = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
 		        }
 
 		        $future->save();
