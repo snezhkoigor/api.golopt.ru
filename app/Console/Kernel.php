@@ -34,7 +34,7 @@ class Kernel extends ConsoleKernel
 			->withoutOverlapping();
 
 		$schedule->command('getFuturesFromCME')
-			->hourlyAt(7)
+			->hourlyAt(17)
 			->withoutOverlapping();
 
 
