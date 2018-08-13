@@ -43,9 +43,11 @@ class GetForwardPointsFromFTP extends Command
         $disk = Storage::disk('public');
         $path_prefix = $disk->getDriver()->getAdapter()->getPathPrefix();
 
-        $conn_id = ftp_connect('http://bulatlab.ru//forwardpoint/');
-        $login_result = ftp_login($conn_id, '', '');
-        ftp_pasv($conn_id, true);
+        $contents = file_get_content('http://bulatlab.ru/forwardpoint/20180813.TXT');
+        
+//         $conn_id = ftp_connect('http://bulatlab.ru//forwardpoint/');
+//         $login_result = ftp_login($conn_id, '', '');
+//         ftp_pasv($conn_id, true);
         $contents = ftp_nlist($conn_id, '');
         var_dump($contents);die;
         // установка соединения
