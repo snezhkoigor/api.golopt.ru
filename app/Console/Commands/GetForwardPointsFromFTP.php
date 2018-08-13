@@ -6,6 +6,7 @@ use App\Console\Parsers\ForwardPointParser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class GetForwardPointsFromFTP extends Command
 {
@@ -49,7 +50,43 @@ class GetForwardPointsFromFTP extends Command
         if ($contents)
         {
             $contents_array = explode("\n", $contents);
-            var_dump($contents_array);die;
+            
+            if (count($contents_array))
+            {
+                foreach($contents_array as $item)
+                {
+                    $item_array = explode(',', $item);
+                    if (count($item_array) === 2)
+                    {
+                        $exists = DB::table('forward_points')
+                            ->where('name', $item_array[0] . 'USD')
+                            ->where('date', date('Y-m-d'))
+                            ->first();
+                        
+                        if ($exists)
+                        {
+                            DB::table('product_user')
+                                ->where('name', $item_array[0] . 'USD')
+                                ->update([
+                                    'fp' => $item_array[1],
+                                    'updated_at' => date('Y-m-d H:i:s')
+                                ]);
+                        }
+                        else 
+                        {
+                            DB::table('product_user')
+                                ->insert([
+                                    'name' => $item_array[0] . 'USD',
+                                    'fp' => $item_array[1],
+                                    'date', date('Y-m-d'),
+                                    'created_at' => date('Y-m-d H:i:s'),
+                                    'updated_at' => date('Y-m-d H:i:s')
+                                ])
+                        }
+                    }
+                }
+            }
+//             var_dump($contents_array);die;
         }
         
 //         $conn_id = ftp_connect('http://bulatlab.ru//forwardpoint/');
