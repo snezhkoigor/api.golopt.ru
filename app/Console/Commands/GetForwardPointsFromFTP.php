@@ -65,7 +65,7 @@ class GetForwardPointsFromFTP extends Command
                         
                         if ($exists)
                         {
-                            DB::table('product_user')
+                            DB::table('forward_points')
                                 ->where('name', $item_array[0] . 'USD')
                                 ->update([
                                     'fp' => $item_array[1],
@@ -74,7 +74,7 @@ class GetForwardPointsFromFTP extends Command
                         }
                         else 
                         {
-                            DB::table('product_user')
+                            DB::table('forward_points')
                                 ->insert([
                                     'name' => $item_array[0] . 'USD',
                                     'fp' => $item_array[1],
