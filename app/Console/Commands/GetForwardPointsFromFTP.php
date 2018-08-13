@@ -78,7 +78,7 @@ class GetForwardPointsFromFTP extends Command
                                 ->insert([
                                     'name' => $item_array[0] . 'USD',
                                     'fp' => $item_array[1],
-                                    'date', date('Y-m-d'),
+                                    'date' => date('Y-m-d'),
                                     'created_at' => date('Y-m-d H:i:s'),
                                     'updated_at' => date('Y-m-d H:i:s')
                                 ]);
