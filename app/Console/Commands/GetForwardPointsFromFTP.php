@@ -48,7 +48,7 @@ class GetForwardPointsFromFTP extends Command
         
         if ($contents)
         {
-            $contents_array = explode("/n", $contents);
+            $contents_array = explode("\n", $contents);
             var_dump($contents_array);die;
         }
         
