@@ -48,7 +48,7 @@ class GetForwardPointsFromFTP extends Command
 //         $conn_id = ftp_connect('http://bulatlab.ru//forwardpoint/');
 //         $login_result = ftp_login($conn_id, '', '');
 //         ftp_pasv($conn_id, true);
-        $contents = ftp_nlist($conn_id, '');
+//         $contents = ftp_nlist($conn_id, '');
         var_dump($contents);die;
         // установка соединения
         // $conn_id = ftp_connect(config('cme_ftp.url'));
