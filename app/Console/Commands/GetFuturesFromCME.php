@@ -53,12 +53,13 @@ class GetFuturesFromCME extends Command
 
     	$links = [
     		'AUD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/37/G?pageSize=50',
-		    'CAD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/48/G?pageSize=50',
-		    'CHF' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/86/G?pageSize=50',
-		    'EUR' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/58/G?pageSize=50',
-		    'GBP' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/42/G?pageSize=50',
-		    'JPY' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/69/G?pageSize=50',
-		    'MXN' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/75/G?pageSize=50',
+	    	'CAD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/48/G?pageSize=50',
+	    	'CHF' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/86/G?pageSize=50',
+	    	'EUR' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/58/G?pageSize=50',
+	    	'GBP' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/42/G?pageSize=50',
+	    	'JPY' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/69/G?pageSize=50',
+	    	'MXN' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/75/G?pageSize=50',
+		'GOLD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/437/G?pageSize=50'
 	    ];
 
     	try
