@@ -59,7 +59,8 @@ class GetFuturesFromCME extends Command
 	    	'GBP' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/42/G?pageSize=50',
 	    	'JPY' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/69/G?pageSize=50',
 	    	'MXN' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/75/G?pageSize=50',
-		'GOLD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/437/G?pageSize=50'
+		'GOLD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/437/G?pageSize=50',
+		'CLI' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/425/G?pageSize=50'
 	    ];
 
     	try
