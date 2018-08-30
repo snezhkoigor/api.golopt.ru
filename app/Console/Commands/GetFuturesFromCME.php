@@ -73,11 +73,16 @@ class GetFuturesFromCME extends Command
 		        $price = 0;
 		        foreach ($json['quotes'] as $item)
 		        {
-		        	if ($item['expirationMonth'] === $current)
+// 		        	if ($item['expirationMonth'] === $current)
+// 			        {
+// 			        	$price = $item['last'];
+// 			        	break;
+// 			        }
+				if ($item['last'])
 			        {
 			        	$price = $item['last'];
-			        	break;
 			        }
+				break;
 		        }
 
 		        $future = FuturesPrice::query()
