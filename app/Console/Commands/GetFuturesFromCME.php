@@ -71,6 +71,7 @@ class GetFuturesFromCME extends Command
 		        $json = json_decode($data, true);
 		        
 		        $price = 0;
+			$exp_month = '';
 		        foreach ($json['quotes'] as $item)
 		        {
 // 		        	if ($item['expirationMonth'] === $current)
@@ -80,6 +81,7 @@ class GetFuturesFromCME extends Command
 // 			        }
 				if ($item['last'])
 			        {
+					$exp_month = $item['expirationMonth'];
 			        	$price = $item['last'];
 			        }
 				break;
@@ -97,12 +99,14 @@ class GetFuturesFromCME extends Command
 		            $future = new FuturesPrice();
 			        $future->price = $price;
 			        $future->pair = $pair;
+				$future->month = $exp_month;
 			        $future->date = Carbon::today()->format('Y-m-d');
 				$future->updated_at = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
 		        }
 		        else
 		        {
 		            $future->price = $price;
+				$future->month = $exp_month;
 				$future->updated_at = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
 		        }
 
