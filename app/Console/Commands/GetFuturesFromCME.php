@@ -79,7 +79,7 @@ class GetFuturesFromCME extends Command
 // 			        	$price = $item['last'];
 // 			        	break;
 // 			        }
-				if ($item['last'])
+				if ($item['last'] !== '-' && (float)$item['last'])
 			        {
 					$exp_month = $item['expirationMonth'];
 			        	$price = $item['last'];
