@@ -83,8 +83,8 @@ class GetFuturesFromCME extends Command
 			        {
 					$exp_month = $item['expirationMonth'];
 			        	$price = $item['last'];
+					break;
 			        }
-				break;
 		        }
 
 		        $future = FuturesPrice::query()
