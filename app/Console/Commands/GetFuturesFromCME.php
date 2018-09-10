@@ -97,7 +97,7 @@ class GetFuturesFromCME extends Command
 				])
 				->orderBy('settlement')
 				->limit(1)
-				->get();
+				->first();
 var_dump($current);die;
 		        $data = file_get_contents($link);
 		        $json = json_decode($data, true);
