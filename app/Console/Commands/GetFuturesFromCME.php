@@ -69,8 +69,8 @@ class GetFuturesFromCME extends Command
 		11 => 'MAR'
 	    ];
 
-    	$current = $month[(int)date('n')] . ' ' . date('Y');
-	    
+//     	$current = $month[(int)date('n')] . ' ' . date('Y');
+
 	$not_use_months = ['GOLD', 'CLI'];
 
     	$links = [
@@ -89,6 +89,15 @@ class GetFuturesFromCME extends Command
 	    {
 	        foreach ($links as $pair => $link)
 		    {
+			$current = DB::table('cme_option_expire_calendar')
+				->where([
+					[ 'pair', $pair ],
+					[ 'settlement', '>=', Carbon::now()->format('Y-m-d') ]
+				])
+				->orderBy('settlement')
+				->limit(1)
+				->get();
+var_dump($current);die;
 		        $data = file_get_contents($link);
 		        $json = json_decode($data, true);
 		        
