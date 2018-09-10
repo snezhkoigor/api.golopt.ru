@@ -43,7 +43,7 @@ class GetOptionExpirations extends Command
     public function handle()
     {
     	$month = [
-		'MAR', 'JUN', 'SEP', 'DEC'
+		'MAR' => '03', 'JUN' => '06', 'SEP' => '09', 'DEC' => '12'
 	];
 
 	$links = [
@@ -73,15 +73,20 @@ class GetOptionExpirations extends Command
 						{
 							$contract_month_array = explode(' ', $calendar['contractMonth']);
 							
-							if (count($contract_month_array) === 2 && in_array(strtoupper($contract_month_array[0]), $month))
+							if (count($contract_month_array) === 2 && in_array(strtoupper($contract_month_array[0]), array_keys($month)))
 							{
-								DB::table('cme_option_expire_calendar')
-									->insert([
-										'pair' => $pair,
-										'contract_month' => $calendar['contractMonth'],
-										'settlement' => $calendar['settlement'],
-										'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-									]);
+								$settlement_array = explode(' ', $calendar['settlement']);
+
+								if (count($settlement_array) === 3)
+								{
+									DB::table('cme_option_expire_calendar')
+										->insert([
+											'pair' => $pair,
+											'contract_month' => $calendar['contractMonth'],
+											'settlement' => $settlement_array[2].'-' . $month[$contract_month_array[0]].'-'.$settlement_array[0],
+											'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+										]);
+								}
 							}
 						}
 					}
