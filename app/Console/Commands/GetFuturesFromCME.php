@@ -50,6 +50,8 @@ class GetFuturesFromCME extends Command
 	    ];
 
     	$current = $month[(int)(date('n')+2) / 3] . ' ' . date('Y');
+	    
+	$not_use_months = ['GOLD', 'CLI'];
 
     	$links = [
     		'AUD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/37/G?pageSize=50',
@@ -74,12 +76,12 @@ class GetFuturesFromCME extends Command
 			$exp_month = '';
 		        foreach ($json['quotes'] as $item)
 		        {
-// 		        	if ($item['expirationMonth'] === $current)
-// 			        {
-// 			        	$price = $item['last'];
-// 			        	break;
-// 			        }
-				if ($item['last'] !== '-' && (float)$item['last'])
+		        	if (!in_array($pair, $not_use_months) && $item['expirationMonth'] === $current)
+			        {
+			        	$price = $item['last'];
+			        	break;
+			        }
+				elseif (in_array($pair, $not_use_months) && $item['last'] !== '-' && (float)$item['last'])
 			        {
 					$exp_month = $item['expirationMonth'];
 			        	$price = $item['last'];
