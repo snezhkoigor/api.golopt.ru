@@ -6,7 +6,7 @@ use App\Exceptions\SystemErrorException;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class GetFuturesFromCME extends Command
+class GetOptionExpirations extends Command
 {
     /**
      * The name and signature of the console command.
