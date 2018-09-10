@@ -6,6 +6,7 @@ use App\Exceptions\SystemErrorException;
 use App\FuturesPrice;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class GetFuturesFromCME extends Command
 {
