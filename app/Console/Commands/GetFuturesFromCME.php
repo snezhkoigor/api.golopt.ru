@@ -62,9 +62,9 @@ class GetFuturesFromCME extends Command
 		// сентябрь
 		9 => 'DEC',
 		// октябрь
-		10 => 'DEC'
+		10 => 'DEC',
 		// ноябрь
-		11 => 'DEC'
+		11 => 'DEC',
 		// декабрь
 		11 => 'MAR'
 	    ];
