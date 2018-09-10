@@ -83,7 +83,7 @@ class GetOptionExpirations extends Command
 										->insert([
 											'pair' => $pair,
 											'contract_month' => $calendar['contractMonth'],
-											'settlement' => $settlement_array[2].'-' . $month[$contract_month_array[0]].'-'.$settlement_array[0],
+											'settlement' => $settlement_array[2].'-' . $month[strtoupper($contract_month_array[0])].'-'.$settlement_array[0],
 											'created_at' => Carbon::now()->format('Y-m-d H:i:s')
 										]);
 								}
