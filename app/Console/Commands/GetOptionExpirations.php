@@ -42,6 +42,10 @@ class GetOptionExpirations extends Command
      */
     public function handle()
     {
+    	$month = [
+		'MAR', 'JUN', 'SEP', 'DEC'
+	];
+
 	$links = [
     		'AUD' => 'https://www.cmegroup.com/CmeWS/mvc/ProductCalendar/Options/37?pageSize=50',
 	    	'CAD' => 'https://www.cmegroup.com/CmeWS/mvc/ProductCalendar/Options/48?pageSize=50',
@@ -67,13 +71,18 @@ class GetOptionExpirations extends Command
 					{
 						if (!DB::table('cme_option_expire_calendar')->where([ ['contract_month', $calendar['contractMonth']], ['pair', $pair] ])->first())
 						{
-							DB::table('cme_option_expire_calendar')
-								->insert([
-									'pair' => $pair,
-									'contract_month' => $calendar['contractMonth'],
-									'settlement' => $calendar['settlement'],
-									'created_at' => Carbon::now()->format('Y-m-d H:i:s')
-								]);
+							$contract_month_array = explode(' ', $calendar['contractMonth']);
+							
+							if (count($contract_month_array) === 2 && in_array(strtoupper($contract_month_array[0]), $month))
+							{
+								DB::table('cme_option_expire_calendar')
+									->insert([
+										'pair' => $pair,
+										'contract_month' => $calendar['contractMonth'],
+										'settlement' => $calendar['settlement'],
+										'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+									]);
+							}
 						}
 					}
 				}
