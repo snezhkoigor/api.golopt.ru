@@ -65,7 +65,7 @@ class GetOptionExpirations extends Command
 				{
 					foreach ($item['calendarEntries'] as $calendar)
 					{
-						if (!DB::table('cme_option_expire_calendar')->where([ ['contract_month' => $calendar['contractMonth']], ['pair' => $pair] ])->first())
+						if (!DB::table('cme_option_expire_calendar')->where([ ['contract_month', $calendar['contractMonth']], ['pair', $pair] ])->first())
 						{
 							DB::table('cme_option_expire_calendar')
 								->insert([
