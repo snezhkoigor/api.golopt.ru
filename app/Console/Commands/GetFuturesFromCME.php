@@ -43,32 +43,32 @@ class GetFuturesFromCME extends Command
      */
     public function handle()
     {
-	$month = [
-		// январь
-		1 => 'FEB',
-		// февраль
-		2 => 'FEB',
-		// март
-		3 => 'MAY',
-		// апрель
-		4 => 'MAY',
-		// май
-		5 => 'MAY',
-		// июнь
-		6 => 'AUG',
-		// июль
-		7 => 'AUG',
-		// август
-		8 => 'AUG',
-		// сентябрь
-		9 => 'DEC',
-		// октябрь
-		10 => 'DEC',
-		// ноябрь
-		11 => 'DEC',
-		// декабрь
-		11 => 'MAR'
-	    ];
+// 	$month = [
+// 		// январь
+// 		1 => 'FEB',
+// 		// февраль
+// 		2 => 'FEB',
+// 		// март
+// 		3 => 'MAY',
+// 		// апрель
+// 		4 => 'MAY',
+// 		// май
+// 		5 => 'MAY',
+// 		// июнь
+// 		6 => 'AUG',
+// 		// июль
+// 		7 => 'AUG',
+// 		// август
+// 		8 => 'AUG',
+// 		// сентябрь
+// 		9 => 'DEC',
+// 		// октябрь
+// 		10 => 'DEC',
+// 		// ноябрь
+// 		11 => 'DEC',
+// 		// декабрь
+// 		11 => 'MAR'
+// 	    ];
 
 //     	$current = $month[(int)date('n')] . ' ' . date('Y');
 
@@ -81,7 +81,6 @@ class GetFuturesFromCME extends Command
 	    	'EUR' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/58/G?pageSize=50',
 	    	'GBP' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/42/G?pageSize=50',
 	    	'JPY' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/69/G?pageSize=50',
-	    	'MXN' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/75/G?pageSize=50',
 		'GOLD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/437/G?pageSize=50',
 		'CLI' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/425/G?pageSize=50'
 	    ];
