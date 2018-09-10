@@ -42,14 +42,34 @@ class GetFuturesFromCME extends Command
      */
     public function handle()
     {
-    	$month = [
-			1 => 'FEB',
-                        2 => 'MAY',
-                        3 => 'AUG',
-                        4 => 'NOV'
+	$month = [
+		// январь
+		1 => 'FEB',
+		// февраль
+		2 => 'FEB',
+		// март
+		3 => 'MAY',
+		// апрель
+		4 => 'MAY',
+		// май
+		5 => 'MAY',
+		// июнь
+		6 => 'AUG',
+		// июль
+		7 => 'AUG',
+		// август
+		8 => 'AUG',
+		// сентябрь
+		9 => 'DEC',
+		// октябрь
+		10 => 'DEC'
+		// ноябрь
+		11 => 'DEC'
+		// декабрь
+		11 => 'MAR'
 	    ];
 
-    	$current = $month[(int)(date('n')+2) / 3] . ' ' . date('Y');
+    	$current = $month[(int)date('n')] . ' ' . date('Y');
 	    
 	$not_use_months = ['GOLD', 'CLI'];
 
