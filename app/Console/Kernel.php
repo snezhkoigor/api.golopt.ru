@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         Commands\UpdateUserSubscriptions::class,
         Commands\CheckPayments::class,
         Commands\GetFuturesFromCME::class,
-	Commands\GetFuturesFromCME::class
+	Commands\GetOptionExpirations::class
     ];
 
     /**
