@@ -78,6 +78,7 @@ class GetFuturesFromCME extends Command
 		        {
 		        	if (!in_array($pair, $not_use_months) && $item['expirationMonth'] === $current)
 			        {
+					$exp_month = $item['expirationMonth'];
 			        	$price = $item['last'];
 			        	break;
 			        }
