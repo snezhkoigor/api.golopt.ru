@@ -90,7 +90,7 @@ class GetFuturesFromCME extends Command
 	    {
 	        foreach ($links as $pair => $link)
 		    {
-			$current = DB::table('cme_option_expire_calendar')
+			$cme_option_expire_calendar = DB::table('cme_option_expire_calendar')
 				->where([
 					[ 'pair', $pair ],
 					[ 'settlement', '>=', Carbon::now()->format('Y-m-d') ]
@@ -98,7 +98,9 @@ class GetFuturesFromCME extends Command
 				->orderBy('settlement')
 				->limit(1)
 				->first();
-var_dump($current);die;
+
+			$current = $cme_option_expire_calendar ? $cme_option_expire_calendar->contract_month : '';
+
 		        $data = file_get_contents($link);
 		        $json = json_decode($data, true);
 		        
