@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Exceptions\SystemErrorException;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class GetOptionExpirations extends Command
 {
