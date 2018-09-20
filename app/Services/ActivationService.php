@@ -43,7 +43,7 @@ class ActivationService
         $code = $this->activationRepo->create($user, true);
         $msg = view('sms.activation.' . User::getLanguage($user->country), ['code' => $code]);
         $send_request = StreamTelecom::PostConnect('http://gateway.api.sc/rest/Send/SendSms/', 'sessionId='.$result.'&sourceAddress=Goloption&destinationAddress='.$user->calling_code.$user->phone.'&data='.$msg);
-var_dump($user->calling_code.$user->phone);die;
+var_dump($msg);die;
         if (!empty($send_request['Code']))
         {
         	return;
