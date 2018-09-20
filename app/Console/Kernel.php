@@ -18,7 +18,8 @@ class Kernel extends ConsoleKernel
         Commands\SendEndSubscriptionEmail::class,
         Commands\UpdateUserSubscriptions::class,
         Commands\CheckPayments::class,
-        Commands\GetFuturesFromCME::class
+        Commands\GetFuturesFromCME::class,
+	Commands\GetOptionExpirations::class
     ];
 
     /**
@@ -29,6 +30,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+		$schedule->command('getForwardPointsFromFTP')
+			->hourlyAt(7)
+			->withoutOverlapping();
+
 		$schedule->command('getFuturesFromCME')
 			->hourlyAt(17)
 			->withoutOverlapping();
@@ -37,15 +42,19 @@ class Kernel extends ConsoleKernel
 		$schedule->command('getYahooRates')
 			->twiceDaily()
 			->withoutOverlapping();
-		
+
 		$schedule->command('sendEndSubscriptionEmail')
 			->daily()
 			->withoutOverlapping();
-		
+
+	    	$schedule->command('getOptionExpirations')
+			->daily()
+			->withoutOverlapping();
+	    
 		$schedule->command('updateUserSubscriptions')
 			->twiceDaily(1, 18)
 			->withoutOverlapping();
-		
+
 		$schedule->command('checkPayments')
 			->everyMinute()
 			->withoutOverlapping();

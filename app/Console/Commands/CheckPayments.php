@@ -124,7 +124,7 @@ class CheckPayments extends Command
                                                 ]
                                             );
                                     } else {
-                                        $current_subscribe_date_until = date('Y-m-d');
+                                        $current_subscribe_date_until = date('Y-m-d') > $user_product->subscribe_date_until ? date('Y-m-d') : $user_product->subscribe_date_until;
                                         // изменяем настройки продукта у пользователя
                                         DB::table('product_user')
                                             ->where('id', $user_product->id)
@@ -148,7 +148,15 @@ class CheckPayments extends Command
                             } else {
                                 // нет транзакции такой
                             }
-                        }
+                        } else {
+			    DB::table('payment_answer_queue')
+			    	->where('id', $payment->id)
+			    	->update([
+					'post' => '_' . $payment->post,
+					'active' => 0,
+					'updated_at' => date('Y-m-d H:i:s')
+			    	]);
+			}
                     } else {
                         // пустой POST
                     }

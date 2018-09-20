@@ -6,6 +6,7 @@ use App\Exceptions\SystemErrorException;
 use App\FuturesPrice;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class GetFuturesFromCME extends Command
 {
@@ -42,39 +43,81 @@ class GetFuturesFromCME extends Command
      */
     public function handle()
     {
-    	$month = [
-			1 => 'MAR',
-			2 => 'JUN',
-			3 => 'SEP',
-			4 => 'DEC'
-	    ];
+// 	$month = [
+// 		// январь
+// 		1 => 'FEB',
+// 		// февраль
+// 		2 => 'FEB',
+// 		// март
+// 		3 => 'MAY',
+// 		// апрель
+// 		4 => 'MAY',
+// 		// май
+// 		5 => 'MAY',
+// 		// июнь
+// 		6 => 'AUG',
+// 		// июль
+// 		7 => 'AUG',
+// 		// август
+// 		8 => 'AUG',
+// 		// сентябрь
+// 		9 => 'DEC',
+// 		// октябрь
+// 		10 => 'DEC',
+// 		// ноябрь
+// 		11 => 'DEC',
+// 		// декабрь
+// 		11 => 'MAR'
+// 	    ];
 
-    	$current = $month[(int)(date('n')+2) / 3] . ' ' . date('Y');
+//     	$current = $month[(int)date('n')] . ' ' . date('Y');
+
+	$not_use_months = ['GOLD', 'CLI'];
 
     	$links = [
     		'AUD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/37/G?pageSize=50',
-		    'CAD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/48/G?pageSize=50',
-		    'CHF' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/86/G?pageSize=50',
-		    'EUR' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/58/G?pageSize=50',
-		    'GBP' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/42/G?pageSize=50',
-		    'JPY' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/69/G?pageSize=50',
-		    'MXN' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/75/G?pageSize=50',
+	    	'CAD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/48/G?pageSize=50',
+	    	'CHF' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/86/G?pageSize=50',
+	    	'EUR' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/58/G?pageSize=50',
+	    	'GBP' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/42/G?pageSize=50',
+	    	'JPY' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/69/G?pageSize=50',
+		'GOLD' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/437/G?pageSize=50',
+		'CLI' => 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/425/G?pageSize=50'
 	    ];
 
     	try
 	    {
 	        foreach ($links as $pair => $link)
 		    {
+			$cme_option_expire_calendar = DB::table('cme_option_expire_calendar')
+				->where([
+					[ 'pair', $pair ],
+					[ 'settlement', '>=', Carbon::now()->format('Y-m-d') ]
+				])
+				->orderBy('settlement')
+				->limit(1)
+				->first();
+
+			$current = $cme_option_expire_calendar ? $cme_option_expire_calendar->contract_month : '';
+
 		        $data = file_get_contents($link);
 		        $json = json_decode($data, true);
 		        
 		        $price = 0;
+			$exp_month = '';
 		        foreach ($json['quotes'] as $item)
 		        {
-		        	if ($item['expirationMonth'] === $current)
+		        	if (!in_array($pair, $not_use_months) && $item['expirationMonth'] === $current)
 			        {
+					$exp_month = $item['expirationMonth'];
 			        	$price = $item['last'];
 			        	break;
+			        }
+				elseif (in_array($pair, $not_use_months) && $item['last'] !== '-' && (float)$item['last'])
+			        {
+					$exp_month = $item['expirationMonth'];
+			        	$price = $item['last'];
+					break;
 			        }
 		        }
 
@@ -90,11 +133,15 @@ class GetFuturesFromCME extends Command
 		            $future = new FuturesPrice();
 			        $future->price = $price;
 			        $future->pair = $pair;
+				$future->month = $exp_month;
 			        $future->date = Carbon::today()->format('Y-m-d');
+				$future->updated_at = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
 		        }
 		        else
 		        {
 		            $future->price = $price;
+				$future->month = $exp_month;
+				$future->updated_at = Carbon::now()->subMinutes(10)->format('Y-m-d H:i:s');
 		        }
 
 		        $future->save();

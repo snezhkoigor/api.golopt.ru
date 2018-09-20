@@ -6,6 +6,7 @@ use App\Console\Parsers\ForwardPointParser;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class GetForwardPointsFromFTP extends Command
 {
@@ -42,46 +43,96 @@ class GetForwardPointsFromFTP extends Command
     {
         $disk = Storage::disk('public');
         $path_prefix = $disk->getDriver()->getAdapter()->getPathPrefix();
+        $date = date('Ymd');
 
-        // установка соединения
-        $conn_id = ftp_connect(config('cme_ftp.url'));
-        // вход с именем пользователя и паролем
-        $login_result = ftp_login($conn_id, config('cme_ftp.user'), '');
-
-        if ($login_result == true) {
-            ftp_pasv($conn_id, true);
-
-            // получить содержимое текущей директории
-            $contents = ftp_nlist($conn_id, config('cme_ftp.ftp_folder') . '/');
-
-            if (!empty($contents)) {
-                $last_file = array_pop($contents);
-                $last_file = str_replace(config('cme_ftp.ftp_folder') . '/', '', $last_file);
-
-                $name_arr = explode('-', $last_file);
-
-                $disk->makeDirectory(config('cme_ftp.save_path') . '/' . $name_arr[1] . '/');
-
-                // попытка скачать и распаковать архив
-                $local_file = config('cme_ftp.save_path') . '/' . $name_arr[1] . '/' . $last_file;
-                $ftp_file = 'ftp://' . config('cme_ftp.url') . '/' . config('cme_ftp.ftp_folder') . '/' . $last_file;
-
-                if (!$disk->has($local_file)) {
-                    if (copy($ftp_file, $path_prefix . $local_file)) {
-
-                    } else {
-                        Log::warning('Файл не смогли скопировать.', [ 'file' => $local_file ]);
+        $contents = file_get_contents('http://bulatlab.ru/forwardpoint/' . $date . '.TXT');
+        
+        if ($contents)
+        {
+            $contents_array = explode("\n", $contents);
+            
+            if (count($contents_array))
+            {
+                foreach($contents_array as $item)
+                {
+                    $item_array = explode(',', $item);
+                    if (count($item_array) === 2)
+                    {
+                        $exists = DB::table('forward_points')
+                            ->where('name', $item_array[0] . 'USD')
+                            ->where('date', date('Y-m-d'))
+                            ->first();
+                        
+                        if ($exists)
+                        {
+                            DB::table('forward_points')
+                                ->where('name', $item_array[0] . 'USD')
+                                ->update([
+                                    'fp' => $item_array[1],
+                                    'updated_at' => date('Y-m-d H:i:s')
+                                ]);
+                        }
+                        else 
+                        {
+                            DB::table('forward_points')
+                                ->insert([
+                                    'name' => $item_array[0] . 'USD',
+                                    'fp' => $item_array[1],
+                                    'date' => date('Y-m-d'),
+                                    'created_at' => date('Y-m-d H:i:s'),
+                                    'updated_at' => date('Y-m-d H:i:s')
+                                ]);
+                        }
                     }
-                } else {
-                    Log::warning('Файл уже скачан.', [ 'file' => $local_file ]);
-                }
-
-                if ($local_file) {
-                    $forward_point = new ForwardPointParser();
-
-                    $forward_point->parse($local_file);
                 }
             }
+//             var_dump($contents_array);die;
         }
+        
+//         $conn_id = ftp_connect('http://bulatlab.ru//forwardpoint/');
+//         $login_result = ftp_login($conn_id, '', '');
+//         ftp_pasv($conn_id, true);
+//         $contents = ftp_nlist($conn_id, '');
+
+        // установка соединения
+        // $conn_id = ftp_connect(config('cme_ftp.url'));
+        // вход с именем пользователя и паролем
+        // $login_result = ftp_login($conn_id, config('cme_ftp.user'), '');
+
+        // if ($login_result == true) {
+        //    ftp_pasv($conn_id, true);
+
+            // получить содержимое текущей директории
+        //     $contents = ftp_nlist($conn_id, config('cme_ftp.ftp_folder') . '/');
+
+        //     if (!empty($contents)) {
+        //         $last_file = array_pop($contents);
+        //         $last_file = str_replace(config('cme_ftp.ftp_folder') . '/', '', $last_file);
+
+        //         $name_arr = explode('-', $last_file);
+
+        //         $disk->makeDirectory(config('cme_ftp.save_path') . '/' . $name_arr[1] . '/');
+
+                // попытка скачать и распаковать архив
+        //         $local_file = config('cme_ftp.save_path') . '/' . $name_arr[1] . '/' . $last_file;
+        //         $ftp_file = 'ftp://' . config('cme_ftp.url') . '/' . config('cme_ftp.ftp_folder') . '/' . $last_file;
+
+        //         if (!$disk->has($local_file)) {
+        //             if (copy($ftp_file, $path_prefix . $local_file)) {
+
+        //             } else {
+        //                 Log::warning('Файл не смогли скопировать.', [ 'file' => $local_file ]);
+        //             }
+        //         } else {
+        //             Log::warning('Файл уже скачан.', [ 'file' => $local_file ]);
+        //         }
+
+        //         if ($local_file) {
+        //             $forward_point = new ForwardPointParser();
+
+        //             $forward_point->parse($local_file);
+        //         }
+        //     }
+        // }
     }
 }
