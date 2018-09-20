@@ -17,7 +17,7 @@ final class StreamTelecom
 	    return $result;
 	}
 	
-	public static function PostConnect($src, $href)
+	public static function PostConnect($href, $src)
 	{
         $ch = curl_init();
 
@@ -28,7 +28,7 @@ final class StreamTelecom
         curl_setopt($ch, CURLOPT_POSTFIELDS, $src);
         curl_setopt($ch, CURLOPT_URL, $href);
         $result = curl_exec($ch);
-var_dump($result);die;
+
         curl_close($ch);
 
         return $result;
