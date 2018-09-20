@@ -8,7 +8,7 @@ final class StreamTelecom
 	{
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL,$href);
+		curl_setopt($ch, CURLOPT_URL, $href);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$result = curl_exec($ch);
 
