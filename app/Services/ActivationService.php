@@ -12,6 +12,7 @@ namespace App\Services;
 use App\Mail\EmailActivate;
 use App\Repositories\ActivationRepository;
 use App\Smsc;
+use App\StreamTelecom;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -31,11 +32,21 @@ class ActivationService
             return;
         }
 
+        $request = StreamTelecom::GetConnect('http://gateway.api.sc/rest/Session/?login=goloption&password=123Goloption123');
+        $result = json_decode($request,true);
+
+        if (!empty($result['Code']))
+        {
+        	return;
+        }
+
         $code = $this->activationRepo->create($user, true);
-        return Smsc::send([
-            'phones' => $user->calling_code . $user->phone,
-            'mes' => view('sms.activation.' . User::getLanguage($user->country), ['code' => $code])
-        ], $code);
+
+        return StreamTelecom::PostConnect('http://gateway.api.sc/rest/Send/SendSms/', 'sessionId='.$result.'&sourceAddress=Goloption&destinationAddress='.$user->calling_code.$user->phone.'&data='.view('sms.activation.' . User::getLanguage($user->country), ['code' => $code]));
+//        return Smsc::send([
+//            'phones' => $user->calling_code . $user->phone,
+//            'mes' => view('sms.activation.' . User::getLanguage($user->country), ['code' => $code])
+//        ], $code);
     }
 
     public function sendMail($user, $createToken = true)
