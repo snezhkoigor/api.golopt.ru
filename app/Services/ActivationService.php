@@ -34,7 +34,7 @@ class ActivationService
 
         $request = StreamTelecom::GetConnect('http://gateway.api.sc/rest/Session/?login=goloption&password=123Goloption123');
         $result = json_decode($request,true);
-var_dump($result);die;
+var_dump(!empty($result['Code']));die;
         if (!empty($result['Code']))
         {
         	return;
