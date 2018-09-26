@@ -32,7 +32,7 @@ class Lesson extends Model
         'meta_description'
     ];
 
-	protected $table = 'news';
+	protected $table = 'lessons';
 
 	protected $guarded = [
         'active',
