@@ -2,15 +2,15 @@
 
 namespace App\Repositories;
 
-use App\News;
+use App\Lesson;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class NewsRepository
+ * Class LeessonRepository
  * @package App\Repositories
  */
-class NewsRepository
+class LessonRepository
 {
 	/**
 	 * @param array $filters
@@ -22,9 +22,9 @@ class NewsRepository
 	 * @param null $offset
 	 * @return \Illuminate\Database\Eloquent\Collection|static[]
 	 */
-	public static function getNews(array $filters = [], array $sorts = [], array $relations = [], array $fields = ['*'], $search_string = null, $limit = null, $offset = null)
+	public static function getLessons(array $filters = [], array $sorts = [], array $relations = [], array $fields = ['*'], $search_string = null, $limit = null, $offset = null)
 	{
-		$query = News::query();
+		$query = Lesson::query();
 
 		self::applyFiltersToQuery($query, $filters);
 		self::applySearch($query, $search_string);
@@ -50,9 +50,9 @@ class NewsRepository
 	 * @param null $search_string
 	 * @return int
 	 */
-	public static function getNewsCount(array $filters = [], $search_string = null)
+	public static function getLessonsCount(array $filters = [], $search_string = null)
 	{
-		return self::getNewsQuery($filters, $search_string)->count();
+		return self::getLessonsQuery($filters, $search_string)->count();
 	}
 
 
@@ -61,9 +61,9 @@ class NewsRepository
 	 * @param null $search_string
 	 * @return Builder
 	 */
-	private static function getNewsQuery(array $filters = [], $search_string = null)
+	private static function getLessonsQuery(array $filters = [], $search_string = null)
 	{
-		$query = News::query();
+		$query = Lesson::query();
 
 		self::applyFiltersToQuery($query, $filters);
 		self::applySearch($query, $search_string);
@@ -81,16 +81,16 @@ class NewsRepository
 	{
 		foreach ($filter_parameters as $name => $value)
 		{
-			switch ($name)
-			{
-				case 'type':
-					$query->where('type', $value);
-					break;
-
-				default:
-					$query->where('type', 'news');
-					break;
-			}
+//			switch ($name)
+//			{
+//				case 'type':
+//					$query->where('type', $value);
+//					break;
+//
+//				default:
+//					$query->where('type', 'news');
+//					break;
+//			}
 		}
 	}
 
@@ -121,22 +121,21 @@ class NewsRepository
 			{
 				case 'title':
 				case 'text':
-				case 'date':
 					$query->orderBy($name, $value);
 					break;
 
 				default:
-					$query->orderBy('date', 'desc');
+					$query->orderBy('id', 'asc');
 					break;
 			}
 
 		}
 	}
-
-
+	
+	
 	/**
 	 * @param Builder $query
-	 * @return $this
+	 * @return Builder
 	 */
 	private static function applyIsDelete(Builder $query)
 	{

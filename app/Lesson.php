@@ -7,10 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  *
  * @property integer $id
- * @property string $type
  * @property string $title
  * @property string $text
- * @property string $date
  * @property string $meta_key
  * @property string $meta_description
  * @property boolean $active
@@ -18,10 +16,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $created_at
  * @property string $updated_at
  *
- * Class News
+ * Class Lesson
  * @package App\Models
  */
-class News extends Model
+class Lesson extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -29,11 +27,9 @@ class News extends Model
      * @var array
      */
     protected $fillable = [
-    	'type',
-        'title',
+    	'title',
         'meta_key',
-        'meta_description',
-        'date'
+        'meta_description'
     ];
 
 	protected $table = 'news';

@@ -19,7 +19,8 @@ class Kernel extends ConsoleKernel
         Commands\UpdateUserSubscriptions::class,
         Commands\CheckPayments::class,
         Commands\GetFuturesFromCME::class,
-	Commands\GetOptionExpirations::class
+		Commands\GetOptionExpirations::class,
+        Commands\GetWeaklyFromFile::class
     ];
 
     /**
@@ -50,7 +51,7 @@ class Kernel extends ConsoleKernel
 	    	$schedule->command('getOptionExpirations')
 			->daily()
 			->withoutOverlapping();
-	    
+	  
 		$schedule->command('updateUserSubscriptions')
 			->twiceDaily(1, 18)
 			->withoutOverlapping();

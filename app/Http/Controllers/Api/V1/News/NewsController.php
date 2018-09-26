@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1\News;
 use App\Exceptions\SystemErrorException;
 use App\News;
 use App\Repositories\NewsRepository;
-use App\Services\NewsService;
+use App\Services\RichTextService;
 use App\Transformers\NewsTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,11 +14,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class NewsController extends Controller
 {
-	private $news_service;
+	private $rich_text_service;
 
-	public function __construct(NewsService $news_service)
+	public function __construct(RichTextService $rich_text_service)
 	{
-		$this->news_service = $news_service;
+		$this->rich_text_service = $rich_text_service;
 	}
 
 	public function rules()
@@ -32,7 +32,7 @@ class NewsController extends Controller
 	public function messages()
 	{
 		return [
-			'title.required' => 'ЗАполните заголовок',
+			'title.required' => 'Заполните заголовок',
 			'text.required' => 'Заполните текст',
 		];
 	}
@@ -73,9 +73,9 @@ class NewsController extends Controller
 			->respond();
 	}
 
-	public function view()
+	public function view($type = 'news')
 	{
-		return fractal(NewsRepository::getNews(), new NewsTransformer())
+		return fractal(NewsRepository::getNews(['type' => $type]), new NewsTransformer())
 			->toArray();
 	}
 
@@ -98,9 +98,9 @@ class NewsController extends Controller
 	    {
 		    $news = new News();
 		    $news->fill($request->all());
-		    $news->text = $this->news_service->getProcessedNewsText($request->get('text'));
+		    $news->text = $this->rich_text_service->getProcessedNewsText($request->get('text'));
 		    $news->active = $request->get('active', true);
-		    $news->save([], true);
+		    $news->save();
 	    }
 	    catch (\Exception $e)
 	    {
@@ -123,8 +123,8 @@ class NewsController extends Controller
 	    {
 		    $news->fill($request->all());
 		    $news->active = $request->get('active');
-		    $news->text = $this->news_service->getProcessedNewsText($request->get('text'));
-		    $news->save([], true);
+		    $news->text = $this->rich_text_service->getProcessedNewsText($request->get('text'));
+		    $news->save();
 	    }
 	    catch (\Exception $e)
 	    {
@@ -144,11 +144,11 @@ class NewsController extends Controller
 	    try
 	    {
 		    $news->is_deleted = true;
-		    $news->save([], true);
+		    $news->save();
 	    }
 	    catch (\Exception $e)
 	    {
-		    throw new SystemErrorException('Ошибка редактирования новости', $e);
+		    throw new SystemErrorException('Ошибка удаления новости', $e);
 	    }
 
 	    return response()->json(['data' => null], Response::HTTP_NO_CONTENT);

@@ -192,6 +192,8 @@ return [
         Rollbar\Laravel\RollbarServiceProvider::class,
 
         Intervention\Image\ImageServiceProvider::class,
+        
+        Monokakure\CSV\CSVServiceProvider::class
     ],
 
     /*
@@ -250,6 +252,7 @@ return [
         'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
 
         'Image' => Intervention\Image\Facades\Image::class,
+        'CSV'=> Monokakure\CSV\CSVFacade::class
     ],
 
 ];
