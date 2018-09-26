@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2baa5c34de2a73b006d723e6cb06e38d",
-    "content-hash": "89bcf8484ac84585fd616904fdb376bf",
+    "hash": "24a5406636066c8c4695a7d68f3173e1",
+    "content-hash": "b6a8111611eed111657e5e79c958b8ed",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -1995,51 +1995,6 @@
                 "yaml"
             ],
             "time": "2016-09-01 09:41:00"
-        },
-        {
-            "name": "monokakure/laravel-csv",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/satkaku/laravel-csv.git",
-                "reference": "f0ee8de63673321446f090665c33af72d48e8683"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/satkaku/laravel-csv/zipball/f0ee8de63673321446f090665c33af72d48e8683",
-                "reference": "f0ee8de63673321446f090665c33af72d48e8683",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": ">=4.1.0",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*",
-                "way/phpunit-wrappers": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Monokakure\\CSV": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "satkaku"
-                }
-            ],
-            "description": "Simple CSV manipulation for Laravel. Also you can select encoding.",
-            "homepage": "https://github.com/satkaku/laravel-csv",
-            "keywords": [
-                "csv",
-                "laravel"
-            ],
-            "time": "2015-04-22 07:13:43"
         },
         {
             "name": "monolog/monolog",
@@ -6037,8 +5992,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "kodeine/laravel-acl": 20,
-        "monokakure/laravel-csv": 20
+        "kodeine/laravel-acl": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
