@@ -139,6 +139,6 @@ class LessonRepository
 	 */
 	private static function applyIsDelete(Builder $query)
 	{
-		return $query->where('is_deleted', '=',false);
+		return $query->where('is_delete', '=',false);
 	}
 }

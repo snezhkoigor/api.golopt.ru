@@ -132,14 +132,14 @@ class NewsRepository
 
 		}
 	}
-
-
+	
+	
 	/**
 	 * @param Builder $query
-	 * @return $this
+	 * @return Builder
 	 */
 	private static function applyIsDelete(Builder $query)
 	{
-		return $query->where('is_deleted', '=',false);
+		return $query->where('is_delete', '=',false);
 	}
 }
