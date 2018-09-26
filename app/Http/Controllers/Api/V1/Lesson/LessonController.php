@@ -143,7 +143,7 @@ class LessonController extends Controller
 
 	    try
 	    {
-		    $lesson->is_deleted = true;
+		    $lesson->is_delete = true;
 		    $lesson->save();
 	    }
 	    catch (\Exception $e)

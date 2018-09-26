@@ -143,7 +143,7 @@ class NewsController extends Controller
 
 	    try
 	    {
-		    $news->is_deleted = true;
+		    $news->is_delete = true;
 		    $news->save();
 	    }
 	    catch (\Exception $e)
