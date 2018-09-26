@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\News;
+namespace App\Http\Controllers\Api\V1\Lesson;
 
 use App\Exceptions\SystemErrorException;
 use App\Lesson;

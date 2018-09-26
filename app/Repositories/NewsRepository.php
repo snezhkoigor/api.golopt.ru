@@ -81,16 +81,16 @@ class NewsRepository
 	{
 		foreach ($filter_parameters as $name => $value)
 		{
-			switch ($name)
-			{
-				case 'type':
-					$query->where('type', $value);
-					break;
-
-				default:
-					$query->where('type', 'news');
-					break;
-			}
+//			switch ($name)
+//			{
+//				case 'type':
+//					$query->where('type', $value);
+//					break;
+//
+//				default:
+//					$query->where('type', 'news');
+//					break;
+//			}
 		}
 	}
 
