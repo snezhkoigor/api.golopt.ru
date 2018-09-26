@@ -65,7 +65,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
 
 	// Lessons
 	Route::get('/lessons', 'Lesson\LessonController@getLessons');
-	Route::get('/lessons/{lesson_id}', 'Lesson\LessonController@getNewsById');
+	Route::get('/lessons/{lesson_id}', 'Lesson\LessonController@getLessonById');
 	Route::get('/site/lessons/view', 'Lesson\LessonController@view');
 	Route::get('/site/lessons/show/{lesson_id}', 'Lesson\LessonController@show');
 	Route::post('/lessons', 'Lesson\LessonController@add');
