@@ -73,9 +73,9 @@ class NewsController extends Controller
 			->respond();
 	}
 
-	public function view($type = 'news')
+	public function view()
 	{
-		return fractal(NewsRepository::getNews(['type' => $type]), new NewsTransformer())
+		return fractal(NewsRepository::getNews(), new NewsTransformer())
 			->toArray();
 	}
 
