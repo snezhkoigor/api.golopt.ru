@@ -23,7 +23,7 @@ class LessonTransformer extends TransformerAbstract
 		$data = [
 			'id' => (int)$lesson->id,
 			'title' => $lesson->title,
-			'text' => html_entity_decode($lesson->text),
+			'text' => $lesson->text,
 			'meta_description' => $lesson->meta_description,
 			'meta_key' => $lesson->meta_key,
 			'active' => (bool)$lesson->active,

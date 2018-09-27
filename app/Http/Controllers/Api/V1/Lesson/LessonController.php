@@ -86,6 +86,8 @@ class LessonController extends Controller
 			throw new NotFoundHttpException('Нет урока');
 		}
 
+		$lesson->text = html_entity_decode($lesson->text);
+
 		return fractal($lesson, new LessonTransformer())
 			->respond();
 	}
