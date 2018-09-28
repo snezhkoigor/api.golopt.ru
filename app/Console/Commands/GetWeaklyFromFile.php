@@ -92,7 +92,7 @@ class GetWeaklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['prirost_predydushiy' . $prefix] = $row_array[9];
 						    	$result[$pair][$expire][$row_array[0]]['money_obshiy' . $prefix] = $row_array[10];
 						    	$result[$pair][$expire][$row_array[0]]['money_tekushiy' . $prefix] = $row_array[11];
-						    	$result[$pair][$expire][$row_array[0]]['balance_of_day' . $prefix] = $prefix === 'call' ? (float)$row_array[0] + (float)$row_array[3] : (float)$row_array[0] - (float)$row_array[3];
+						    	$result[$pair][$expire][$row_array[0]]['balance_of_day' . $prefix] = $prefix === 'call' ? (float)$row_array[0]*0.001 + (float)$row_array[3] : (float)$row_array[0]*0.001 - (float)$row_array[3];
 						    	$result[$pair][$expire][$row_array[0]]['fp'] = 0;
 						    	$result[$pair][$expire][$row_array[0]]['odr'] = 0;
 						    }
