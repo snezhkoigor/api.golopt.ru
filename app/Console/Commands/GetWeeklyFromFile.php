@@ -91,7 +91,7 @@ class GetWeeklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['balance_of_day' . $prefix] = $prefix === '_call' ? (float)$row_array[0]*0.001 + (float)$row_array[3] : (float)$row_array[0]*0.001 - (float)$row_array[3];
 						    	$result[$pair][$expire][$row_array[0]]['fp'] = 0;
 						    	$result[$pair][$expire][$row_array[0]]['odr'] = 0;
-						    	$result[$pair][$expire][$row_array[0]]['is_balance'] = 0;
+						    	$result[$pair][$expire][$row_array[0]]['balance'] = '';
 						    }
 					    }
 				    }

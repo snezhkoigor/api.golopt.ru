@@ -49,7 +49,7 @@ class CreateOptionsTable extends Migration
 
 			    $table->decimal('fp', 15, 4)->default(0);
 			    $table->boolean('odr')->default(false);
-			    $table->boolean('is_balance')->default(false);
+			    $table->string('balance', 5)->default('');
 
 			    $table->timestamps();
 		    });
