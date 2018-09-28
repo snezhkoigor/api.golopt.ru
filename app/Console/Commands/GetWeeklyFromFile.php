@@ -38,7 +38,7 @@ class GetWeeklyFromFile extends Command
 	    	
 	    	if (count($data_info_array) === 4)
 		    {
-		    	$date = explode('.', $data_info_array[2])[2] . '-' . explode('.', $data_info_array[2])[1] . '-' . explode('.', $data_info_array[2])[0] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3]);
+		    	$parse_date = explode('.', $data_info_array[2])[2] . '-' . explode('.', $data_info_array[2])[1] . '-' . explode('.', $data_info_array[2])[0] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3]);
 		    	$data = file_get_contents('http://goloption.ru/Files/CME_Reports2/week.csv');
 		    	$data_array = explode("\n", $data);
 
@@ -73,7 +73,7 @@ class GetWeeklyFromFile extends Command
 						    	$row_array = explode(';', $row);
 						    	$result[$pair][$expire][$row_array[0]]['symbol'] = $pair;
 						    	$result[$pair][$expire][$row_array[0]]['expw'] = $expire;
-						    	$result[$pair][$expire][$row_array[0]]['parse_date'] = $date;
+						    	$result[$pair][$expire][$row_array[0]]['parse_date'] = $parse_date;
 						    	$result[$pair][$expire][$row_array[0]]['type'] = 'w';
 						    	$result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
 						    	$result[$pair][$expire][$row_array[0]]['open_interest' . $prefix] = $row_array[1];
