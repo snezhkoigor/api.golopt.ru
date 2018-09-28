@@ -105,7 +105,6 @@ class GetWeeklyFromFile extends Command
 				        	$week_number++;
 				        	foreach ($expire_date as $strike)
 					        {
-					        	var_dump($strike);die;
 					        	$strike['type'] .= $week_number;
 					        	Option::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
