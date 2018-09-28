@@ -79,7 +79,7 @@ class GetWeaklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['symbol'] = $pair;
 						    	$result[$pair][$expire][$row_array[0]]['expw'] = $expire;
 						    	$result[$pair][$expire][$row_array[0]]['parse_date'] = $date;
-						    	$result[$pair][$expire][$row_array[0]]['type'] = 'W' . self::weekOfMonth($expire);
+						    	$result[$pair][$expire][$row_array[0]]['type'] = 'w';
 						    	$result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
 						    	$result[$pair][$expire][$row_array[0]]['open_interest' . $prefix] = $row_array[1];
 						    	$result[$pair][$expire][$row_array[0]]['volume' . $prefix] = $row_array[2];
@@ -104,10 +104,13 @@ class GetWeaklyFromFile extends Command
 			    {
 			    	foreach ($result as $symbol)
 				    {
+				    	$week_number = 0;
 				        foreach ($symbol as $expire_date)
 				        {
+				        	$week_number++;
 				        	foreach ($expire_date as $strike)
 					        {
+					        	$strike['type'] .= $week_number;
 					        	Option::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
 							        'expw' => $strike['expw'],
