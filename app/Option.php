@@ -83,6 +83,7 @@ class Option extends Model
 	    'money_obshiy_puts',
 	    'money_tekushiy_puts',
 	    'balance_of_day_puts',
+	    'is_balance',
 	    'fp',
 	    'odr'
     ];
