@@ -18,7 +18,7 @@ class CreateOptionsTable extends Migration
 			    $table->increments('id');
 			    $table->string('symbol', 10);
 			    $table->date('expw');
-			    $table->dateTime('parse_date');
+			    $table->timestamp('parse_date');
 			    $table->string('type', 5);
 			    $table->string('strike', 50);
 			    $table->string('open_interest_call', 50);
@@ -32,7 +32,7 @@ class CreateOptionsTable extends Migration
 			    $table->string('prirost_predydushiy_call', 50);
 			    $table->string('money_obshiy_call', 50);
 			    $table->string('money_tekushiy_call', 50);
-			    $table->string('balance_of_day_call', 50);
+			    $table->decimal('balance_of_day_call', 15, 5);
 
 			    $table->string('open_interest_puts', 50);
 			    $table->string('volume_puts', 50);
@@ -45,7 +45,7 @@ class CreateOptionsTable extends Migration
 			    $table->string('prirost_predydushiy_puts', 50);
 			    $table->string('money_obshiy_puts', 50);
 			    $table->string('money_tekushiy_puts', 50);
-			    $table->string('balance_of_day_puts', 50);
+			    $table->decimal('balance_of_day_puts', 15, 5);
 			    
 			    $table->decimal('fp', 15, 4)->default(0);
 			    $table->boolean('odr')->default(false);

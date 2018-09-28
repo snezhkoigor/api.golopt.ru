@@ -2,29 +2,24 @@
 
 namespace App\Console\Commands;
 
-use App\Exceptions\SystemErrorException;
-use App\FuturesPrice;
 use App\Option;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Wilgucki\Csv\Reader as CsvReader;
 
-class GetWeaklyFromFile extends Command
+class GetWeeklyFromFile extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'getWeaklyFromFile';
+    protected $signature = 'getWeeklyFromFile';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Get weakly options from ftp files';
+    protected $description = 'Get weekly options from ftp files';
 
     /**
      * Execute the console command.

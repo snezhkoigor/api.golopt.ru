@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
         Commands\CheckPayments::class,
         Commands\GetFuturesFromCME::class,
 		Commands\GetOptionExpirations::class,
-        Commands\GetWeaklyFromFile::class
+        Commands\GetWeeklyFromFile::class
     ];
 
     /**
@@ -39,7 +39,6 @@ class Kernel extends ConsoleKernel
 			->hourlyAt(17)
 			->withoutOverlapping();
 
-
 		$schedule->command('getYahooRates')
 			->twiceDaily()
 			->withoutOverlapping();
@@ -57,6 +56,10 @@ class Kernel extends ConsoleKernel
 			->withoutOverlapping();
 
 		$schedule->command('checkPayments')
+			->everyMinute()
+			->withoutOverlapping();
+
+		$schedule->command('getWeeklyFromFile')
 			->everyMinute()
 			->withoutOverlapping();
     }
