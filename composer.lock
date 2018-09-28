@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "24a5406636066c8c4695a7d68f3173e1",
-    "content-hash": "b6a8111611eed111657e5e79c958b8ed",
+    "hash": "4b81c27a27cb223444a63c02e584fb60",
+    "content-hash": "e4ff533b31694201dc2f5f6dbccd790d",
     "packages": [
         {
             "name": "alaouy/youtube",
@@ -4517,6 +4517,49 @@
                 "environment"
             ],
             "time": "2018-07-29 20:33:41"
+        },
+        {
+            "name": "wilgucki/csv",
+            "version": "v0.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wilgucki/csv.git",
+                "reference": "c9f467b582208ccbb24c6537c2195af369b5aebd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wilgucki/csv/zipball/c9f467b582208ccbb24c6537c2195af369b5aebd",
+                "reference": "c9f467b582208ccbb24c6537c2195af369b5aebd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "^1.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wilgucki\\Csv\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maciej Wilgucki",
+                    "email": "mwilgucki@gmail.com"
+                }
+            ],
+            "description": "Laravel 5 package for writing and reading CSV files",
+            "keywords": [
+                "csv",
+                "laravel"
+            ],
+            "time": "2017-01-26 04:38:57"
         },
         {
             "name": "yandexmoney/omnipay",

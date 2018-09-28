@@ -26,7 +26,8 @@
         "yandexmoney/omnipay": "^1.0",
         "league/fractal": "^0.17",
         "spatie/laravel-fractal": "4.5",
-        "intervention/image": "^2.4"
+        "intervention/image": "^2.4",
+        "wilgucki/csv": "0.6.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

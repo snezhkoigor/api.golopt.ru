@@ -191,7 +191,9 @@ return [
 
         Rollbar\Laravel\RollbarServiceProvider::class,
 
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        
+        Wilgucki\Csv\CsvServiceProvider::class,
     ],
 
     /*
@@ -249,7 +251,10 @@ return [
 
         'Youtube' => Alaouy\Youtube\Facades\Youtube::class,
 
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+
+        'CsvReader' => Wilgucki\Csv\Facades\Reader::class,
+        'CsvWriter' => Wilgucki\Csv\Facades\Writer::class,
     ],
 
 ];
