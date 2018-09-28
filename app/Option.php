@@ -56,6 +56,7 @@ class Option extends Model
     protected $fillable = [
     	'symbol',
         'expw',
+	    'parse_date',
         'type',
 	    'strike',
 	    'open_interest_call',

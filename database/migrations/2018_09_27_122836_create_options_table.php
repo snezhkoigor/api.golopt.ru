@@ -46,9 +46,10 @@ class CreateOptionsTable extends Migration
 			    $table->string('money_obshiy_puts', 50);
 			    $table->string('money_tekushiy_puts', 50);
 			    $table->decimal('balance_of_day_puts', 15, 5);
-			    
+
 			    $table->decimal('fp', 15, 4)->default(0);
 			    $table->boolean('odr')->default(false);
+			    $table->boolean('is_balance')->default(false);
 
 			    $table->timestamps();
 		    });
