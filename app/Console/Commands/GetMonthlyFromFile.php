@@ -59,7 +59,7 @@ class GetMonthlyFromFile extends Command
 						    	if (strpos($row, 'EXPW') !== false)
 							    {
 							    	$row_array = explode(' ', $row);
-							    	$expire = date('Y-m-d', strtotime(trim($row_array[2])));
+							    	$expire = date('Y-m-d', strtotime(trim($row_array[1])));
 							    }
 							    elseif (in_array(trim($row), ['CALL', 'PUTS']))
 							    {
