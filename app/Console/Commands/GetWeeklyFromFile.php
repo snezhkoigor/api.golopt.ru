@@ -120,15 +120,12 @@ class GetWeeklyFromFile extends Command
 
 					        	if ($strike)
 						        {
-						        	foreach ($strike['calls_puts'] as $option_type => $items)
+						        	foreach ($strike['calls_puts'] as $option_type => $item)
 							        {
-							        	foreach ($items as $item)
-								        {
-								            CallsPuts::updateOrCreate([
-								                'strike_id' => $strike->id,
-										        'type' => $option_type
-									        ], $item);
-								        }
+							            CallsPuts::updateOrCreate([
+							                'strike_id' => $strike->id,
+									        'type' => $option_type
+								        ], $item);
 							        }
 						        }
 					        }
