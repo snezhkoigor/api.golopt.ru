@@ -56,7 +56,7 @@ class GetUsaFromFile extends Command
 					    	
 					    	if (strpos($row, ';') === false)
 						    {
-						    	if (strpos($row, 'EXPW') !== false)
+						    	if (strpos($row, 'EXPA') !== false)
 							    {
 							    	$row_array = explode(' ', $row);
 							    	$expire = date('Y-m-d', strtotime(trim($row_array[1])));
