@@ -30,10 +30,20 @@ class StrikeController extends Controller
 	    {
 	    	$query->whereBetween('parse_date', [date('Y-m-d H:i:s', strtotime($_GET['parse_date_from'])), date('Y-m-d H:i:s', strtotime($_GET['parse_date_to']))]);
 	    }
-//	    else
-//        {
-//
-//	    }
+	    else
+        {
+			$max_date = DB::table('strikes')
+				->select('parse_date')
+				->where([
+			        ['strikes.symbol', strtoupper($symbol)],
+				    ['strikes.type', $type]
+			    ])
+				->orderBy('parse_date', 'desc')
+				->limit(1)
+				->first();
+			
+			$query->where('parse_date', '>=', $max_date->parse_date);
+	    }
 
     	$data = $query
 		    ->get()
