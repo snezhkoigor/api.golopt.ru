@@ -16,7 +16,7 @@ class CreateCallsPutsTable extends Migration
         if (!Schema::hasTable('calls_puts')) {
 		    Schema::create('calls_puts', function (Blueprint $table) {
 			    $table->increments('id');
-			    $table->integer('strike_id', 10);
+			    $table->integer('strike_id');
 			    $table->string('type', 5);
 			    $table->string('open_interest', 50);
 			    $table->string('volume', 50);
