@@ -108,11 +108,9 @@ class StrikeController extends Controller
 
 	        foreach ($strikes as $key => $value)
 	        {
-	            $answer .= implode(';', array_values($value)) . "\n\n";
+	            echo implode(';', array_values($value)) . "\n";
 	        }
 	    }
-
-    	echo $answer;
     }
 
     public function saveFpAndOdrFromIndicator($strike_id, $fp = null, $odr = null)
