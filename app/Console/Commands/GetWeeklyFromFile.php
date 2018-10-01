@@ -81,6 +81,7 @@ class GetWeeklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['fp'] = 0;
 						    	$result[$pair][$expire][$row_array[0]]['odr'] = 0;
 
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['type'] = $prefix;
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['open_interest'] = $row_array[1];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['volume'] = $row_array[2];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['premia'] = $row_array[3];
