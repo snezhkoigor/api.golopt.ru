@@ -17,7 +17,7 @@ class CreateStrikesTable extends Migration
 		    Schema::create('strikes', function (Blueprint $table) {
 			    $table->increments('id');
 			    $table->string('symbol', 10);
-			    $table->date('expw');
+			    $table->date('expire');
 			    $table->timestamp('parse_date');
 			    $table->tinyInteger('type');
 			    $table->string('strike', 50);

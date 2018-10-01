@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property integer $id
  * @property string $symbol
- * @property string $expw
+ * @property string $expire
  * @property string $parse_date
  * @property string $type
  * @property integer $fp
@@ -36,7 +36,7 @@ class Strikes extends Model
      */
     protected $fillable = [
     	'symbol',
-        'expw',
+        'expire',
 	    'parse_date',
         'type',
 	    'strike',
