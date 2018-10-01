@@ -1,17 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Lesson;
+namespace App\Http\Controllers\Api\V1\Strike;
 
-use App\Exceptions\SystemErrorException;
-use App\Lesson;
-use App\Repositories\LessonRepository;
-use App\Services\RichTextService;
-use App\Transformers\LessonTransformer;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class StrikeController extends Controller
 {
