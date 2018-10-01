@@ -59,9 +59,9 @@ class Kernel extends ConsoleKernel
 			->everyMinute()
 			->withoutOverlapping();
 
-//		$schedule->command('getWeeklyFromFile')
-//			->everyMinute()
-//			->withoutOverlapping();
+		$schedule->command('getWeeklyFromFile')
+			->everyMinute()
+			->withoutOverlapping();
     }
 
     /**
