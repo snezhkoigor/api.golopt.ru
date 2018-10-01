@@ -108,7 +108,7 @@ class StrikeController extends Controller
 
 	        foreach ($strikes as $key => $value)
 	        {
-	            $answer .= implode(';', array_values($value)) . "\n";
+	            $answer .= implode(';', array_values($value)) . "\n\n";
 	        }
 	    }
 
