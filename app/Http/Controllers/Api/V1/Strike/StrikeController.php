@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api\V1\Strike;
 
 use App\Http\Controllers\Controller;
+use App\Strikes;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\Exception\NotFoundException;
 
 class StrikeController extends Controller
 {
@@ -50,5 +52,32 @@ class StrikeController extends Controller
 	    }
 
     	return response()->json($result);
+    }
+
+    public function saveFpAndOdrFromIndicator($strike_id, $fp = null, $odr = null)
+    {
+    	$strike = Strikes::query('id', $strike_id)->first();
+
+    	if ($strike === null)
+	    {
+	    	throw new NotFoundException('Нет страйка');
+	    }
+
+	    if ($fp)
+	    {
+	        $strike->fp = $fp;
+	    }
+	    if ($odr)
+	    {
+	        $strike->odr = $odr;
+	    }
+
+    	$strike->save();
+
+    	return response()->json([
+            'status' => true,
+            'message' => 'Данные изменены',
+            'data' => null
+        ], 200);
     }
 }
