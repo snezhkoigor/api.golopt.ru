@@ -41,6 +41,7 @@ class CallsPuts extends Model
      */
     protected $fillable = [
     	'strike_id',
+	    'type',
         'open_interest',
 	    'volume',
 	    'premia',
