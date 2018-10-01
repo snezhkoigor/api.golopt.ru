@@ -82,17 +82,17 @@ class GetUsaFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['odr'] = 0;
 
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['type'] = $prefix;
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['open_interest'] = (int)$row_array[1];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['volume'] = (int)$row_array[2];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['premia'] = (int)$row_array[3];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['spros_1'] = (int)$row_array[4];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['spros_2'] = (int)$row_array[5];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['predlojenie_1'] = (int)$row_array[6];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['predlojenie_2'] = (int)$row_array[7];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['prirost_tekushiy'] = (int)$row_array[8];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['prirost_predydushiy'] = (int)$row_array[9];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_obshiy'] = (int)$row_array[10];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_tekushiy'] = (int)$row_array[11];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['open_interest'] = (float)$row_array[1];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['volume'] = (float)$row_array[2];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['premia'] = (float)$row_array[3];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['spros_1'] = (float)$row_array[4];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['spros_2'] = (float)$row_array[5];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['predlojenie_1'] = (float)$row_array[6];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['predlojenie_2'] = (float)$row_array[7];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['prirost_tekushiy'] = (float)$row_array[8];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['prirost_predydushiy'] = (float)$row_array[9];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_obshiy'] = (float)$row_array[10];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_tekushiy'] = (float)$row_array[11];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['balance_of_day'] = $prefix === CallsPuts::TYPES_CALL ? (float)$row_array[0]*0.001 + (float)$row_array[3] : (float)$row_array[0]*0.001 - (float)$row_array[3];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['is_balance'] = false;
 						    }
