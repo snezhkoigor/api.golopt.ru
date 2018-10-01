@@ -48,7 +48,8 @@ class StrikeController extends Controller
 			}
 			else
 			{
-				return response()->csv([]);
+				echo 'Нет данных';
+				die;
 			}
 	    }
 
