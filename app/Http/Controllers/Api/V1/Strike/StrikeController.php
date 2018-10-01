@@ -11,7 +11,8 @@ class StrikeController extends Controller
 {
     public function getBySymbol($symbol, $type)
     {
-    	$result = [];
+    	$answer = '';
+    	$strikes = [];
     	$data = DB::table('strikes')
 		    ->select(['strike', 'fp', 'odr', 'expire', 'parse_date', 'strikes.id', 'calls_puts.type', 'calls_puts.open_interest', 'calls_puts.volume',
 	              'calls_puts.premia', 'calls_puts.spros_1', 'calls_puts.spros_2', 'calls_puts.predlojenie_1',
@@ -30,28 +31,33 @@ class StrikeController extends Controller
 	    {
 	        foreach ($data as $strike)
 	        {
-	        	$result[$strike->strike]['id'] = $strike->id;
-	        	$result[$strike->strike]['fp'] = $strike->fp;
-	        	$result[$strike->strike]['odr'] = $strike->odr;
-	        	$result[$strike->strike]['expire'] = $strike->expire;
-	        	$result[$strike->strike]['parse_date'] = $strike->parse_date;
-	        	$result[$strike->strike]['open_interest_' . $strike->type] = $strike->open_interest;
-	        	$result[$strike->strike]['volume_' . $strike->type] = $strike->volume;
-	        	$result[$strike->strike]['premia_' . $strike->type] = $strike->premia;
-	        	$result[$strike->strike]['spros_1_' . $strike->type] = $strike->spros_1;
-	        	$result[$strike->strike]['spros_2_' . $strike->type] = $strike->spros_2;
-	        	$result[$strike->strike]['predlojenie_1_' . $strike->type] = $strike->predlojenie_1;
-	        	$result[$strike->strike]['predlojenie_2_' . $strike->type] = $strike->predlojenie_2;
-	        	$result[$strike->strike]['prirost_tekushiy_' . $strike->type] = $strike->prirost_tekushiy;
-	        	$result[$strike->strike]['prirost_predydushiy_' . $strike->type] = $strike->prirost_predydushiy;
-	        	$result[$strike->strike]['money_obshiy_' . $strike->type] = $strike->money_obshiy;
-	        	$result[$strike->strike]['money_tekushiy_' . $strike->type] = $strike->money_tekushiy;
-	        	$result[$strike->strike]['balance_of_day_' . $strike->type] = $strike->balance_of_day;
-	        	$result[$strike->strike]['is_balance_' . $strike->type] = $strike->is_balance;
+	        	$strikes[$strike->strike]['id'] = $strike->id;
+	        	$strikes[$strike->strike]['fp'] = $strike->fp;
+	        	$strikes[$strike->strike]['odr'] = $strike->odr;
+	        	$strikes[$strike->strike]['expire'] = $strike->expire;
+	        	$strikes[$strike->strike]['parse_date'] = $strike->parse_date;
+	        	$strikes[$strike->strike]['open_interest_' . $strike->type] = $strike->open_interest;
+	        	$strikes[$strike->strike]['volume_' . $strike->type] = $strike->volume;
+	        	$strikes[$strike->strike]['premia_' . $strike->type] = $strike->premia;
+	        	$strikes[$strike->strike]['spros_1_' . $strike->type] = $strike->spros_1;
+	        	$strikes[$strike->strike]['spros_2_' . $strike->type] = $strike->spros_2;
+	        	$strikes[$strike->strike]['predlojenie_1_' . $strike->type] = $strike->predlojenie_1;
+	        	$strikes[$strike->strike]['predlojenie_2_' . $strike->type] = $strike->predlojenie_2;
+	        	$strikes[$strike->strike]['prirost_tekushiy_' . $strike->type] = $strike->prirost_tekushiy;
+	        	$strikes[$strike->strike]['prirost_predydushiy_' . $strike->type] = $strike->prirost_predydushiy;
+	        	$strikes[$strike->strike]['money_obshiy_' . $strike->type] = $strike->money_obshiy;
+	        	$strikes[$strike->strike]['money_tekushiy_' . $strike->type] = $strike->money_tekushiy;
+	        	$strikes[$strike->strike]['balance_of_day_' . $strike->type] = $strike->balance_of_day;
+	        	$strikes[$strike->strike]['is_balance_' . $strike->type] = $strike->is_balance;
+	        }
+	        
+	        foreach ($strikes as $key => $value)
+	        {
+	            $answer .= implode(';', $value) . "\n";
 	        }
 	    }
 
-    	return response()->json($result);
+    	echo $answer;
     }
 
     public function saveFpAndOdrFromIndicator($strike_id, $fp = null, $odr = null)
