@@ -58,4 +58,38 @@ class Strikes extends Model
 	{
 		return $this->hasMany(CallsPuts::class, 'strike_id', 'id');
 	}
+	
+	public static function getDefaultFields()
+	{
+		return [
+			'odr',
+			'expire',
+			'open_interest_call',
+			'volume_call',
+			'premia_call',
+			'spros_1_call',
+			'spros_2_call',
+			'predlojenie_1_call',
+			'predlojenie_2_call',
+			'prirost_tekushiy_call',
+			'prirost_predydushiy_call',
+			'money_obshiy_call',
+			'money_tekushiy_call',
+			'balance_of_day_call',
+			'is_balance_call',
+			'open_interest_puts',
+			'volume_puts',
+			'premia_puts',
+			'spros_1_puts',
+			'spros_2_puts',
+			'predlojenie_1_puts',
+			'predlojenie_2_puts',
+			'prirost_tekushiy_puts',
+			'prirost_predydushiy_puts',
+			'money_obshiy_puts',
+			'money_tekushiy_puts',
+			'balance_of_day_puts',
+			'is_balance_puts'
+		];
+	}
 }
