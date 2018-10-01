@@ -109,14 +109,14 @@ class GetWeeklyFromFile extends Command
 					        {
 					        	$strike['type'] .= $week_number;
 
-					        	$strike_id = Strikes::updateOrCreate([
+					        	$strike = Strikes::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
 							        'expw' => $strike['expw'],
 							        'type' => $strike['type'],
 							        'strike' => $strike['strike']
 						        ], $strike);
 
-					        	var_dump($strike_id);die;
+					        	var_dump($strike->id);die;
 					        }
 				        }
 				    }
