@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\CallsPuts;
 use App\Strikes;
 use Illuminate\Console\Command;
 
@@ -92,6 +93,7 @@ class GetWeeklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_obshiy'] = $row_array[10];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_tekushiy'] = $row_array[11];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['balance_of_day'] = $prefix === 'call' ? (float)$row_array[0]*0.001 + (float)$row_array[3] : (float)$row_array[0]*0.001 - (float)$row_array[3];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['is_balance'] = false;
 						    }
 					    }
 				    }
@@ -116,7 +118,20 @@ class GetWeeklyFromFile extends Command
 							        'strike' => $strike['strike']
 						        ], $strike);
 
-					        	var_dump($strike->id);die;
+					        	if ($strike)
+						        {
+						        	foreach ($strike['calls_puts'] as $option_type => $items)
+							        {
+							        	foreach ($items as $item)
+								        {
+								            CallsPuts::updateOrCreate([
+								                'strike_id' => $strike->id,
+										        'type' => $option_type
+									        ], $item);
+								        }
+							        }
+							        die;
+						        }
 					        }
 				        }
 				    }
