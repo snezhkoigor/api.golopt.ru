@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Option;
+use App\Strikes;
 use Illuminate\Console\Command;
 
 class GetWeeklyFromFile extends Command
@@ -62,7 +62,7 @@ class GetWeeklyFromFile extends Command
 							    }
 							    elseif (in_array(trim($row), ['CALL', 'PUTS']))
 							    {
-							    	$prefix = '_' . strtolower(trim($row));
+							    	$prefix = strtolower(trim($row));
 							    }
 							    else
 							    {
@@ -77,21 +77,21 @@ class GetWeeklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['parse_date'] = $parse_date;
 						    	$result[$pair][$expire][$row_array[0]]['type'] = 'w';
 						    	$result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
-						    	$result[$pair][$expire][$row_array[0]]['open_interest' . $prefix] = $row_array[1];
-						    	$result[$pair][$expire][$row_array[0]]['volume' . $prefix] = $row_array[2];
-						    	$result[$pair][$expire][$row_array[0]]['premia' . $prefix] = $row_array[3];
-						    	$result[$pair][$expire][$row_array[0]]['spros_1' . $prefix] = $row_array[4];
-						    	$result[$pair][$expire][$row_array[0]]['spros_2' . $prefix] = $row_array[5];
-						    	$result[$pair][$expire][$row_array[0]]['predlojenie_1' . $prefix] = $row_array[6];
-						    	$result[$pair][$expire][$row_array[0]]['predlojenie_2' . $prefix] = $row_array[7];
-						    	$result[$pair][$expire][$row_array[0]]['prirost_tekushiy' . $prefix] = $row_array[8];
-						    	$result[$pair][$expire][$row_array[0]]['prirost_predydushiy' . $prefix] = $row_array[9];
-						    	$result[$pair][$expire][$row_array[0]]['money_obshiy' . $prefix] = $row_array[10];
-						    	$result[$pair][$expire][$row_array[0]]['money_tekushiy' . $prefix] = $row_array[11];
-						    	$result[$pair][$expire][$row_array[0]]['balance_of_day' . $prefix] = $prefix === '_call' ? (float)$row_array[0]*0.001 + (float)$row_array[3] : (float)$row_array[0]*0.001 - (float)$row_array[3];
 						    	$result[$pair][$expire][$row_array[0]]['fp'] = 0;
 						    	$result[$pair][$expire][$row_array[0]]['odr'] = 0;
-						    	$result[$pair][$expire][$row_array[0]]['balance'] = '';
+
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['open_interest'] = $row_array[1];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['volume'] = $row_array[2];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['premia'] = $row_array[3];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['spros_1'] = $row_array[4];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['spros_2'] = $row_array[5];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['predlojenie_1'] = $row_array[6];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['predlojenie_2'] = $row_array[7];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['prirost_tekushiy'] = $row_array[8];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['prirost_predydushiy'] = $row_array[9];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_obshiy'] = $row_array[10];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_tekushiy'] = $row_array[11];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['balance_of_day'] = $prefix === '_call' ? (float)$row_array[0]*0.001 + (float)$row_array[3] : (float)$row_array[0]*0.001 - (float)$row_array[3];
 						    }
 					    }
 				    }
@@ -108,12 +108,15 @@ class GetWeeklyFromFile extends Command
 				        	foreach ($expire_date as $strike)
 					        {
 					        	$strike['type'] .= $week_number;
-					        	Option::updateOrCreate([
+
+					        	$strike_id = Strikes::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
 							        'expw' => $strike['expw'],
 							        'type' => $strike['type'],
 							        'strike' => $strike['strike']
 						        ], $strike);
+
+					        	var_dump($strike_id);die;
 					        }
 				        }
 				    }
