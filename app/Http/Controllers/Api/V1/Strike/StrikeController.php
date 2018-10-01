@@ -41,8 +41,15 @@ class StrikeController extends Controller
 				->orderBy('parse_date', 'desc')
 				->limit(1)
 				->first();
-			
-			$query->where('parse_date', '>=', $max_date->parse_date);
+
+			if ($max_date)
+			{
+				$query->where('parse_date', '>=', $max_date->parse_date);
+			}
+			else
+			{
+				return response()->csv([]);
+			}
 	    }
 
     	$data = $query
