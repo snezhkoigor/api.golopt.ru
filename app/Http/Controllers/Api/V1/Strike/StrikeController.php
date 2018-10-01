@@ -17,8 +17,8 @@ class StrikeController extends Controller
                   'calls_puts.is_balance'])
 		    ->join('calls_puts', 'calls_puts.strike_id', '=', 'strikes.id')
 		    ->where([
-		    	['symbol', strtoupper($symbol)],
-			    ['type', $type]
+		    	['strikes.symbol', strtoupper($symbol)],
+			    ['strikes.type', $type]
 		    ])
 		    ->get()
 	        ->toArray();
