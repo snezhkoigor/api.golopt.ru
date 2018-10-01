@@ -27,7 +27,7 @@ class Strikes extends Model
 	const TYPES_AMER = 'a';
 	const TYPES_WEEK = 'w';
 	const TYPES_MONTH = 'm';
-	const TYPES_WEDNESDAY = 'wed';
+	const TYPES_WEDNESDAY = 'wd';
 
     /**
      * The attributes that are mass assignable.
