@@ -18,17 +18,17 @@ class CreateCallsPutsTable extends Migration
 			    $table->increments('id');
 			    $table->integer('strike_id');
 			    $table->string('type', 5);
-			    $table->integer('open_interest');
-			    $table->integer('volume');
-			    $table->integer('premia');
-			    $table->integer('spros_1');
-			    $table->integer('spros_2');
-			    $table->integer('predlojenie_1');
-			    $table->integer('predlojenie_2');
-			    $table->integer('prirost_tekushiy');
-			    $table->integer('prirost_predydushiy');
-			    $table->integer('money_obshiy');
-			    $table->integer('money_tekushiy');
+			    $table->decimal('open_interest', 15, 5);
+			    $table->decimal('volume', 15, 5);
+			    $table->decimal('premia', 15, 5);
+			    $table->decimal('spros_1', 15, 5);
+			    $table->decimal('spros_2', 15, 5);
+			    $table->decimal('predlojenie_1', 15, 5);
+			    $table->decimal('predlojenie_2', 15, 5);
+			    $table->decimal('prirost_tekushiy', 15, 5);
+			    $table->decimal('prirost_predydushiy', 15, 5);
+			    $table->decimal('money_obshiy', 15, 5);
+			    $table->decimal('money_tekushiy', 15, 5);
 			    $table->decimal('balance_of_day', 15, 5);
 			    $table->boolean('is_balance', 5)->default(false);
 
