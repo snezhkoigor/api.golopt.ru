@@ -111,19 +111,19 @@ class GetWeeklyFromFile extends Command
 					        {
 					        	$strike['type'] .= $week_number;
 
-					        	$strike = Strikes::updateOrCreate([
+					        	$strike_obj = Strikes::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
 							        'expw' => $strike['expw'],
 							        'type' => $strike['type'],
 							        'strike' => $strike['strike']
 						        ], $strike);
 
-					        	if ($strike)
+					        	if ($strike_obj)
 						        {
 						        	foreach ($strike['calls_puts'] as $option_type => $item)
 							        {
 							            CallsPuts::updateOrCreate([
-							                'strike_id' => $strike->id,
+							                'strike_id' => $strike_obj->id,
 									        'type' => $option_type
 								        ], $item);
 							        }
