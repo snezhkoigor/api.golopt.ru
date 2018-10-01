@@ -114,7 +114,7 @@ class GetUsaFromFile extends Command
 
 					        	$strike_obj = Strikes::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
-							        'expire' => $strike['expa'],
+							        'expire' => $strike['expire'],
 							        'type' => $strike['type'],
 							        'strike' => $strike['strike']
 						        ], $strike);

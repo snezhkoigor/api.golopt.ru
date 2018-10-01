@@ -114,7 +114,7 @@ class GetWednesdayFromFile extends Command
 
 					        	$strike_obj = Strikes::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
-							        'expire' => $strike['expw'],
+							        'expire' => $strike['expire'],
 							        'type' => $strike['type'],
 							        'strike' => $strike['strike']
 						        ], $strike);
