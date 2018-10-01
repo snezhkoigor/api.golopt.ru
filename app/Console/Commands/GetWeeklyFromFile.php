@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\CallsPuts;
 use App\Strikes;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class GetWeeklyFromFile extends Command
 {

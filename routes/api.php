@@ -76,6 +76,8 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
 	Route::get('/widgets/clients/totalRegistrations', 'User\WidgetController@totalClientRegistrations');
 	Route::get('/widgets/clients/totalRegistrationsAndActivations/{period_type?}', 'User\WidgetController@totalClientRegistrationsAndActivations');
 
+	Route::get('/strikes/{symbol}/{type}', 'Strike\StrikeController@getBySymbol');
+
 	Route::get('/files/{storage}/{filename}', function ($storage, $filename) {
 		if (Storage::disk($storage)->exists($filename)) {
 			return Image::make(Storage::disk($storage)->get($filename))->response();
