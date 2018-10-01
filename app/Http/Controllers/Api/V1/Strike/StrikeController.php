@@ -12,7 +12,7 @@ class StrikeController extends Controller
     public function getBySymbol($symbol, $type)
     {
     	$fields = !empty($_GET['fields']) ? explode(',', $_GET['fields']) : Strikes::getDefaultFields();
-    	$answer = '';
+    	$result = [];
     	$strikes = [];
     	$query = DB::table('strikes')
 		    ->select(['strike', 'fp', 'odr', 'expire', 'parse_date', 'strikes.id', 'calls_puts.type', 'calls_puts.open_interest', 'calls_puts.volume',
@@ -108,9 +108,11 @@ class StrikeController extends Controller
 
 	        foreach ($strikes as $key => $value)
 	        {
-	            echo implode(';', array_values($value)) . "\n";
+	        	$result[] = array_values($value);
 	        }
 	    }
+	    
+	    return response()->csv($result);
     }
 
     public function saveFpAndOdrFromIndicator($strike_id, $fp = null, $odr = null)
