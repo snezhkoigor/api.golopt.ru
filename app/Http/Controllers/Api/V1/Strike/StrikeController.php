@@ -32,6 +32,7 @@ class StrikeController extends Controller
 	        foreach ($data as $strike)
 	        {
 	        	$strikes[$strike->strike]['id'] = $strike->id;
+	        	$strikes[$strike->strike]['strike'] = $strike->strike;
 	        	$strikes[$strike->strike]['fp'] = $strike->fp;
 	        	$strikes[$strike->strike]['odr'] = $strike->odr;
 	        	$strikes[$strike->strike]['expire'] = $strike->expire;
