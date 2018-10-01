@@ -6,21 +6,21 @@ use App\CallsPuts;
 use App\Strikes;
 use Illuminate\Console\Command;
 
-class GetWeeklyFromFile extends Command
+class GetMonthlyFromFile extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'getWeeklyFromFile';
+    protected $signature = 'getMonthlyFromFile';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Get weekly options from ftp files';
+    protected $description = 'Get monthly options from ftp files';
 
     /**
      * Execute the console command.
@@ -31,7 +31,7 @@ class GetWeeklyFromFile extends Command
      */
     public function handle()
     {
-    	$file_name = file_get_contents('http://goloption.ru/Files/CME_Reports2/dataW.txt');
+    	$file_name = file_get_contents('http://goloption.ru/Files/CME_Reports2/dataM.txt');
 
     	if ($file_name)
 	    {
@@ -40,7 +40,7 @@ class GetWeeklyFromFile extends Command
 	    	if (count($data_info_array) === 4)
 		    {
 		    	$parse_date = explode('.', $data_info_array[2])[2] . '-' . explode('.', $data_info_array[2])[1] . '-' . explode('.', $data_info_array[2])[0] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3]);
-		    	$data = file_get_contents('http://goloption.ru/Files/CME_Reports2/week.csv');
+		    	$data = file_get_contents('http://goloption.ru/Files/CME_Reports2/mon.csv');
 		    	$data_array = explode("\n", $data);
 
 		    	$result = [];
@@ -76,7 +76,7 @@ class GetWeeklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['symbol'] = $pair;
 						    	$result[$pair][$expire][$row_array[0]]['expw'] = $expire;
 						    	$result[$pair][$expire][$row_array[0]]['parse_date'] = $parse_date;
-						    	$result[$pair][$expire][$row_array[0]]['type'] = Strikes::TYPES_WEEK;
+						    	$result[$pair][$expire][$row_array[0]]['type'] = Strikes::TYPES_MONTH;
 						    	$result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
 						    	$result[$pair][$expire][$row_array[0]]['fp'] = 0;
 						    	$result[$pair][$expire][$row_array[0]]['odr'] = 0;

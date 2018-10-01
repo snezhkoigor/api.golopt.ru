@@ -20,7 +20,9 @@ class Kernel extends ConsoleKernel
         Commands\CheckPayments::class,
         Commands\GetFuturesFromCME::class,
 		Commands\GetOptionExpirations::class,
-        Commands\GetWeeklyFromFile::class
+        Commands\GetWeeklyFromFile::class,
+        Commands\GetMonthlyFromFile::class,
+        Commands\GetUsaFromFile::class
     ];
 
     /**
@@ -60,6 +62,14 @@ class Kernel extends ConsoleKernel
 			->withoutOverlapping();
 
 		$schedule->command('getWeeklyFromFile')
+			->everyMinute()
+			->withoutOverlapping();
+		
+		$schedule->command('getMonthlyFromFile')
+			->everyMinute()
+			->withoutOverlapping();
+		
+		$schedule->command('getUsaFromFile')
 			->everyMinute()
 			->withoutOverlapping();
     }

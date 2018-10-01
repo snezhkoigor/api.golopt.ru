@@ -24,6 +24,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Strikes extends Model
 {
+	const TYPES_AMER = 'a';
+	const TYPES_WEEK = 'w';
+	const TYPES_MONTH = 'm';
+	const TYPES_WEDNESDAY = 'wed';
+
     /**
      * The attributes that are mass assignable.
      *

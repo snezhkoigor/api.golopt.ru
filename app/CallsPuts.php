@@ -34,6 +34,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class CallsPuts extends Model
 {
+	const TYPES_CALL = 'call';
+	const TYPES_PUT = 'puts';
+
     /**
      * The attributes that are mass assignable.
      *
