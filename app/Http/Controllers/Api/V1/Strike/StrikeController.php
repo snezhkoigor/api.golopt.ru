@@ -10,9 +10,9 @@ use Intervention\Image\Exception\NotFoundException;
 
 class StrikeController extends Controller
 {
-    public function getBySymbol(Request $request, $symbol, $type)
+    public function getBySymbol($symbol, $type)
     {
-    	$fields = $request->get('fields') ? explode(',', $request->get('fields')) : Strikes::getDefaultFields();
+    	$fields = $_GET['fields'] ? explode(',', $_GET['fields']) : Strikes::getDefaultFields();
     	$answer = '';
     	$strikes = [];
     	$query = DB::table('strikes')
@@ -29,9 +29,9 @@ class StrikeController extends Controller
 		    ->get()
 	        ->toArray();
 
-    	if ($request->get('parse_date_from') && $request->get('parse_date_to'))
+    	if ($_GET['parse_date_from'] && $_GET['parse_date_to'])
 	    {
-	    	$query->whereBetween('parse_date', [date('Y-m-d H:i:s', strtotime($request->get('parse_date_from'))), date('Y-m-d H:i:s', strtotime($request->get('parse_date_to')))]);
+	    	$query->whereBetween('parse_date', [date('Y-m-d H:i:s', strtotime($_GET['parse_date_from'])), date('Y-m-d H:i:s', strtotime($_GET['parse_date_to']))]);
 	    }
 
     	$data = $query
