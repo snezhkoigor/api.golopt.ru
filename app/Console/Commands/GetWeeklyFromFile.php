@@ -130,7 +130,6 @@ class GetWeeklyFromFile extends Command
 									        ], $item);
 								        }
 							        }
-							        die;
 						        }
 					        }
 				        }
