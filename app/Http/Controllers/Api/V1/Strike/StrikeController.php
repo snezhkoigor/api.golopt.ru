@@ -24,9 +24,7 @@ class StrikeController extends Controller
 		    ->where([
 		    	['strikes.symbol', strtoupper($symbol)],
 			    ['strikes.type', $type]
-		    ])
-		    ->get()
-	        ->toArray();
+		    ]);
 
     	if (!empty($_GET['parse_date_from']) && !empty($_GET['parse_date_to']))
 	    {
