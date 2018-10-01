@@ -74,7 +74,7 @@ class GetWeeklyFromFile extends Command
 						    {
 						    	$row_array = explode(';', $row);
 						    	$result[$pair][$expire][$row_array[0]]['symbol'] = $pair;
-						    	$result[$pair][$expire][$row_array[0]]['expw'] = $expire;
+						    	$result[$pair][$expire][$row_array[0]]['expire'] = $expire;
 						    	$result[$pair][$expire][$row_array[0]]['parse_date'] = $parse_date;
 						    	$result[$pair][$expire][$row_array[0]]['type'] = Strikes::TYPES_WEEK;
 						    	$result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
@@ -114,7 +114,7 @@ class GetWeeklyFromFile extends Command
 
 					        	$strike_obj = Strikes::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
-							        'expw' => $strike['expw'],
+							        'expire' => $strike['expw'],
 							        'type' => $strike['type'],
 							        'strike' => $strike['strike']
 						        ], $strike);
