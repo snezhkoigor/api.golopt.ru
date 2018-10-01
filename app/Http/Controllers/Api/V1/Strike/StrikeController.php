@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\V1\Strike;
 
 use App\Http\Controllers\Controller;
 use App\Strikes;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Exception\NotFoundException;
 
@@ -12,7 +11,7 @@ class StrikeController extends Controller
 {
     public function getBySymbol($symbol, $type)
     {
-    	$fields = $_GET['fields'] ? explode(',', $_GET['fields']) : Strikes::getDefaultFields();
+    	$fields = !empty($_GET['fields']) ? explode(',', $_GET['fields']) : Strikes::getDefaultFields();
     	$answer = '';
     	$strikes = [];
     	$query = DB::table('strikes')
@@ -29,7 +28,7 @@ class StrikeController extends Controller
 		    ->get()
 	        ->toArray();
 
-    	if ($_GET['parse_date_from'] && $_GET['parse_date_to'])
+    	if (!empty($_GET['parse_date_from']) && !empty($_GET['parse_date_to']))
 	    {
 	    	$query->whereBetween('parse_date', [date('Y-m-d H:i:s', strtotime($_GET['parse_date_from'])), date('Y-m-d H:i:s', strtotime($_GET['parse_date_to']))]);
 	    }
