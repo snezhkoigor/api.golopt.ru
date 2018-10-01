@@ -39,7 +39,7 @@ class GetWednesdayFromFile extends Command
 	    	
 	    	if (count($data_info_array) === 4)
 		    {
-		    	$parse_date = explode('.', $data_info_array[2])[2] . '-' . explode('.', $data_info_array[2])[1] . '-' . explode('.', $data_info_array[2])[0] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3]);
+		    	$parse_date = date('Y-m-d H:i:s', strtotime($data_info_array[2] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3])));
 		    	$data = file_get_contents('http://goloption.ru/Files/CME_Reports2/wednesday.csv');
 		    	$data_array = explode("\n", $data);
 
