@@ -116,7 +116,8 @@ class GetUsaFromFile extends Command
 					        		'symbol' => $strike['symbol'],
 							        'expire' => $strike['expire'],
 							        'type' => $strike['type'],
-							        'strike' => $strike['strike']
+							        'strike' => $strike['strike'],
+							        'parse_date' => $strike['parse_date']
 						        ], $strike);
 
 					        	if ($strike_obj)

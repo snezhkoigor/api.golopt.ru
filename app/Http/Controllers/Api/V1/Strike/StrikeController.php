@@ -30,6 +30,10 @@ class StrikeController extends Controller
 	    {
 	    	$query->whereBetween('parse_date', [date('Y-m-d H:i:s', strtotime($_GET['parse_date_from'])), date('Y-m-d H:i:s', strtotime($_GET['parse_date_to']))]);
 	    }
+//	    else
+//        {
+//
+//	    }
 
     	$data = $query
 		    ->get()
@@ -111,7 +115,7 @@ class StrikeController extends Controller
 	        	$result[] = array_values($value);
 	        }
 	    }
-	    
+
 	    return response()->csv($result);
     }
 
