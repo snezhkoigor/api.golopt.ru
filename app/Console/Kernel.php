@@ -36,10 +36,12 @@ class Kernel extends ConsoleKernel
     {
 		$schedule->command('getForwardPointsFromFTP')
 			->hourlyAt(7)
+			->weekdays()
 			->withoutOverlapping();
 
 		$schedule->command('getFuturesFromCME')
 			->hourlyAt(17)
+			->weekdays()
 			->withoutOverlapping();
 
 		$schedule->command('getYahooRates')
@@ -50,8 +52,9 @@ class Kernel extends ConsoleKernel
 			->daily()
 			->withoutOverlapping();
 
-	    	$schedule->command('getOptionExpirations')
+        $schedule->command('getOptionExpirations')
 			->daily()
+		    ->weekdays()
 			->withoutOverlapping();
 	  
 		$schedule->command('updateUserSubscriptions')
@@ -63,19 +66,23 @@ class Kernel extends ConsoleKernel
 			->withoutOverlapping();
 
 		$schedule->command('getWeeklyFromFile')
-			->everyMinute()
+			->cron('*/2 * * * * *')
+			->weekdays()
 			->withoutOverlapping();
 		
 		$schedule->command('getMonthlyFromFile')
-			->everyMinute()
+			->cron('*/2 * * * * *')
+			->weekdays()
 			->withoutOverlapping();
 		
 		$schedule->command('getUsaFromFile')
-			->everyMinute()
+			->cron('*/2 * * * * *')
+			->weekdays()
 			->withoutOverlapping();
 		
 		$schedule->command('getWednesdayFromFile')
-			->everyMinute()
+			->cron('*/2 * * * * *')
+			->weekdays()
 			->withoutOverlapping();
     }
 
