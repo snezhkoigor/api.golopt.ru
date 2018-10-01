@@ -31,12 +31,12 @@ class StrikeController extends Controller
 	    {
 	        foreach ($data as $strike)
 	        {
+	        	$strikes[$strike->strike]['parse_date'] = $strike->parse_date;
 	        	$strikes[$strike->strike]['id'] = $strike->id;
 	        	$strikes[$strike->strike]['strike'] = $strike->strike;
 	        	$strikes[$strike->strike]['fp'] = $strike->fp;
-	        	$strikes[$strike->strike]['odr'] = $strike->odr;
-	        	$strikes[$strike->strike]['expire'] = $strike->expire;
-	        	$strikes[$strike->strike]['parse_date'] = $strike->parse_date;
+//	        	$strikes[$strike->strike]['odr'] = $strike->odr;
+//	        	$strikes[$strike->strike]['expire'] = $strike->expire;
 	        	$strikes[$strike->strike]['open_interest_' . $strike->type] = $strike->open_interest;
 	        	$strikes[$strike->strike]['volume_' . $strike->type] = $strike->volume;
 	        	$strikes[$strike->strike]['premia_' . $strike->type] = $strike->premia;
@@ -51,7 +51,7 @@ class StrikeController extends Controller
 	        	$strikes[$strike->strike]['balance_of_day_' . $strike->type] = $strike->balance_of_day;
 	        	$strikes[$strike->strike]['is_balance_' . $strike->type] = $strike->is_balance;
 	        }
-	        
+
 	        foreach ($strikes as $key => $value)
 	        {
 	            $answer .= implode(';', array_values($value)) . "\n";
