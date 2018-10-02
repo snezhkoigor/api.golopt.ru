@@ -25,8 +25,8 @@ class StrikeController extends Controller
 		    ->join('option_strike_calls_puts', 'option_strike_calls_puts.strike_id', '=', 'option_strikes.id')
 		    ->join('option_parse_dates', 'option_parse_dates.id', '=', 'option_strikes.parse_date_id')
 		    ->where([
-		    	['strikes.symbol', strtoupper($symbol)],
-			    ['strikes.type', $type]
+		    	['option_strikes.symbol', strtoupper($symbol)],
+			    ['option_strikes.type', $type]
 		    ]);
 
     	if (!empty($_GET['parse_date_from']) && !empty($_GET['parse_date_to']))
