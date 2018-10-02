@@ -14,13 +14,16 @@ class StrikeController extends Controller
     	$fields = !empty($_GET['fields']) ? explode(',', $_GET['fields']) : OptionStrikes::getDefaultFields();
     	$result = [];
     	$strikes = [];
-    	$query = DB::table('strikes')
-		    ->select(['strike', 'fp', 'odr', 'expire', 'parse_date', 'strikes.id', 'calls_puts.type', 'calls_puts.open_interest', 'calls_puts.volume',
-	              'calls_puts.premia', 'calls_puts.spros_1', 'calls_puts.spros_2', 'calls_puts.predlojenie_1',
-                  'calls_puts.predlojenie_2', 'calls_puts.prirost_tekushiy', 'calls_puts.prirost_predydushiy',
-                  'calls_puts.money_obshiy', 'calls_puts.money_tekushiy', 'calls_puts.balance_of_day',
-                  'calls_puts.is_balance'])
-		    ->join('calls_puts', 'calls_puts.strike_id', '=', 'strikes.id')
+    	$query = DB::table('option_strikes')
+		    ->select(['option_strikes.strike', 'option_strikes.odr', 'option_strikes.expire', 'option_parse_dates.parse_date',
+	              'option_strikes.id', 'option_strike_calls_puts.type', 'option_strike_calls_puts.open_interest',
+                  'option_strike_calls_puts.volume', 'option_strike_calls_puts.premia', 'option_strike_calls_puts.spros_1',
+                  'option_strike_calls_puts.spros_2', 'option_strike_calls_puts.predlojenie_1', 'option_strike_calls_puts.predlojenie_2',
+                  'option_strike_calls_puts.prirost_tekushiy', 'option_strike_calls_puts.prirost_predydushiy',
+                  'option_strike_calls_puts.money_obshiy', 'option_strike_calls_puts.money_tekushiy',
+                  'option_strike_calls_puts.balance_of_day', 'option_strike_calls_puts.is_balance'])
+		    ->join('option_strike_calls_puts', 'option_strike_calls_puts.strike_id', '=', 'option_strikes.id')
+		    ->join('option_parse_dates', 'option_parse_dates.id', '=', 'option_strikes.parse_date_id')
 		    ->where([
 		    	['strikes.symbol', strtoupper($symbol)],
 			    ['strikes.type', $type]
@@ -28,23 +31,19 @@ class StrikeController extends Controller
 
     	if (!empty($_GET['parse_date_from']) && !empty($_GET['parse_date_to']))
 	    {
-	    	$query->whereBetween('parse_date', [date('Y-m-d H:i:s', strtotime($_GET['parse_date_from'])), date('Y-m-d H:i:s', strtotime($_GET['parse_date_to']))]);
+	    	$query->whereBetween('option_parse_dates.parse_date', [date('Y-m-d H:i:s', strtotime($_GET['parse_date_from'])), date('Y-m-d H:i:s', strtotime($_GET['parse_date_to']))]);
 	    }
 	    else
         {
-			$max_date = DB::table('strikes')
+			$max_date = DB::table('option_parse_dates')
 				->select('parse_date')
-				->where([
-			        ['strikes.symbol', strtoupper($symbol)],
-				    ['strikes.type', $type]
-			    ])
 				->orderBy('parse_date', 'desc')
 				->limit(1)
 				->first();
 
 			if ($max_date)
 			{
-				$query->where('parse_date', '>=', $max_date->parse_date);
+				$query->where('option_parse_dates.parse_date', '>=', $max_date->parse_date);
 			}
 			else
 			{
@@ -64,7 +63,7 @@ class StrikeController extends Controller
 	        	$strikes[$strike->parse_date][$strike->strike]['parse_date'] = $strike->parse_date;
 	        	$strikes[$strike->parse_date][$strike->strike]['id'] = $strike->id;
 	        	$strikes[$strike->parse_date][$strike->strike]['strike'] = $strike->strike;
-	        	$strikes[$strike->parse_date][$strike->strike]['fp'] = $strike->fp;
+	        	$strikes[$strike->parse_date][$strike->strike]['fp'] = 0;
 
 	        	if (in_array('odr', $fields))
 		        {
