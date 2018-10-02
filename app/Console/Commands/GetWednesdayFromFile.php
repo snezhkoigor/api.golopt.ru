@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\OptionParseDates;
 use App\OptionStrikeCallsPuts;
 use App\OptionStrikes;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class GetWednesdayFromFile extends Command
@@ -40,10 +41,10 @@ class GetWednesdayFromFile extends Command
 	    	
 	    	if (count($data_info_array) === 4)
 		    {
-		    	$parse_date = date(
-				    'Y-m-d H:i:s',
-				    strtotime($data_info_array[2] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3]))
-			    );
+		    	$parse_date = Carbon::createFromTimestamp(strtotime($data_info_array[2] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3])))
+				    ->subHours(3)
+				    ->format('Y-m-d H:i:s');
+
 		    	$data = file_get_contents('http://goloption.ru/Files/CME_Reports2/wednesday.csv');
 		    	$data_array = explode("\n", $data);
 
@@ -109,10 +110,6 @@ class GetWednesdayFromFile extends Command
 
 			    if ($parse_date_obj !== null)
 			    {
-			    	$parse_date_obj = new OptionParseDates();
-				    $parse_date_obj->parse_date = $parse_date;
-				    $parse_date_obj->save();
-
 				    if (count($result))
 				    {
 					    foreach ($result as $symbol)
