@@ -139,7 +139,12 @@ class StrikeController extends Controller
 	        }
 	    }
 
-	    return response()->csv($result);
+	    return response()->csv($result, 200, [], [
+	    	'encoding' => 'UTF-8',
+		    'delimiter' => ';',
+		    'quoted' => false,
+		    'include_header' => true,
+	    ]);
     }
 
     public function saveFpAndOdrFromIndicator($strike_id, $fp = null, $odr = null)
