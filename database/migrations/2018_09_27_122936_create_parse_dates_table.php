@@ -13,13 +13,10 @@ class CreateStrikesTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('option_strikes')) {
-		    Schema::create('option_strikes', function (Blueprint $table) {
+        if (!Schema::hasTable('option_parse_dates')) {
+		    Schema::create('option_parse_dates', function (Blueprint $table) {
 			    $table->increments('id');
-			    $table->string('symbol', 10);
-			    $table->date('expire');
-			    $table->integer('parse_date_id');
-			    $table->tinyInteger('type');
+			    $table->dateTime('parse_date');
 			    $table->string('strike', 50);
 			    $table->boolean('odr')->default(false);
 
@@ -35,6 +32,6 @@ class CreateStrikesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('option_strikes');
+        Schema::dropIfExists('option_parse_dates');
     }
 }

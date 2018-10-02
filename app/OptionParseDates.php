@@ -8,40 +8,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  *
  * @property integer $id
- * @property string $symbol
- * @property string $expire
  * @property string $parse_date
- * @property string $type
- * @property integer $fp
- * @property boolean $odr
  * @property string $created_at
  * @property string $updated_at
  *
- * @property CallsPuts[] $calls_puts
+ * @property OptionStrikes[] $strikes
  *
- * Class Strikes
+ * Class OptionParseDates
  * @package App\Models
  */
-class Strikes extends Model
+class OptionParseDates extends Model
 {
-	const TYPES_AMER = 'a';
-	const TYPES_WEEK = 'w';
-	const TYPES_MONTH = 'm';
-	const TYPES_WEDNESDAY = 'wd';
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-    	'symbol',
-        'expire',
-	    'parse_date',
-        'type',
-	    'strike',
-	    'fp',
-	    'odr'
+    	'parse_date'
     ];
 
 	protected $table = 'strikes';
@@ -56,7 +40,7 @@ class Strikes extends Model
 	 */
 	public function calls_puts()
 	{
-		return $this->hasMany(CallsPuts::class, 'strike_id', 'id');
+		return $this->hasMany(OptionStrikeCallsPuts::class, 'strike_id', 'id');
 	}
 	
 	public static function getDefaultFields()

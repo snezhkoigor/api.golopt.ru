@@ -13,8 +13,8 @@ class CreateCallsPutsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('calls_puts')) {
-		    Schema::create('calls_puts', function (Blueprint $table) {
+        if (!Schema::hasTable('option_strike_calls_puts')) {
+		    Schema::create('option_strike_calls_puts', function (Blueprint $table) {
 			    $table->increments('id');
 			    $table->integer('strike_id');
 			    $table->string('type', 5);
@@ -44,6 +44,6 @@ class CreateCallsPutsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('calls_puts');
+        Schema::dropIfExists('option_strike_calls_puts');
     }
 }

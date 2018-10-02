@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Strike;
 
 use App\Http\Controllers\Controller;
-use App\Strikes;
+use App\OptionStrikes;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Exception\NotFoundException;
 
@@ -11,7 +11,7 @@ class StrikeController extends Controller
 {
     public function getBySymbol($symbol, $type)
     {
-    	$fields = !empty($_GET['fields']) ? explode(',', $_GET['fields']) : Strikes::getDefaultFields();
+    	$fields = !empty($_GET['fields']) ? explode(',', $_GET['fields']) : OptionStrikes::getDefaultFields();
     	$result = [];
     	$strikes = [];
     	$query = DB::table('strikes')
@@ -142,7 +142,7 @@ class StrikeController extends Controller
 
     public function saveFpAndOdrFromIndicator($strike_id, $fp = null, $odr = null)
     {
-    	$strike = Strikes::query('id', $strike_id)->first();
+    	$strike = OptionStrikes::query('id', $strike_id)->first();
 
     	if ($strike === null)
 	    {

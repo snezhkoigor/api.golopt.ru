@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $balance_of_day
  * @property boolean $is_balance
  *
- * @property Strikes $strike
+ * @property OptionStrikes $strike
  *
  * @property string $created_at
  * @property string $updated_at
@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * Class CallsPuts
  * @package App\Models
  */
-class CallsPuts extends Model
+class OptionStrikeCallsPuts extends Model
 {
 	const TYPES_CALL = 'call';
 	const TYPES_PUT = 'puts';
@@ -72,6 +72,6 @@ class CallsPuts extends Model
 	 */
 	public function strike()
 	{
-		return $this->hasOne(Strikes::class, 'id', 'strike_id');
+		return $this->hasOne(OptionStrikes::class, 'id', 'strike_id');
 	}
 }

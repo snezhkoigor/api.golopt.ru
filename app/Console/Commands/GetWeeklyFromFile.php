@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\CallsPuts;
-use App\Strikes;
+use App\OptionParseDates;
+use App\OptionStrikeCallsPuts;
+use App\OptionStrikes;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -77,7 +78,7 @@ class GetWeeklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['symbol'] = $pair;
 						    	$result[$pair][$expire][$row_array[0]]['expire'] = $expire;
 						    	$result[$pair][$expire][$row_array[0]]['parse_date'] = $parse_date;
-						    	$result[$pair][$expire][$row_array[0]]['type'] = Strikes::TYPES_WEEK;
+						    	$result[$pair][$expire][$row_array[0]]['type'] = OptionStrikes::TYPES_WEEK;
 						    	$result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
 						    	$result[$pair][$expire][$row_array[0]]['fp'] = 0;
 						    	$result[$pair][$expire][$row_array[0]]['odr'] = 0;
@@ -94,7 +95,7 @@ class GetWeeklyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['prirost_predydushiy'] = (float)$row_array[9];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_obshiy'] = (float)$row_array[10];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_tekushiy'] = (float)$row_array[11];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['balance_of_day'] = $prefix === CallsPuts::TYPES_CALL ? (float)$row_array[0]*0.001 + (float)$row_array[3] : (float)$row_array[0]*0.001 - (float)$row_array[3];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['balance_of_day'] = $prefix === OptionStrikeCallsPuts::TYPES_CALL ? (float) $row_array[0]*0.001 + (float) $row_array[3] : (float) $row_array[0]*0.001 - (float) $row_array[3];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['is_balance'] = false;
 						    }
 					    }
@@ -113,22 +114,29 @@ class GetWeeklyFromFile extends Command
 					        {
 					        	$strike['type'] .= $week_number;
 
-					        	$strike_obj = Strikes::updateOrCreate([
-					        		'symbol' => $strike['symbol'],
-							        'expire' => $strike['expire'],
-							        'type' => $strike['type'],
-							        'strike' => $strike['strike'],
-							        'parse_date' => $strike['parse_date']
-						        ], $strike);
+					        	$parse_date_obj = OptionParseDates::updateOrCreate([
+					        		['parse_date' => $strike['parse_date']]
+						        ], ['parse_date' => $strike['parse_date']]);
 
-					        	if ($strike_obj)
+					        	if ($parse_date_obj)
 						        {
-						        	foreach ($strike['calls_puts'] as $option_type => $item)
+						            $strike_obj = OptionStrikes::updateOrCreate([
+						                'symbol' => $strike['symbol'],
+								        'expire' => $strike['expire'],
+								        'type' => $strike['type'],
+								        'strike' => $strike['strike'],
+								        'parse_date_id' => $parse_date_obj->id
+							        ], $strike);
+	
+						            if ($strike_obj)
 							        {
-							            CallsPuts::updateOrCreate([
-							                'strike_id' => $strike_obj->id,
-									        'type' => $option_type
-								        ], $item);
+							            foreach ($strike['calls_puts'] as $option_type => $item)
+								        {
+								            OptionStrikeCallsPuts::updateOrCreate([
+								                'strike_id' => $strike_obj->id,
+										        'type' => $option_type
+									        ], $item);
+								        }
 							        }
 						        }
 					        }

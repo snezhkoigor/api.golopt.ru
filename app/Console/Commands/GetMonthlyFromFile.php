@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\CallsPuts;
-use App\Strikes;
+use App\OptionStrikeCallsPuts;
+use App\OptionStrikes;
 use Illuminate\Console\Command;
 
 class GetMonthlyFromFile extends Command
@@ -76,7 +76,7 @@ class GetMonthlyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['symbol'] = $pair;
 						    	$result[$pair][$expire][$row_array[0]]['expire'] = $expire;
 						    	$result[$pair][$expire][$row_array[0]]['parse_date'] = $parse_date;
-						    	$result[$pair][$expire][$row_array[0]]['type'] = Strikes::TYPES_MONTH;
+						    	$result[$pair][$expire][$row_array[0]]['type'] = OptionStrikes::TYPES_MONTH;
 						    	$result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
 						    	$result[$pair][$expire][$row_array[0]]['fp'] = 0;
 						    	$result[$pair][$expire][$row_array[0]]['odr'] = 0;
@@ -93,7 +93,7 @@ class GetMonthlyFromFile extends Command
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['prirost_predydushiy'] = (float)$row_array[9];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_obshiy'] = (float)$row_array[10];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['money_tekushiy'] = (float)$row_array[11];
-						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['balance_of_day'] = $prefix === CallsPuts::TYPES_CALL ? (float)$row_array[0]*0.001 + (float)$row_array[3] : (float)$row_array[0]*0.001 - (float)$row_array[3];
+						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['balance_of_day'] = $prefix === OptionStrikeCallsPuts::TYPES_CALL ? (float) $row_array[0]*0.001 + (float) $row_array[3] : (float) $row_array[0]*0.001 - (float) $row_array[3];
 						    	$result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['is_balance'] = false;
 						    }
 					    }
@@ -112,7 +112,7 @@ class GetMonthlyFromFile extends Command
 					        {
 					        	$strike['type'] .= $week_number;
 
-					        	$strike_obj = Strikes::updateOrCreate([
+					        	$strike_obj = OptionStrikes::updateOrCreate([
 					        		'symbol' => $strike['symbol'],
 							        'expire' => $strike['expire'],
 							        'type' => $strike['type'],
@@ -124,7 +124,7 @@ class GetMonthlyFromFile extends Command
 						        {
 						        	foreach ($strike['calls_puts'] as $option_type => $item)
 							        {
-							            CallsPuts::updateOrCreate([
+							            OptionStrikeCallsPuts::updateOrCreate([
 							                'strike_id' => $strike_obj->id,
 									        'type' => $option_type
 								        ], $item);
