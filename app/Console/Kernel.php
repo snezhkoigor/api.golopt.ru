@@ -69,12 +69,12 @@ class Kernel extends ConsoleKernel
 //			->cron('*/2 * * * * *')
 //			->weekdays()
 //			->withoutOverlapping();
-//
+
 //		$schedule->command('getMonthlyFromFile')
 //			->cron('*/2 * * * * *')
 //			->weekdays()
 //			->withoutOverlapping();
-//
+
 //		$schedule->command('getUsaFromFile')
 //			->cron('*/2 * * * * *')
 //			->weekdays()

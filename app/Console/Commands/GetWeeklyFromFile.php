@@ -83,9 +83,8 @@ class GetWeeklyFromFile extends Command
 							    $result[$pair][$expire][$row_array[0]]['parse_date_id'] = null;
 							    $result[$pair][$expire][$row_array[0]]['type'] = OptionStrikes::TYPES_WEEK;
 							    $result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
-							    $result[$pair][$expire][$row_array[0]]['fp'] = 0;
 							    $result[$pair][$expire][$row_array[0]]['odr'] = 0;
-							
+
 							    $result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['type'] = $prefix;
 							    $result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['open_interest'] = (float) $row_array[1];
 							    $result[$pair][$expire][$row_array[0]]['calls_puts'][$prefix]['volume'] = (float) $row_array[2];

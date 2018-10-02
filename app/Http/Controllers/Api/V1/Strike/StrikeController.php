@@ -31,7 +31,10 @@ class StrikeController extends Controller
 
     	if (!empty($_GET['parse_date_from']) && !empty($_GET['parse_date_to']))
 	    {
-	    	$query->whereBetween('option_parse_dates.parse_date', [date('Y-m-d H:i:s', strtotime($_GET['parse_date_from'])), date('Y-m-d H:i:s', strtotime($_GET['parse_date_to']))]);
+	    	$query->whereBetween('option_parse_dates.parse_date', [
+	    		date('Y-m-d H:i:s', $_GET['parse_date_from']),
+			    date('Y-m-d H:i:s', $_GET['parse_date_to'])
+		    ]);
 	    }
 	    else
         {
