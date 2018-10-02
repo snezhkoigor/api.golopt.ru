@@ -17,9 +17,6 @@ class CreateParseDatesTable extends Migration
 		    Schema::create('option_parse_dates', function (Blueprint $table) {
 			    $table->increments('id');
 			    $table->dateTime('parse_date');
-			    $table->string('strike', 50);
-			    $table->boolean('odr')->default(false);
-
 			    $table->timestamps();
 		    });
 	    }

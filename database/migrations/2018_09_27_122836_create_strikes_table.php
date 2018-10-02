@@ -19,7 +19,7 @@ class CreateStrikesTable extends Migration
 			    $table->string('symbol', 10);
 			    $table->date('expire');
 			    $table->integer('parse_date_id');
-			    $table->tinyInteger('type');
+			    $table->string('type', 3);
 			    $table->string('strike', 50);
 			    $table->boolean('odr')->default(false);
 
