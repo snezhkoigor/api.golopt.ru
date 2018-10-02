@@ -31,6 +31,7 @@ class OptionParseDates extends Model
 	protected $table = 'option_parse_dates';
 
     protected $dates = [
+    	'parse_date',
     	'created_at',
 	    'updated_at'
     ];
