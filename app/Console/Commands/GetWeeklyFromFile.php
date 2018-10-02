@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\OptionParseDates;
 use App\OptionStrikeCallsPuts;
 use App\OptionStrikes;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -41,10 +42,10 @@ class GetWeeklyFromFile extends Command
 	    	
 	    	if (count($data_info_array) === 4)
 		    {
-			    $parse_date = date(
-				    'Y-m-d H:i:s',
-				    strtotime($data_info_array[2] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3]))
-			    );
+		    	$parse_date = Carbon::createFromTimestamp(strtotime($data_info_array[2] . ' ' . str_replace(['-', '.csv'], [':', ''], $data_info_array[3])))
+				    ->subHours(3)
+				    ->format('Y-m-d H:i:s');
+
 			    $data = file_get_contents('http://goloption.ru/Files/CME_Reports2/week.csv');
 			    $data_array = explode("\n", $data);
 			
