@@ -115,7 +115,7 @@ class GetWeeklyFromFile extends Command
 					        	$strike['type'] .= $week_number;
 
 					        	$parse_date_obj = OptionParseDates::updateOrCreate([
-					        		['parse_date' => $strike['parse_date']]
+					        		'parse_date' => $strike['parse_date']
 						        ], ['parse_date' => $strike['parse_date']]);
 
 					        	if ($parse_date_obj)
