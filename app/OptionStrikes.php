@@ -42,7 +42,7 @@ class OptionStrikes extends Model
 	    'odr'
     ];
 
-	protected $table = 'strikes';
+	protected $table = 'option_strikes';
 
     protected $dates = [
     	'created_at',

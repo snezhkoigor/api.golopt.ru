@@ -60,7 +60,7 @@ class OptionStrikeCallsPuts extends Model
 	    'is_balance'
     ];
 
-	protected $table = 'calls_puts';
+	protected $table = 'option_strike_calls_puts';
 
     protected $dates = [
     	'created_at',
