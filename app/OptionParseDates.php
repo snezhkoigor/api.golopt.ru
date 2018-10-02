@@ -28,7 +28,7 @@ class OptionParseDates extends Model
     	'parse_date'
     ];
 
-	protected $table = 'strikes';
+	protected $table = 'option_parse_dates';
 
     protected $dates = [
     	'created_at',
