@@ -59,7 +59,6 @@ class GetWeeklyFromFile extends Command
 				    {
 					    if ($row !== '')
 					    {
-						
 						    if (strpos($row, ';') === false)
 						    {
 							    if (strpos($row, 'EXPW') !== false)
