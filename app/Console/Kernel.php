@@ -65,25 +65,25 @@ class Kernel extends ConsoleKernel
 			->everyMinute()
 			->withoutOverlapping();
 
-//		$schedule->command('getWeeklyFromFile')
-//			->cron('*/2 * * * * *')
-//			->weekdays()
-//			->withoutOverlapping();
+		$schedule->command('getWeeklyFromFile')
+			->cron('*/2 * * * * *')
+			->weekdays()
+			->withoutOverlapping();
 
-//		$schedule->command('getMonthlyFromFile')
-//			->cron('*/2 * * * * *')
-//			->weekdays()
-//			->withoutOverlapping();
+		$schedule->command('getMonthlyFromFile')
+			->cron('*/2 * * * * *')
+			->weekdays()
+			->withoutOverlapping();
 
-//		$schedule->command('getUsaFromFile')
-//			->cron('*/2 * * * * *')
-//			->weekdays()
-//			->withoutOverlapping();
-//
-//		$schedule->command('getWednesdayFromFile')
-//			->cron('*/2 * * * * *')
-//			->weekdays()
-//			->withoutOverlapping();
+		$schedule->command('getUsaFromFile')
+			->cron('*/2 * * * * *')
+			->weekdays()
+			->withoutOverlapping();
+
+		$schedule->command('getWednesdayFromFile')
+			->cron('*/2 * * * * *')
+			->weekdays()
+			->withoutOverlapping();
     }
 
     /**
