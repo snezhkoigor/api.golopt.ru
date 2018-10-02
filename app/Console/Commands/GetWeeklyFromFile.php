@@ -120,8 +120,9 @@ class GetWeeklyFromFile extends Command
 
 					        	if ($parse_date_obj === null)
 						        {
-						        	$parse_date_obj = OptionParseDates::query()
-								        ->insert(['parse_date' => $parse_date]);
+						        	$parse_date_obj =  new OptionParseDates();
+						        	$parse_date_obj->parse_date = $parse_date;
+						        	$parse_date_obj->save();
 
 						        	$strike['parse_date_id'] = $parse_date_obj->id;
 						            $strike_obj = OptionStrikes::updateOrCreate([
