@@ -104,16 +104,12 @@ class GetWeeklyFromFile extends Command
 				    }
 			    }
 			
-			    $parse_date_obj = OptionParseDates::query()
-				    ->where('parse_date', $parse_date)
-				    ->first();
-			
-			    if ($parse_date_obj === null)
-			    {
-			    	$parse_date_obj = new OptionParseDates();
-				    $parse_date_obj->parse_date = $parse_date;
-				    $parse_date_obj->save();
+			    $parse_date_obj = OptionParseDates::updateOrCreate([
+			    	'parse_date' => $parse_date
+			    ], ['parse_date' => $parse_date]);
 
+			    if ($parse_date_obj !== null)
+			    {
 				    if (count($result))
 				    {
 					    foreach ($result as $symbol)
