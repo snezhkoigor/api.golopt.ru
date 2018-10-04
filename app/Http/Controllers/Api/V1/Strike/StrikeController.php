@@ -32,15 +32,12 @@ class StrikeController extends Controller
 			if ($parse_date)
 			{
 				DB::table('option_parse_dates')
+					->where(['id', $parse_date->id])
 					->update([
 						'fp' => (float)$_GET['fp']
-					])
-					->where(['id', $parse_date->id]);
+					]);
 
 				DB::table('option_strikes')
-					->update([
-						'odr' => 1
-					])
 					->where([
 						['parse_date_id', $parse_date->id],
 						['symbol', strtoupper($_GET['symbol'])]
@@ -48,7 +45,10 @@ class StrikeController extends Controller
 					->where(function ($query) use ($_GET) {
 		                $query->whereBetween('strike', [$_GET['open0'], $_GET['close1']])
 		                      ->orWhereBetween('strike', [$_GET['open1'], $_GET['close1']]);
-		            });
+		            })
+					->update([
+						'odr' => 1
+					]);
 			}
 		}
 
