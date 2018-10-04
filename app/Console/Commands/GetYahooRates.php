@@ -15,8 +15,8 @@ use Illuminate\Console\Command;
 
 class GetYahooRates extends Command
 {
-	public static $central_bank_rates_associations = [
-		Dictionary::CURRENCY_USD => 'R01235'
+	public static $need_to_parse = [
+		'USD'
 	];
 	public static $central_bank_rates_uri = 'http://www.cbr.ru/currency_base/dynamics.aspx?VAL_NM_RQ={currency}&date_req1={from}&date_req2={to}&rt=1&mode=1';
 
@@ -51,64 +51,35 @@ class GetYahooRates extends Command
      */
     public function handle()
     {
-	    foreach (self::$central_bank_rates_associations as $major => $currency) {
-		    $uri = str_replace(
-			    ['{from}', '{to}', '{currency}'],
-			    [date('Y-m-d'), date('Y-m-d'), $currency],
-			    self::$central_bank_rates_uri
-		    );
-		    $content = @file_get_contents($uri);
+    	$data = file_get_contents('https://www.cbr-xml-daily.ru/daily_json.js');
+    	$json = json_decode($data);
 
-		    $rates = [];
-		    if (!empty($content)) {
-			    preg_match('~<table.*?class=\"data\">.*?<tbody>(.*)<\/tbody>.*?</table>~is', $content, $matches);
-
-			    if (!empty($matches[1])) {
-				    preg_match_all('~<tr>(.*?)<\/tr>~is', $matches[1], $items);
-
-				    if (!empty($items[1]) && count($items[1])) {
-					    foreach ($items[1] as $item) {
-						    preg_match_all('~<td>(.*?)<\/td>~is', $item, $calendar);
-
-						    if (!empty($calendar[1]) && count($calendar[1]) && !empty($calendar[1][2])) {
-							    $rates[$major] = (float) str_replace(',', '.', $calendar[1][2]);
-						    }
-					    }
-				    }
-			    }
-		    }
-
-		    if (!empty($rates))
+    	foreach (self::$need_to_parse as $code)
+	    {
+		    if (property_exists($json->Valute, $code) && property_exists($json->Valute->{$code}, 'Value'))
 		    {
-			    foreach ($rates as $major_symbol => $exchange_rate)
-			    {
-				    if (!empty($exchange_rate))
-				    {
-					    $info = Rate::where([
-						    ['date', date('Y-m-d')],
-						    ['name', $major_symbol . Dictionary::CURRENCY_RUB]
-					    ])->first();
+				$info = Rate::where([
+				    ['date', date('Y-m-d')],
+				    ['name', $code . Dictionary::CURRENCY_RUB]
+			    ])->first();
 
-					    if ($info) {
-						    $rate = $info;
-					    } else {
-						    $rate = new Rate();
-					    }
-
-					    $rate->name = $major_symbol . Dictionary::CURRENCY_RUB;
-					    $rate->rate = (float)$exchange_rate;
-					    $rate->date = date('Y-m-d');
-					    $rate->save();
-				    }
+			    if ($info) {
+				    $rate = $info;
+			    } else {
+				    $rate = new Rate();
 			    }
 
-			    Log::info('Установили курс валют за ' . date('Y-m-d') . '.');
-		    } else {
-
-			    $info = Rate::where(
+			    $rate->name = $code . Dictionary::CURRENCY_RUB;
+			    $rate->rate = (float)$json->Valute->{$code}->Value;
+			    $rate->date = date('Y-m-d');
+			    $rate->save();
+		    }
+		    else
+	        {
+		    	$info = Rate::where(
 				    [
 					    ['date', date('Y-m-d')],
-					    ['name', $major . Dictionary::CURRENCY_RUB]
+					    ['name', $code . Dictionary::CURRENCY_RUB]
 				    ]
 			    )
 				    ->first();
@@ -117,9 +88,8 @@ class GetYahooRates extends Command
 			    {
 				    $ratePrev = Rate::where(
 					    [
-						    ['name', $major . Dictionary::CURRENCY_RUB]
-					    ]
-				    )
+						    ['name', $code . Dictionary::CURRENCY_RUB]
+					    ])
 					    ->orderBy('date', 'desc')
 					    ->first();
 
@@ -127,16 +97,10 @@ class GetYahooRates extends Command
 				    {
 					    $rate = new Rate();
 
-					    $rate->name = $major . Dictionary::CURRENCY_RUB;
+					    $rate->name = $code . Dictionary::CURRENCY_RUB;
 					    $rate->rate = (float) $ratePrev->rate;
 					    $rate->date = date('Y-m-d');
 					    $rate->save();
-
-					    Log::info('Установили предыдущий курс валют.');
-				    }
-				    else
-				    {
-					    Log::warning('Не смогли получить курсы валют.');
 				    }
 			    }
 		    }
