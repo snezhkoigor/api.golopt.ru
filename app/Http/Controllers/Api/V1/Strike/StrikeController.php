@@ -11,6 +11,7 @@ class StrikeController extends Controller
 {
     public function getBySymbol($symbol, $type)
     {
+    	$filters = !empty($_GET['filters']) ? json_decode($_GET['filters'], true) : [];
     	$fields = !empty($_GET['fields']) ? explode(',', $_GET['fields']) : OptionStrikes::getDefaultFields();
     	$result = [];
     	$strikes = [];
@@ -29,16 +30,17 @@ class StrikeController extends Controller
 			    ['option_strikes.type', $type]
 		    ]);
 
-    	if (!empty($_GET['parse_date_from']) && !empty($_GET['parse_date_to']))
+    	if (isset($filters['parse_date_from']))
 	    {
-	    	$query->whereBetween('option_parse_dates.parse_date', [
-	    		date('Y-m-d H:i:s', $_GET['parse_date_from']),
-			    date('Y-m-d H:i:s', $_GET['parse_date_to'])
-		    ]);
+	    	$query->where('option_parse_dates.parse_date', '>=', date('Y-m-d H:i:s', $filters['parse_date_from']));
 	    }
-	    else
-        {
-			$max_date = DB::table('option_parse_dates')
+	    if (isset($filters['parse_date_to']))
+	    {
+	    	$query->where('option_parse_dates.parse_date', '<=', date('Y-m-d H:i:s', $filters['parse_date_to']));
+	    }
+	    if (!isset($filters['parse_date_from']) && !isset($filters['parse_date_to']))
+	    {
+	    	$max_date = DB::table('option_parse_dates')
 				->select('parse_date')
 				->orderBy('parse_date', 'desc')
 				->limit(1)
