@@ -30,6 +30,10 @@ class StrikeController extends Controller
 			    ['option_strikes.type', $type]
 		    ]);
 
+    	if (isset($filters['odr']))
+	    {
+	    	$query->where('option_strikes.odr', $filters['odr']);
+	    }
     	if (isset($filters['parse_date_from']))
 	    {
 	    	$query->where('option_parse_dates.parse_date', '>=', date('Y-m-d H:i:s', $filters['parse_date_from']));
