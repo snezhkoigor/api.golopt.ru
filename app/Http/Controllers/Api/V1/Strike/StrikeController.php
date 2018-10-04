@@ -83,7 +83,7 @@ class StrikeController extends Controller
     	$result = [];
     	$strikes = [];
     	$query = DB::table('option_strikes')
-		    ->select(['option_parse_dates.fp', 'option_strikes.strike', 'option_strikes.odr', 'option_strikes.expire', 'option_parse_dates.parse_date',
+		    ->select(['option_strikes.fp', 'option_strikes.strike', 'option_strikes.odr', 'option_strikes.expire', 'option_parse_dates.parse_date',
 	              'option_strikes.id', 'option_strike_calls_puts.type', 'option_strike_calls_puts.open_interest',
                   'option_strike_calls_puts.volume', 'option_strike_calls_puts.premia', 'option_strike_calls_puts.spros_1',
                   'option_strike_calls_puts.spros_2', 'option_strike_calls_puts.predlojenie_1', 'option_strike_calls_puts.predlojenie_2',
