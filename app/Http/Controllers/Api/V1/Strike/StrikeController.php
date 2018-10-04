@@ -11,40 +11,57 @@ class StrikeController extends Controller
 {
 	public function fpOdr()
 	{
-		if (isset($_GET['symbol']) && isset($_GET['fp']) && isset($_GET['open0']) && isset($_GET['open1']) && isset($_GET['close1']))
+		if (isset($_GET['symbol'], $_GET['fp'], $_GET['open0'], $_GET['open1'], $_GET['close1']))
 		{
-			if ((float)$_GET['fp'] === 0)
-			{
-				$_GET['fp'] = DB::table('option_parse_dates')
-					->select('fp')
-					->where('fp', '>', 0)
-					->orderBy('parse_date', 'desc')
-					->limit(1)
-					->first();
-			}
+			$fp = (float)$_GET['fp'];
+			$symbol = strtoupper($_GET['symbol']);
+			$open_0 = (float)$_GET['open0'];
+			$open_1 = (float)$_GET['open1'];
+			$close_1 = (float)$_GET['close1'];
 
 			$parse_date = DB::table('option_parse_dates')
 				->select('id')
 				->orderBy('parse_date', 'desc')
 				->limit(1)
 				->first();
-
-			if ($parse_date)
+			
+			if ($fp === 0)
 			{
-				DB::table('option_parse_dates')
-					->where('id', $parse_date->id)
+				$strike_with_fp = DB::table('option_strikes')
+					->select('fp')
+					->where([
+						['fp', '>', 0],
+						['symbol', $symbol]
+					])
+					->orderBy('parse_date_id', 'desc')
+					->limit(1)
+					->first();
+				
+				if ($strike_with_fp)
+				{
+					$fp = $strike_with_fp->fp;
+				}
+			}
+
+			if ($parse_date && $_GET['fp'] !== 0)
+			{
+				DB::table('option_strikes')
+					->where([
+						['parse_date_id', $parse_date->id],
+						['symbol', $symbol]
+					])
 					->update([
-						'fp' => (float)$_GET['fp']
+						'fp' => $fp
 					]);
 
 				DB::table('option_strikes')
 					->where([
 						['parse_date_id', $parse_date->id],
-						['symbol', strtoupper($_GET['symbol'])]
+						['symbol', $symbol]
 					])
-					->where(function ($query) use ($_GET) {
-		                $query->whereBetween('strike', [$_GET['open0'], $_GET['close1']])
-		                      ->orWhereBetween('strike', [$_GET['open1'], $_GET['close1']]);
+					->where(function ($query) use ($open_0, $open_1, $close_1) {
+		                $query->whereBetween('strike', [$open_0, $close_1])
+		                      ->orWhereBetween('strike', [$open_1, $close_1]);
 		            })
 					->update([
 						'odr' => 1

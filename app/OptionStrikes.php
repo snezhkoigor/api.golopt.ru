@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property integer $parse_date_id
  * @property string $symbol
  * @property string $expire
+ * @property float $fp
  * @property string $type
  * @property boolean $odr
  * @property string $created_at
@@ -36,6 +37,7 @@ class OptionStrikes extends Model
     protected $fillable = [
     	'symbol',
         'expire',
+	    'fp',
 	    'parse_date_id',
         'type',
 	    'strike',
@@ -62,6 +64,7 @@ class OptionStrikes extends Model
 		return [
 			'odr',
 			'expire',
+			'fp',
 			'open_interest_call',
 			'volume_call',
 			'premia_call',
