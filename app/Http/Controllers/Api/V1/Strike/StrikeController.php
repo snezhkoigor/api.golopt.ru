@@ -31,8 +31,11 @@ class StrikeController extends Controller
 
 			if ($parse_date)
 			{
-				$parse_date->fp = (float)$_GET['fp'];
-				$parse_date->save();
+				DB::table('option_parse_dates')
+					->update([
+						'fp' => (float)$_GET['fp']
+					])
+					->where(['id', $parse_date->id]);
 
 				DB::table('option_strikes')
 					->update([
