@@ -76,6 +76,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
 	Route::get('/widgets/clients/totalRegistrations', 'User\WidgetController@totalClientRegistrations');
 	Route::get('/widgets/clients/totalRegistrationsAndActivations/{period_type?}', 'User\WidgetController@totalClientRegistrationsAndActivations');
 
+	Route::get('/fpodr', 'Strike\StrikeController@fpOdr');
 	Route::get('/strikes/{symbol}/{type}', 'Strike\StrikeController@getBySymbol');
 	Route::put('/strikes/{strike_id}/{?fp}/{?odr}', 'Strike\StrikeController@saveFpAndOdrFromIndicator');
 

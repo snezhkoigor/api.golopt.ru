@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property integer $id
  * @property string $parse_date
+ * @property float $fp
  * @property string $created_at
  * @property string $updated_at
  *
@@ -25,7 +26,8 @@ class OptionParseDates extends Model
      * @var array
      */
     protected $fillable = [
-    	'parse_date'
+    	'parse_date',
+	    'fp'
     ];
 
 	protected $table = 'option_parse_dates';
@@ -43,12 +45,13 @@ class OptionParseDates extends Model
 	{
 		return $this->hasMany(OptionStrikeCallsPuts::class, 'strike_id', 'id');
 	}
-	
+
 	public static function getDefaultFields()
 	{
 		return [
 			'odr',
 			'expire',
+			'fp',
 			'open_interest_call',
 			'volume_call',
 			'premia_call',

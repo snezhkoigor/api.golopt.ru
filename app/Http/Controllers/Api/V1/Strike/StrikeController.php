@@ -9,6 +9,53 @@ use Intervention\Image\Exception\NotFoundException;
 
 class StrikeController extends Controller
 {
+	public function fpOdr()
+	{
+		if (isset($_GET['symbol']) && isset($_GET['fp']) && isset($_GET['open0']) && isset($_GET['open1']) && isset($_GET['close1']))
+		{
+			if ((float)$_GET['fp'] === 0)
+			{
+				$_GET['fp'] = DB::table('option_parse_dates')
+					->select('fp')
+					->where('fp', '>', 0)
+					->orderBy('parse_date', 'desc')
+					->limit(1)
+					->first();
+			}
+
+			$parse_date = DB::table('option_parse_dates')
+				->select('id')
+				->orderBy('parse_date', 'desc')
+				->limit(1)
+				->first();
+
+			if ($parse_date)
+			{
+				$parse_date->fp = (float)$_GET['fp'];
+				$parse_date->save();
+
+				DB::table('option_strikes')
+					->update([
+						'odr' => 1
+					])
+					->where([
+						['parse_date_id', $parse_date->id],
+						['symbol', strtoupper($_GET['symbol'])]
+					])
+					->where(function ($query) use ($_GET) {
+		                $query->whereBetween('strike', [$_GET['open0'], $_GET['close1']])
+		                      ->orWhereBetween('strike', [$_GET['open1'], $_GET['close1']]);
+		            });
+			}
+		}
+
+		return response()->json([
+            'status' => true,
+            'message' => 'Данные изменены',
+            'data' => null
+        ], 200);
+	}
+	
     public function getBySymbol($symbol, $type)
     {
     	$filters = !empty($_GET['filters']) ? json_decode($_GET['filters'], true) : [];
@@ -16,7 +63,7 @@ class StrikeController extends Controller
     	$result = [];
     	$strikes = [];
     	$query = DB::table('option_strikes')
-		    ->select(['option_strikes.strike', 'option_strikes.odr', 'option_strikes.expire', 'option_parse_dates.parse_date',
+		    ->select(['option_parse_dates.fp', 'option_strikes.strike', 'option_strikes.odr', 'option_strikes.expire', 'option_parse_dates.parse_date',
 	              'option_strikes.id', 'option_strike_calls_puts.type', 'option_strike_calls_puts.open_interest',
                   'option_strike_calls_puts.volume', 'option_strike_calls_puts.premia', 'option_strike_calls_puts.spros_1',
                   'option_strike_calls_puts.spros_2', 'option_strike_calls_puts.predlojenie_1', 'option_strike_calls_puts.predlojenie_2',
@@ -72,7 +119,7 @@ class StrikeController extends Controller
 	        	$strikes[$strike->parse_date][$strike->strike]['parse_date'] = $strike->parse_date;
 	        	$strikes[$strike->parse_date][$strike->strike]['id'] = $strike->id;
 	        	$strikes[$strike->parse_date][$strike->strike]['strike'] = $strike->strike;
-	        	$strikes[$strike->parse_date][$strike->strike]['fp'] = 0;
+	        	$strikes[$strike->parse_date][$strike->strike]['fp'] = $strike->fp;
 
 	        	if (in_array('odr', $fields))
 		        {
