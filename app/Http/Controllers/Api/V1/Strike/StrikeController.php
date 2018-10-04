@@ -131,7 +131,7 @@ class StrikeController extends Controller
     	$data = $query
 		    ->get()
 	        ->toArray();
-
+var_dump($data);die;
     	if ($data)
 	    {
 	        foreach ($data as $strike)
