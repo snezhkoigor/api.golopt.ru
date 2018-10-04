@@ -32,7 +32,7 @@ class StrikeController extends Controller
 			if ($parse_date)
 			{
 				DB::table('option_parse_dates')
-					->where(['id', $parse_date->id])
+					->where('id', $parse_date->id)
 					->update([
 						'fp' => (float)$_GET['fp']
 					]);
