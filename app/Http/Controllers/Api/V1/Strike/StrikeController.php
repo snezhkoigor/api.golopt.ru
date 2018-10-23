@@ -134,7 +134,7 @@ class StrikeController extends Controller
 		    {
 		    	if ($filter['value'] !== 'max')
 			    {
-			    	$query->where($filter['field'], $filter['operation'], $filter['value']);
+			    	$query->where($filter['field'] === 'type' ? 'option_strike_calls_puts.type' : $filter['field'], $filter['operation'], $filter['value']);
 			    }
 		    }
 	    }
