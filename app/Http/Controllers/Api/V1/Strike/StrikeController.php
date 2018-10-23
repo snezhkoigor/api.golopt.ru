@@ -79,6 +79,9 @@ class StrikeController extends Controller
     public function getBySymbol($symbol, $type)
     {
     	$parse_date = !empty($_GET['parse_date']) ? json_decode($_GET['parse_date'], true) : [];
+    	
+    	var_dump($parse_date);die;
+    	
     	$filters = !empty($_GET['filters']) ? json_decode($_GET['filters'], true) : [];
     	$fields = !empty($_GET['fields']) ? explode(',', $_GET['fields']) : OptionStrikes::getDefaultFields();
     	$result = [];
