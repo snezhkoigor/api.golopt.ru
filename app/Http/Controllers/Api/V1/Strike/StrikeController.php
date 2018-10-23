@@ -78,6 +78,7 @@ class StrikeController extends Controller
 	
     public function getBySymbol($symbol, $type)
     {
+    	$parse_date = !empty($_GET['parse_date']) ? json_decode($_GET['parse_date'], true) : [];
     	$filters = !empty($_GET['filters']) ? json_decode($_GET['filters'], true) : [];
     	$fields = !empty($_GET['fields']) ? explode(',', $_GET['fields']) : OptionStrikes::getDefaultFields();
     	$result = [];
@@ -101,15 +102,15 @@ class StrikeController extends Controller
 	    {
 	    	$query->where('option_strikes.odr', $filters['odr']);
 	    }
-    	if (isset($filters['parse_date_from']))
+    	if (isset($parse_date['from']))
 	    {
-	    	$query->where('option_parse_dates.parse_date', '>=', date('Y-m-d H:i:s', $filters['parse_date_from']));
+	    	$query->where('option_parse_dates.parse_date', '>=', date('Y-m-d H:i:s', $parse_date['from']));
 	    }
-	    if (isset($filters['parse_date_to']))
+	    if (isset($parse_date['to']))
 	    {
-	    	$query->where('option_parse_dates.parse_date', '<=', date('Y-m-d H:i:s', $filters['parse_date_to']));
+	    	$query->where('option_parse_dates.parse_date', '<=', date('Y-m-d H:i:s', $parse_date['to']));
 	    }
-	    if (!isset($filters['parse_date_from']) && !isset($filters['parse_date_to']))
+	    if (!isset($parse_date['from']) && !isset($parse_date['to']))
 	    {
 	    	$max_date = DB::table('option_parse_dates')
 				->select('parse_date')
@@ -126,6 +127,16 @@ class StrikeController extends Controller
 				echo 'Нет данных';
 				die;
 			}
+	    }
+	    if (count($filters) !== 0)
+	    {
+	    	foreach ($filters as $filter)
+		    {
+		    	if ($filter['value'] !== 'max')
+			    {
+			    	$query->where($filter['field'], $filter['operation'], $filter['value']);
+			    }
+		    }
 	    }
 
     	$data = $query
