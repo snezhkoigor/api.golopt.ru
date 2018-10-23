@@ -84,13 +84,13 @@ class StrikeController extends Controller
     	$result = [];
     	$strikes = [];
     	$query = DB::table('option_strikes')
-		    ->select(['option_strikes.fp', 'option_strikes.strike', 'option_strikes.odr', 'option_strikes.expire', 'option_parse_dates.parse_date',
-	              'option_strikes.id', DB::raw('option_strike_calls_puts.type as option_type'), 'option_strike_calls_puts.open_interest',
-                  'option_strike_calls_puts.volume', 'option_strike_calls_puts.premia', 'option_strike_calls_puts.spros_1',
-                  'option_strike_calls_puts.spros_2', 'option_strike_calls_puts.predlojenie_1', 'option_strike_calls_puts.predlojenie_2',
-                  'option_strike_calls_puts.prirost_tekushiy', 'option_strike_calls_puts.prirost_predydushiy',
-                  'option_strike_calls_puts.money_obshiy', 'option_strike_calls_puts.money_tekushiy',
-                  'option_strike_calls_puts.balance_of_day', 'option_strike_calls_puts.is_balance'])
+		    ->select(DB::raw('option_strikes.fp, option_strikes.strike, option_strikes.odr, option_strikes.expire, option_parse_dates.parse_date,
+	              option_strikes.id, option_strike_calls_puts.type as option_type, option_strike_calls_puts.open_interest,
+                  option_strike_calls_puts.volume, option_strike_calls_puts.premia, option_strike_calls_puts.spros_1,
+                  option_strike_calls_puts.spros_2, option_strike_calls_puts.predlojenie_1, option_strike_calls_puts.predlojenie_2,
+                  option_strike_calls_puts.prirost_tekushiy, option_strike_calls_puts.prirost_predydushiy,
+                  option_strike_calls_puts.money_obshiy, option_strike_calls_puts.money_tekushiy,
+                  option_strike_calls_puts.balance_of_day, option_strike_calls_puts.is_balance'))
 		    ->join('option_strike_calls_puts', 'option_strike_calls_puts.strike_id', '=', 'option_strikes.id')
 		    ->join('option_parse_dates', 'option_parse_dates.id', '=', 'option_strikes.parse_date_id')
 		    ->where([
