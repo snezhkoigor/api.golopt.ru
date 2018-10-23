@@ -14,6 +14,10 @@
 use Intervention\Image\ImageManagerStatic as Image;
 use \Illuminate\Support\Facades\Storage;
 
+Route::group(['middleware' => ['cors'], 'namespace' => 'Api\V1'], function() {
+	Route::get('/strikes/{symbol}/{type}', 'Strike\StrikeController@getBySymbol');
+});
+
 Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], function() {
     Route::post('/register', 'User\RegisterController@register');
     Route::post('/login', 'User\LoginController@login');
@@ -77,7 +81,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
 	Route::get('/widgets/clients/totalRegistrationsAndActivations/{period_type?}', 'User\WidgetController@totalClientRegistrationsAndActivations');
 
 	Route::get('/fpodr', 'Strike\StrikeController@fpOdr');
-	Route::get('/strikes/{symbol}/{type}', 'Strike\StrikeController@getBySymbol');
+//	Route::get('/strikes/{symbol}/{type}', 'Strike\StrikeController@getBySymbol');
 	Route::put('/strikes/{strike_id}/{?fp}/{?odr}', 'Strike\StrikeController@saveFpAndOdrFromIndicator');
 
 	Route::get('/files/{storage}/{filename}', function ($storage, $filename) {
