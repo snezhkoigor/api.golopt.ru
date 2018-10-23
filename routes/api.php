@@ -16,6 +16,7 @@ use \Illuminate\Support\Facades\Storage;
 
 Route::group(['middleware' => ['cors'], 'namespace' => 'Api\V1'], function() {
 	Route::get('/strikes/{symbol}/{type}', 'Strike\StrikeController@getBySymbol');
+	Route::put('/strikes/{strike_id}/{?fp}/{?odr}', 'Strike\StrikeController@saveFpAndOdrFromIndicator');
 });
 
 Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], function() {
@@ -82,7 +83,7 @@ Route::group(['middleware' => ['api', 'cors'], 'namespace' => 'Api\V1'], functio
 
 	Route::get('/fpodr', 'Strike\StrikeController@fpOdr');
 //	Route::get('/strikes/{symbol}/{type}', 'Strike\StrikeController@getBySymbol');
-	Route::put('/strikes/{strike_id}/{?fp}/{?odr}', 'Strike\StrikeController@saveFpAndOdrFromIndicator');
+//	Route::put('/strikes/{strike_id}/{?fp}/{?odr}', 'Strike\StrikeController@saveFpAndOdrFromIndicator');
 
 	Route::get('/files/{storage}/{filename}', function ($storage, $filename) {
 		if (Storage::disk($storage)->exists($filename)) {
