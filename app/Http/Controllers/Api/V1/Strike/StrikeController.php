@@ -134,7 +134,7 @@ class StrikeController extends Controller
 		    {
 		    	if ($filter['value'] !== 'max')
 			    {
-			    	$query->where($filter['field'] === 'type' ? 'option_strike_calls_puts.type' : $filter['field'], $filter['operation'], $filter['value']);
+			    	$query->where(($filter['field'] === 'type' ? 'option_strike_calls_puts.type' : $filter['field']), $filter['operation'], $filter['value']);
 			    }
 		    }
 	    }
@@ -147,70 +147,71 @@ class StrikeController extends Controller
 	    {
 	        foreach ($data as $strike)
 	        {
-	        	$strikes[$strike->parse_date][$strike->strike]['parse_date'] = $strike->parse_date;
+	        	$parse_date = strtotime($strike->parse_date);
+	        	$strikes[$parse_date][$strike->strike]['parse_date'] = $parse_date;
 //	        	$strikes[$strike->parse_date][$strike->strike]['id'] = $strike->id;
-	        	$strikes[$strike->parse_date][$strike->strike]['strike'] = $strike->strike;
-	        	$strikes[$strike->parse_date][$strike->strike]['fp'] = $strike->fp;
+	        	$strikes[$parse_date][$strike->strike]['strike'] = $strike->strike;
+	        	$strikes[$parse_date][$strike->strike]['fp'] = $strike->fp;
 
 	        	if (in_array('odr', $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['odr'] = $strike->odr;
+		        	$strikes[$parse_date][$strike->strike]['odr'] = $strike->odr;
 		        }
 		        if (in_array('expire', $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['expire'] = $strike->expire;
+		        	$strikes[$parse_date][$strike->strike]['expire'] = $strike->expire;
 		        }
 		        if (in_array('open_interest_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['open_interest_' . $strike->type] = $strike->open_interest;
+		        	$strikes[$parse_date][$strike->strike]['open_interest_' . $strike->type] = $strike->open_interest;
 		        }
 		        if (in_array('volume_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['volume_' . $strike->type] = $strike->volume;
+		        	$strikes[$parse_date][$strike->strike]['volume_' . $strike->type] = $strike->volume;
 		        }
 		        if (in_array('premia_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['premia_' . $strike->type] = $strike->premia;
+		        	$strikes[$parse_date][$strike->strike]['premia_' . $strike->type] = $strike->premia;
 		        }
 		        if (in_array('spros_1_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['spros_1_' . $strike->type] = $strike->spros_1;
+		        	$strikes[$parse_date][$strike->strike]['spros_1_' . $strike->type] = $strike->spros_1;
 		        }
 		        if (in_array('spros_2_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['spros_2_' . $strike->type] = $strike->spros_2;
+		        	$strikes[$parse_date][$strike->strike]['spros_2_' . $strike->type] = $strike->spros_2;
 		        }
 		        if (in_array('predlojenie_1_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['predlojenie_1_' . $strike->type] = $strike->predlojenie_1;
+		        	$strikes[$parse_date][$strike->strike]['predlojenie_1_' . $strike->type] = $strike->predlojenie_1;
 		        }
 		        if (in_array('predlojenie_2_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['predlojenie_2_' . $strike->type] = $strike->predlojenie_2;
+		        	$strikes[$parse_date][$strike->strike]['predlojenie_2_' . $strike->type] = $strike->predlojenie_2;
 		        }
 		        if (in_array('prirost_tekushiy_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['prirost_tekushiy_' . $strike->type] = $strike->prirost_tekushiy;
+		        	$strikes[$parse_date][$strike->strike]['prirost_tekushiy_' . $strike->type] = $strike->prirost_tekushiy;
 		        }
 		        if (in_array('prirost_predydushiy_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['prirost_predydushiy_' . $strike->type] = $strike->prirost_predydushiy;
+		        	$strikes[$parse_date][$strike->strike]['prirost_predydushiy_' . $strike->type] = $strike->prirost_predydushiy;
 		        }
 		        if (in_array('money_obshiy_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['money_obshiy_' . $strike->type] = $strike->money_obshiy;
+		        	$strikes[$parse_date][$strike->strike]['money_obshiy_' . $strike->type] = $strike->money_obshiy;
 		        }
 		        if (in_array('money_tekushiy_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['money_tekushiy_' . $strike->type] = $strike->money_tekushiy;
+		        	$strikes[$parse_date][$strike->strike]['money_tekushiy_' . $strike->type] = $strike->money_tekushiy;
 		        }
 		        if (in_array('balance_of_day_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['balance_of_day_' . $strike->type] = $strike->balance_of_day;
+		        	$strikes[$parse_date][$strike->strike]['balance_of_day_' . $strike->type] = $strike->balance_of_day;
 		        }
 		        if (in_array('is_balance_' . $strike->type, $fields))
 		        {
-		        	$strikes[$strike->parse_date][$strike->strike]['is_balance_' . $strike->type] = $strike->is_balance;
+		        	$strikes[$parse_date][$strike->strike]['is_balance_' . $strike->type] = $strike->is_balance;
 		        }
 	        }
 
