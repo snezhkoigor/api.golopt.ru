@@ -7,6 +7,7 @@ use App\OptionStrikeCallsPuts;
 use App\OptionStrikes;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class GetUsaFromFile extends Command
 {
@@ -58,7 +59,6 @@ class GetUsaFromFile extends Command
 				    {
 				    	if ($row !== '')
 					    {
-					    	
 					    	if (strpos($row, ';') === false)
 						    {
 						    	if (strpos($row, 'EXPA') !== false)
@@ -80,8 +80,8 @@ class GetUsaFromFile extends Command
 						    	$row_array = explode(';', $row);
 							    $result[$pair][$expire][$row_array[0]]['symbol'] = $pair;
 							    $result[$pair][$expire][$row_array[0]]['expire'] = $expire;
-							    $result[$pair][$expire][$row_array[0]]['parse_date_id'] = null;
-							    $result[$pair][$expire][$row_array[0]]['type'] = OptionStrikes::TYPES_AMER;
+							    $result[$pair][$expire][$row_array[0]]['parse_date'] = $parse_date;
+							    $result[$pair][$expire][$row_array[0]]['option_type'] = OptionStrikes::TYPES_AMER;
 							    $result[$pair][$expire][$row_array[0]]['strike'] = $row_array[0];
 							    $result[$pair][$expire][$row_array[0]]['odr'] = 0;
 
@@ -103,48 +103,56 @@ class GetUsaFromFile extends Command
 					    }
 				    }
 			    }
-			
-			    $parse_date_obj = OptionParseDates::updateOrCreate([
-			    	'parse_date' => $parse_date
-			    ], ['parse_date' => $parse_date]);
 
-			    if ($parse_date_obj !== null)
+			    if (count($result))
 			    {
-				    if (count($result))
+				    foreach ($result as $symbol)
 				    {
-					    foreach ($result as $symbol)
+					    $week_number = 0;
+					    foreach ($symbol as $expire_date)
 					    {
-						    $week_number = 0;
-						    foreach ($symbol as $expire_date)
+						    $week_number++;
+						    foreach ($expire_date as $strike)
 						    {
-							    $week_number++;
-							    foreach ($expire_date as $strike)
+						    	foreach ($strike['calls_puts'] as $option_type => $item)
 							    {
-								    $strike['type'] .= $week_number;
-								    $strike['parse_date_id'] = $parse_date_obj->id;
-								    $strike_obj = OptionStrikes::updateOrCreate(
-									    [
-										    'symbol' => $strike['symbol'],
-										    'expire' => $strike['expire'],
-										    'type' => $strike['type'],
-										    'strike' => $strike['strike'],
-										    'parse_date_id' => $strike['parse_date_id']
-									    ],
-									    $strike
-								    );
-								
-								    if ($strike_obj)
+							    	$insert = [
+							            'parse_date' => $strike['parse_date'],
+								        'symbol' => $strike['symbol'],
+								        'expire' => $strike['expire'],
+								        'option_type' => $strike['option_type'] . $week_number,
+								        'strike' => $strike['strike'],
+								        'type' => $item['type'],
+								        'open_interest' => $item['open_interest'],
+								        'volume' => $item['volume'],
+								        'premia' => $item['premia'],
+								        'spros_1' => $item['spros_1'],
+								        'spros_2' => $item['spros_2'],
+								        'predlojenie_1' => $item['predlojenie_1'],
+								        'predlojenie_2' => $item['predlojenie_2'],
+								        'prirost_tekushiy' => $item['prirost_tekushiy'],
+								        'prirost_predydushiy' => $item['prirost_predydushiy'],
+								        'money_obshiy' => $item['money_obshiy'],
+								        'money_tekushiy' => $item['money_tekushiy'],
+								        'balance_of_day' => $item['balance_of_day'],
+								        'is_balance' => $item['is_balance'],
+								    ];
+
+							    	$exists = DB::table('option_parse')
+									    ->where([
+									    	['parse_date', $insert['parse_date']],
+										    ['symbol', $insert['symbol']],
+										    ['expire', $insert['expire']],
+										    ['strike', $insert['strike']],
+										    ['type', $insert['type']],
+										    ['option_type', $insert['option_type']]
+									    ])
+									    ->first();
+
+							    	if (!$exists)
 								    {
-									    foreach ($strike['calls_puts'] as $option_type => $item)
-									    {
-										    OptionStrikeCallsPuts::updateOrCreate(
-											    [
-												    'strike_id' => $strike_obj->id,
-												    'type'      => $option_type
-											    ],
-											    $item
-										    );
-									    }
+								    	DB::table('option_parse')
+										    ->insert($insert);
 								    }
 							    }
 						    }

@@ -193,9 +193,7 @@ return [
 
         Intervention\Image\ImageServiceProvider::class,
         
-        Wilgucki\Csv\CsvServiceProvider::class,
-        
-        Neoxia\Routing\ResponseFactoryServiceProvider::class,
+        Wilgucki\Csv\CsvServiceProvider::class
     ],
 
     /*
