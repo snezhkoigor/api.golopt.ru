@@ -138,7 +138,7 @@ class GetWeeklyFromFile extends Command
 								        'is_balance' => $item['is_balance'],
 								    ];
 
-							    	$exists = DB::table('option_parse')
+							    	$exists = DB::table(OptionStrikes::TYPES_WEEK . $week_number . '_option_parse')
 									    ->where([
 									    	['parse_date', $insert['parse_date']],
 										    ['symbol', $insert['symbol']],
@@ -151,7 +151,7 @@ class GetWeeklyFromFile extends Command
 
 							    	if (!$exists)
 								    {
-								    	DB::table('option_parse')
+								    	DB::table(OptionStrikes::TYPES_WEEK . $week_number . '_option_parse')
 										    ->insert($insert);
 								    }
 							    }

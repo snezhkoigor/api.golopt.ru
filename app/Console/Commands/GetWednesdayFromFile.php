@@ -7,6 +7,7 @@ use App\OptionStrikeCallsPuts;
 use App\OptionStrikes;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class GetWednesdayFromFile extends Command
 {
@@ -138,7 +139,7 @@ class GetWednesdayFromFile extends Command
 								        'is_balance' => $item['is_balance'],
 								    ];
 
-							    	$exists = DB::table('option_parse')
+							    	$exists = DB::table(OptionStrikes::TYPES_WEDNESDAY . $week_number . '_option_parse')
 									    ->where([
 									    	['parse_date', $insert['parse_date']],
 										    ['symbol', $insert['symbol']],
@@ -151,7 +152,7 @@ class GetWednesdayFromFile extends Command
 
 							    	if (!$exists)
 								    {
-								    	DB::table('option_parse')
+								    	DB::table(OptionStrikes::TYPES_WEDNESDAY . $week_number . '_option_parse')
 										    ->insert($insert);
 								    }
 							    }
